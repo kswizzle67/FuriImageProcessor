@@ -17,7 +17,7 @@ import java.awt.image.WritableRaster;
 import javax.imageio.ImageIO;
 import java.util.ArrayList;
 
-
+// test. 
 public class phase1 extends JFrame {
 
 	static JMenuBar mb;// = new JMenuBar();
