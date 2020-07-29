@@ -11,8 +11,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.WritableRaster;
 
 import javax.imageio.ImageIO;
 import java.util.ArrayList;
@@ -98,7 +96,12 @@ public class phase1 extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					folderopener();
+					  //start at the first one...
+		            intCurrentFile = 0;
+					arrFiles = fileManipulation.folderopener();
+					imgSource = ImageIO.read(arrFiles.get(intCurrentFile));
+		            imgWorking = ImageManipulation.deepCopyImage(imgSource);
+		            LoadImageIntoUI(imgSource);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -108,7 +111,12 @@ public class phase1 extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					fileopener();
+					File newfile = fileManipulation.fileopener(FramePicture);
+					  
+					arrFiles.add(newfile);
+					imgSource =  ImageManipulation.FiletoBufferedImage(arrFiles.get(0));
+					imgWorking = ImageManipulation.deepCopyImage(imgSource);
+			    	LoadImageIntoUI(imgSource);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -116,49 +124,13 @@ public class phase1 extends JFrame {
 			}
 		});
 	}
-
-	public static void fileopener() throws IOException {
-
-		JFileChooser J = new JFileChooser();
-
-		J.setCurrentDirectory(new File(System.getProperty("user.home")));
-
-		if (J.showOpenDialog(FramePicture) == JFileChooser.APPROVE_OPTION) {
-		    File selectedFile = J.getSelectedFile();
-		    arrFiles.add(selectedFile);
-		    imgSource = ImageIO.read(selectedFile);
-		    imgWorking = deepCopyImage(imgSource);
-	    	LoadImageIntoUI(imgSource);
-		}
-	}
-
-	static BufferedImage deepCopyImage(BufferedImage bi) {
-		 ColorModel cm = bi.getColorModel();
-		 boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
-		 WritableRaster raster = bi.copyData(null);
-		 return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
-		}
-
+	
 	public static void LoadImageIntoUI(BufferedImage imgIn) throws IOException
 	{
-		 int w, h;
-		    //for now, let's go with 600px on the widest side.
-		 BufferedImage img = deepCopyImage(imgIn);
-		    w = img.getWidth();
-		    h = img.getHeight();
-		    double reduceby = 1;
-		    if(w>600||h<600)//see if the image is already small.
-		    {
-			    if(w>h)
-			    {
-			    	reduceby = (double)w/(double)600;
-			    }
-			    else
-			    {
-			    	reduceby = (double)h/(double)600;			    }
-		    }
-		     resizedImage = getScaledImage(img, (int)(Math.round(w/reduceby)),
-		    		 (int)(Math.round(h/reduceby)));
+		 BufferedImage img = ImageManipulation.deepCopyImage(imgIn);
+		  double reduceby = ImageManipulation.getReduceBy(img);
+		     resizedImage = ImageManipulation.getScaledImage((Image)img, (int)(Math.round(img.getWidth()/reduceby)),
+		    		 (int)(Math.round(img.getHeight()/reduceby)));
 	        ImageIcon icon = new ImageIcon(resizedImage); //use resizedImage here
 	        imgLabel.setSize(icon.getIconWidth(), icon.getIconHeight());
 		    imgLabel.setIcon(icon);
@@ -173,7 +145,7 @@ public class phase1 extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 					try {
-						SaveFile();
+						fileManipulation.SaveFile(txtSaveTo.getText(), arrFiles.get(intCurrentFile));
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -226,7 +198,7 @@ public class phase1 extends JFrame {
 		{
 			intCurrentFile++;
 			 imgSource = ImageIO.read(arrFiles.get(intCurrentFile));
-			 imgWorking = deepCopyImage(imgSource);
+			 imgWorking = ImageManipulation.deepCopyImage(imgSource);
 	    	LoadImageIntoUI(imgSource);
 		}
 	}
@@ -237,7 +209,7 @@ public class phase1 extends JFrame {
 		if (intCurrentFile != 0) {
 			intCurrentFile--;
 			imgSource = ImageIO.read(arrFiles.get(intCurrentFile));
-			imgWorking = deepCopyImage(imgSource);
+			imgWorking = ImageManipulation.deepCopyImage(imgSource);
 			LoadImageIntoUI(imgSource);
 
 		}
@@ -261,27 +233,12 @@ public class phase1 extends JFrame {
 		btnSaveToLocation.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-					txtSaveTo.setText(FindDestinationToSaveTo());
+					txtSaveTo.setText(fileManipulation.FindDestinationToSaveTo());
 			}
 		});
 		FramePicture.add(btnSaveToLocation);
 	}
-	public static String FindDestinationToSaveTo()
-	{
-		JFileChooser FolderChooser = new JFileChooser();
-
-		FolderChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		int op = FolderChooser.showOpenDialog(FolderChooser);
-        if(op == JFileChooser.APPROVE_OPTION){
-        	File folder =  FolderChooser.getSelectedFile();
-        	return folder.getAbsolutePath();
-        }
-        else
-        {
-        	return "";
-        }
-	}
-
+	
 	public static void AddSlider()
 	{
 	 	s = new JSlider(0,100,0);
@@ -313,90 +270,18 @@ public class phase1 extends JFrame {
 		});
 	}
 
-	public static void SaveFile() throws IOException
-	{
-		//TODO: we need to add the saturation to this image.
-		//Right now it is not affecting the SAVED image.
-		File out = new File(txtSaveTo.getText() + "/" + arrFiles.get(intCurrentFile).getName());
-		ImageIO.write(ImageIO.read(arrFiles.get(intCurrentFile)), "TIFF", out);
-	}
-
-	public static void folderopener() throws IOException{
-			JFileChooser FolderChooser = new JFileChooser();
-
-			FolderChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			int op = FolderChooser.showOpenDialog(FolderChooser);
-            if(op == JFileChooser.APPROVE_OPTION){
-               File folder = FolderChooser.getSelectedFile();
-               // how to look for name of first file in folder without user having to tell us by clicking.
-               // to open that, display button for next, save, and a slider bar for changing
-               // then to look for next file and open that
-
-               File[] allfiles = folder.listFiles();
-
-               for(int i = 0; i < allfiles.length; i ++) {
-            	   String name = allfiles[i].getName();
-            	   //name = brainscan123.tif
-            	   if (name.substring(name.length()-3).equals("tif"))
-            	   {
-            		    arrFiles.add(allfiles[i]);
-            	   }
-               }//end for i
-            }
-            //start at the first one...
-            intCurrentFile = 0;
-            imgSource = ImageIO.read(arrFiles.get(intCurrentFile));
-            imgWorking = deepCopyImage(imgSource);
-            LoadImageIntoUI(imgSource);
-	}
-
-	//https://stackoverflow.com/questions/6714045/how-to-resize-jlabel-imageicon
-	private static Image getScaledImage(Image srcImg, int w, int h){
-	    BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-	    Graphics2D g2 = resizedImg.createGraphics();
-
-	    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-	    g2.drawImage(srcImg, 0, 0, w, h, null);
-	    g2.dispose();
-
-	    return resizedImg;
-	}
-
 	public static void SatChange() throws IOException{
 		 //Here is where we will show image to user after sat change was made.
-		imgWorking = deepCopyImage(ActuallyChangeSaturation(imgSource,s.getValue()));
+		imgWorking = ImageManipulation.deepCopyImage(
+				ImageManipulation.ActuallyChangeSaturation(
+						imgSource,s.getValue(),
+							Integer.parseInt(txtR.getText()), 
+							Integer.parseInt(txtG.getText()),
+							Integer.parseInt(txtB.getText())));
 		LoadImageIntoUI(imgWorking); //use resizedImage here
 	}
 
-	private static BufferedImage ActuallyChangeSaturation(BufferedImage img, int saturationchange)
-	{
-		int w = img.getWidth();
-		int h = img.getHeight();
-		int r,g,b,pixel;
-		BufferedImage copy = deepCopyImage(img);
-		float satchange;
-		satchange = (float)(saturationchange*.01);
-        System.out.println("Start! change:" + satchange);
-		for(int y = 0; y < h; y++) {
-		    for(int x = 0; x < w; x++) {
-		    	 pixel = img.getRGB(x, y);
-		    	 r = (pixel >> 16) & 0xFF;
-		    	 g = (pixel >> 8) & 0xFF;
-		    	 b = (pixel) & 0xFF;
-		    	if (r<Integer.parseInt(txtR.getText())&&g<Integer.parseInt(txtG.getText())&&b<Integer.parseInt(txtB.getText()))
-		    	{
-			        float hsb[] = Color.RGBtoHSB(r, g, b, null);
-			        if(x%10==0 && y%100==0)
-			        {
-				        System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b + " H:" + hsb[0] + " s:" + hsb[1] + " b:" + hsb[2]);
-				    }
-			        copy.setRGB(x, y, Color.HSBtoRGB(hsb[0], satchange, hsb[2]));
-		        }
-		    }// For x
-		}// For y
-        System.out.println("End! change:" + satchange);
-		return copy;
-	}
+	
 
 	public static void exporttoCSV(){
 		// want a button to say "save to excel" and it saves current slider bar value.
@@ -437,7 +322,7 @@ public class phase1 extends JFrame {
 		btnProcessImage.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				ProcessImage(imgSource);
+				ImageManipulation.ProcessImage(imgSource);
 				try {
 					LoadImageIntoUI(imgWorking);
 				} catch (IOException e) {
@@ -456,7 +341,11 @@ public class phase1 extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				//ProcessImage(imgSource);
 				try {
-					imgWorking = deepCopyImage(MakeIgnoredPixelsWhite(imgSource));
+					imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhite(imgSource, 
+								Integer.parseInt(txtThreshold.getText()),
+								Integer.parseInt(txtR.getText()),
+								Integer.parseInt(txtG.getText()),
+								Integer.parseInt(txtB.getText())));
 					LoadImageIntoUI(imgWorking); //use resizedImage here
 
 				} catch (IOException e) {
@@ -475,7 +364,7 @@ public class phase1 extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				//ProcessImage(imgSource);
 				try {
-					imgWorking = deepCopyImage(MakeIgnoredPixelsWhiteUsingRange(imgSource));
+					imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhiteUsingRange(imgSource, rgb));
 					LoadImageIntoUI(imgWorking); //use resizedImage here
 
 				} catch (IOException e) {
@@ -486,108 +375,7 @@ public class phase1 extends JFrame {
 		});
 		FramePicture.add(btnMakeWhiteUsingTrackedClicks);
 	}
-
-	static void ProcessImage(BufferedImage img)
-	{
-		int w = img.getWidth();
-		int h = img.getHeight();
-		int r,g,b,pixel,sumR, sumG, sumB,count;
-		sumR = 0;
-		sumG = 0;
-		sumB = 0;
-		count = 0;
-		for(int y = 0; y < h; y++) {
-		    for(int x = 0; x < w; x++) {
-		    	 pixel = img.getRGB(x, y);
-		    	 r = (pixel >> 16) & 0xFF;
-		    	 g = (pixel >> 8) & 0xFF;
-		    	 b = (pixel) & 0xFF;
-		    	 float hsb[] = Color.RGBtoHSB(r, g, b, null);
-
-		    	if (r<255&&g<255&&b<255&&hsb[1]>.30)
-		    	{
-		    		System.out.print(hsb[1]>.30);
-		    		System.out.println(" s =" + hsb[1]);
-			       //Let's try just the sum of them...
-		    		sumR += r;
-		    		sumG += g;
-		    		sumB += b;
-		    		count++;
-		        }
-		    }// For x
-		}// For y
-		txtR.setText(Integer.toString(sumR/count));
-		txtG.setText(Integer.toString(sumG/count));
-		txtB.setText(Integer.toString(sumB/count));
-	}
-	private static BufferedImage MakeIgnoredPixelsWhite(BufferedImage img)
-	{
-		int w = img.getWidth();
-		int h = img.getHeight();
-		int r,g,b,pixel;
-		BufferedImage copy = deepCopyImage(img);
-		int th = Integer.parseInt(txtThreshold.getText());
-		for(int y = 0; y < h; y++) {
-		    for(int x = 0; x < w; x++) {
-		    	 pixel = img.getRGB(x, y);
-		    	 r = (pixel >> 16) & 0xFF;
-		    	 g = (pixel >> 8) & 0xFF;
-		    	 b = (pixel) & 0xFF;
-		    	if ((r>Integer.parseInt(txtR.getText())+th
-		    			||r<Integer.parseInt(txtR.getText())-th)||
-		    			(g>Integer.parseInt(txtG.getText())+th
-		    					||g<Integer.parseInt(txtG.getText())-th)||
-		    			(b>Integer.parseInt(txtB.getText())+th
-		    					||b<Integer.parseInt(txtB.getText())-th))
-		    	{
-			        copy.setRGB(x, y, new Color(255,255,255).getRGB());
-		        }
-		    	else
-		    	{
-		    		float hsb[] = Color.RGBtoHSB(r, g, b, null);
-			        System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b + " H:" + hsb[0] + " s:" + hsb[1] + " b:" + hsb[2]);
-		    	}
-		    }// For x
-		}// For y
-
-		return copy;
-	}
-
-	private static BufferedImage MakeIgnoredPixelsWhiteUsingRange(BufferedImage img)
-	{
-		int w = img.getWidth();
-		int h = img.getHeight();
-		int r,g,b,pixel;
-		BufferedImage copy = deepCopyImage(img);
-		for(int y = 0; y < h; y++) {
-		    for(int x = 0; x < w; x++) {
-		    	 pixel = img.getRGB(x, y);
-		    	 r = (pixel >> 16) & 0xFF;
-		    	 g = (pixel >> 8) & 0xFF;
-		    	 b = (pixel) & 0xFF;
-		    	if (
-		    			(r>rgb[0][0]
-		    			||r<rgb[0][1])
-		    			||
-		    			(g>rgb[1][0]
-		    			||g<rgb[1][1])
-		    			||
-		    			(b>rgb[2][0]
-    					||b<rgb[2][1]))
-		    	{
-			        copy.setRGB(x, y, new Color(255,255,255).getRGB());
-		        }
-		    	else
-		    	{
-		    		float hsb[] = Color.RGBtoHSB(r, g, b, null);
-			        System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b + " H:" + hsb[0] + " s:" + hsb[1] + " b:" + hsb[2]);
-		    	}
-		    }// For x
-		}// For y
-
-		return copy;
-	}
-
+	
 	public static void AddHRPandIFCRadios()
 	{
 		//btnProcessImage.setBounds(50,100,200,30);
@@ -614,9 +402,6 @@ public class phase1 extends JFrame {
 
 		FramePicture.getContentPane().add(rdoIFC);
 		FramePicture.getContentPane().add(rdoHRP);
-
-		//FramePicture.pack();
-
 	}
 
 	public static void AddTrackClicksCheckBox()
@@ -625,43 +410,21 @@ public class phase1 extends JFrame {
 		chkTrackClicks.setBounds(100,100, 150,50);
 		chkTrackClicks.setLocation(650,160);
 		FramePicture.getContentPane().add(chkTrackClicks);
-
 	}
 
 	public static void AddToClickRGBAverage(int R, int G, int B)
 	{
-		//						high,low
-		//static int[][] rgb = {{0,255},{0,255},{0,255}}; //these are actually reversed.
-		//why are they reversed? Because if the following RGB comes in:
-		//125, 115, 160
-		//I want to say IF the value is higher than the high (0) make this the high.
-		//opposite for low.
-		//first value will replace both obviously...
-
 		if (R>rgb[0][0])
 			rgb[0][0] = R;
-
 		if (R<rgb[0][1])
 			rgb[0][1] = R;
-
 		if (G>rgb[1][0])
 			rgb[1][0] = G;
-
 		if (G<rgb[1][1])
 			rgb[1][1] = G;
-
 		if (B>rgb[2][0])
 			rgb[2][0] = B;
-
 		if (B<rgb[2][1])
 			rgb[2][1] = B;
-
-		System.out.println(
-				rgb[0][0] + " " +
-				rgb[0][1] + " " +
-				rgb[1][0] + " " +
-				rgb[1][1] + " " +
-				rgb[2][0] + " " +
-				rgb[2][1]);
 	}
 }
