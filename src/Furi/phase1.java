@@ -9,7 +9,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
@@ -284,9 +286,49 @@ public class phase1 extends JFrame {
 	
 
 	public static void exporttoCSV(){
+		
+		// listener? for window where they can type file name. 
+		// and it sets it equal to namecsv
+		
+		
 		// want a button to say "save to excel" and it saves current slider bar value.
-		// https://www.baeldung.com/java-csv
+		// https://examples.javacodegeeks.com/core-java/writeread-csv-files-in-java-example/
+		// I don't know why type final won't work. 
+		private static final comma = ","; 
+		private static final separator = "\n"; 
+		
+		private static final header = "X, Y, r, g, b, H, S, B, Percent Area"; 
+		
+		public static void csvfile(String namecsv) {
+			
+			
+			List DatatoSave = new Arraylist();
+			DatatoSave.add(x);
+			DatatoSave.add(y);
+			DatatoSave.add(r);
+			DatatoSave.add(g);
+			DatatoSave.add(b);
+			
+			//calculate percent area and add it as last element
+			// we need total number of pixels that fall within accepted
+			// range divided by total pixels in image. Doesn't
+			// matter that image was scaled down. 
+			
+			
+			
+			FileWriter fileWriter = null; 
+			try {
+				
+				fileWriter = new fileWriter(namecsv);
+				fileWriter.append(header.toString());
+				fileWriter.append(Separator); 
+			}
+			catch (Exception e) {
+			}
+		}
+	
 	}
+	
 
 	public static void AddExtraUI()
 	{
