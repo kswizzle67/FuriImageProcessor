@@ -391,7 +391,11 @@ public class phase1 extends JFrame {
 	{
 		//btnProcessImage.setBounds(50,100,200,30);
 		//btnProcessImage.setLocation(650,270);
-
+		
+		// for IFC (green): r = 0, g = 254, b = 0; 
+		// for HRP: r = 171, g = 171, b = 141; 
+		// both have range +/- 20 for "make white". The button should "make white" as well. 
+		
 		rdoHRP = new JRadioButton("HRP");
 		rdoHRP.setBounds(50,100,200,30);
 		rdoHRP.setLocation(650,200);
