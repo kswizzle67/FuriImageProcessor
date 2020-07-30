@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFileChooser;
+
 
 public class ImageManipulation {
 	

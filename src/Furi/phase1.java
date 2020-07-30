@@ -38,7 +38,7 @@ public class phase1 extends JFrame {
 	static JPanel rdoPanel;
 	static JCheckBox chkTrackClicks; //used to track clicks and estimate colors
 	static int[][] rgb = {{0,255},{0,255},{0,255}}; //these are actually reversed.
-	static File csvfile; 
+	static File csvfile;
 
 	private static final long serialVersionUID = 1L;
 
@@ -47,6 +47,9 @@ public class phase1 extends JFrame {
 	}
 
 	public static void UI(){
+		JMenuBar mb;// = new JMenuBar();
+		JMenu mFile;// = new JMenu("Open File");
+		 JMenuItem FileOpenFile, FileOpenFolder;
 
 		mb = new JMenuBar();
 		mFile = new JMenu("File");
@@ -116,7 +119,7 @@ public class phase1 extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					File newfile = fileManipulation.fileopener(FramePicture);
-					  
+
 					arrFiles.add(newfile);
 					imgSource =  ImageManipulation.FiletoBufferedImage(arrFiles.get(0));
 					imgWorking = ImageManipulation.deepCopyImage(imgSource);
@@ -128,7 +131,7 @@ public class phase1 extends JFrame {
 			}
 		});
 	}
-	
+
 	public static void LoadImageIntoUI(BufferedImage imgIn) throws IOException
 	{
 		 BufferedImage img = ImageManipulation.deepCopyImage(imgIn);
@@ -150,7 +153,7 @@ public class phase1 extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 					try {
 						fileManipulation.SaveFile(txtSaveTo.getText(), arrFiles.get(intCurrentFile));
-						exporttocsvfile(); 
+						exporttocsvfile();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -163,7 +166,7 @@ public class phase1 extends JFrame {
 
 	protected static void exporttocsvfile() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public static void AddForwardandBackButtons()
@@ -248,7 +251,7 @@ public class phase1 extends JFrame {
 		});
 		FramePicture.add(btnSaveToLocation);
 	}
-	
+
 	public static void AddSlider()
 	{
 	 	s = new JSlider(0,100,0);
@@ -285,15 +288,15 @@ public class phase1 extends JFrame {
 		imgWorking = ImageManipulation.deepCopyImage(
 				ImageManipulation.ActuallyChangeSaturation(
 						imgSource,s.getValue(),
-							Integer.parseInt(txtR.getText()), 
+							Integer.parseInt(txtR.getText()),
 							Integer.parseInt(txtG.getText()),
 							Integer.parseInt(txtB.getText())));
 		LoadImageIntoUI(imgWorking); //use resizedImage here
 	}
 
-	
 
-	
+
+
 
 	public static void AddExtraUI()
 	{
@@ -348,7 +351,7 @@ public class phase1 extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				//ProcessImage(imgSource);
 				try {
-					imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhite(imgSource, 
+					imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhite(imgSource,
 								Integer.parseInt(txtThreshold.getText()),
 								Integer.parseInt(txtR.getText()),
 								Integer.parseInt(txtG.getText()),
@@ -383,7 +386,7 @@ public class phase1 extends JFrame {
 		});
 		FramePicture.add(btnMakeWhiteUsingTrackedClicks);
 	}
-	
+
 	public static void AddHRPandIFCRadios()
 	{
 		//btnProcessImage.setBounds(50,100,200,30);
