@@ -11,6 +11,8 @@ import javax.swing.JFrame;
 
 public class fileManipulation {
 
+	static File csvfile;
+	
 	public static void SaveFile(String FileLocation, File fyl) throws IOException
 	{
 		//TODO: we need to add the saturation to this image.
@@ -69,6 +71,7 @@ public class fileManipulation {
 		int op = FolderChooser.showOpenDialog(FolderChooser);
         if(op == JFileChooser.APPROVE_OPTION){
         	File folder =  FolderChooser.getSelectedFile();
+        	File csvfile = folder; 
         	return folder.getAbsolutePath();
         }
         else

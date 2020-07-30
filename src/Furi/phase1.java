@@ -20,6 +20,7 @@ import java.util.ArrayList;
 // 2222
 public class phase1 extends JFrame {
 
+	static ArrayList<pixelData> DatatoSave = new ArrayList<pixelData>();
 	static JMenuBar mb;// = new JMenuBar();
 	static JMenu mFile;// = new JMenu("Open File");
 	static JMenuItem FileOpenFile, FileOpenFolder;
@@ -37,6 +38,7 @@ public class phase1 extends JFrame {
 	static JPanel rdoPanel;
 	static JCheckBox chkTrackClicks; //used to track clicks and estimate colors
 	static int[][] rgb = {{0,255},{0,255},{0,255}}; //these are actually reversed.
+	static File csvfile; 
 
 	private static final long serialVersionUID = 1L;
 
@@ -148,6 +150,7 @@ public class phase1 extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 					try {
 						fileManipulation.SaveFile(txtSaveTo.getText(), arrFiles.get(intCurrentFile));
+						exporttocsvfile(); 
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -157,6 +160,11 @@ public class phase1 extends JFrame {
 		FramePicture.add(btnSave);
 	}
 
+
+	protected static void exporttocsvfile() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	public static void AddForwardandBackButtons()
 	{
@@ -285,49 +293,6 @@ public class phase1 extends JFrame {
 
 	
 
-	public static void exporttoCSV(){
-		
-		// listener? for window where they can type file name. 
-		// and it sets it equal to namecsv
-		
-		
-		// want a button to say "save to excel" and it saves current slider bar value.
-		// https://examples.javacodegeeks.com/core-java/writeread-csv-files-in-java-example/
-		// I don't know why type final won't work. 
-		private static final comma = ","; 
-		private static final separator = "\n"; 
-		
-		private static final header = "X, Y, r, g, b, H, S, B, Percent Area"; 
-		
-		public static void csvfile(String namecsv) {
-			
-			
-			List DatatoSave = new Arraylist();
-			DatatoSave.add(x);
-			DatatoSave.add(y);
-			DatatoSave.add(r);
-			DatatoSave.add(g);
-			DatatoSave.add(b);
-			
-			//calculate percent area and add it as last element
-			// we need total number of pixels that fall within accepted
-			// range divided by total pixels in image. Doesn't
-			// matter that image was scaled down. 
-			
-			
-			
-			FileWriter fileWriter = null; 
-			try {
-				
-				fileWriter = new fileWriter(namecsv);
-				fileWriter.append(header.toString());
-				fileWriter.append(Separator); 
-			}
-			catch (Exception e) {
-			}
-		}
-	
-	}
 	
 
 	public static void AddExtraUI()
@@ -387,7 +352,7 @@ public class phase1 extends JFrame {
 								Integer.parseInt(txtThreshold.getText()),
 								Integer.parseInt(txtR.getText()),
 								Integer.parseInt(txtG.getText()),
-								Integer.parseInt(txtB.getText())));
+								Integer.parseInt(txtB.getText()), DatatoSave));
 					LoadImageIntoUI(imgWorking); //use resizedImage here
 
 				} catch (IOException e) {
@@ -406,7 +371,8 @@ public class phase1 extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				//ProcessImage(imgSource);
 				try {
-					imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhiteUsingRange(imgSource, rgb));
+					imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhiteUsingRange(
+							imgSource, rgb, DatatoSave));
 					LoadImageIntoUI(imgWorking); //use resizedImage here
 
 				} catch (IOException e) {

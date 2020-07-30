@@ -9,12 +9,16 @@ import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 
 public class ImageManipulation {
-
+	
+	
+	
+	
 	static BufferedImage FiletoBufferedImage(File in) 
 	{
 		try {
@@ -62,7 +66,7 @@ public class ImageManipulation {
 		 return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
 		}
 
-	static BufferedImage MakeIgnoredPixelsWhiteUsingRange(BufferedImage img, int[][] rgb)
+	static BufferedImage MakeIgnoredPixelsWhiteUsingRange(BufferedImage img, int[][] rgb, ArrayList<pixelData> DatatoSave)
 	{
 		int w = img.getWidth();
 		int h = img.getHeight();
@@ -90,13 +94,26 @@ public class ImageManipulation {
 		    	{
 		    		float hsb[] = Color.RGBtoHSB(r, g, b, null);
 			        System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b + " H:" + hsb[0] + " s:" + hsb[1] + " b:" + hsb[2]);
+		    		// pixel with stain
+		    		pixelData pix = new pixelData();
+		    		pix.x = x;
+		    		pix.y = y;
+		    		pix.r = r;
+		    		pix.g = g;
+		    		pix.b = b;
+		    		pix.h = hsb[0];
+		    		pix.s = hsb[1];
+		    		pix.br = hsb[2];
+		    		
+		    		DatatoSave.add(pix);
+		    		
 		    	}
 		    }// For x
 		}// For y
 
 		return copy;
 	}
-	static BufferedImage MakeIgnoredPixelsWhite(BufferedImage img, int th, int R, int G, int B)
+	static BufferedImage MakeIgnoredPixelsWhite(BufferedImage img, int th, int R, int G, int B, ArrayList<pixelData> DatatoSave)
 	{
 		int w = img.getWidth();
 		int h = img.getHeight();
