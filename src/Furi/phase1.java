@@ -18,9 +18,7 @@ import java.util.ArrayList;
 // 2222
 public class phase1 extends JFrame {
 
-	static JMenuBar mb;// = new JMenuBar();
-	static JMenu mFile;// = new JMenu("Open File");
-	static JMenuItem FileOpenFile, FileOpenFolder;
+	
 	static JFrame FramePicture = new JFrame("Image Processor");
 	static JSlider s;
 	static ArrayList<File> arrFiles = new ArrayList<File>();
@@ -43,7 +41,10 @@ public class phase1 extends JFrame {
 	}
 
 	public static void UI(){
-
+		JMenuBar mb;// = new JMenuBar();
+		JMenu mFile;// = new JMenu("Open File");
+		 JMenuItem FileOpenFile, FileOpenFolder;
+		
 		mb = new JMenuBar();
 		mFile = new JMenu("File");
 		FileOpenFile = new JMenuItem("Open File");
