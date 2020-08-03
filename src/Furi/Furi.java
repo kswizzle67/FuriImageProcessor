@@ -18,7 +18,7 @@ import javax.imageio.ImageIO;
 import java.util.ArrayList;
 
 // 2222
-public class phase1 extends JFrame {
+public class Furi extends JFrame {
 
 	static ArrayList<pixelData> DatatoSave = new ArrayList<pixelData>();
 	static JMenuBar mb;// = new JMenuBar();

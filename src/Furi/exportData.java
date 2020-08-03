@@ -6,7 +6,11 @@ import java.util.ArrayList;
 
 public class exportData {
 
-public static void exporttoCSV(){
+	public String FileName = "";
+	public String FilePath = "";
+	
+	
+	public static void exporttoCSV(){
 		
 		// listener? for window where they can type file name. 
 		// and it sets it equal to namecsv
