@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
 
 public class ImageManipulation {
 	
-	
+	static double dblTotalPixels,coloredpixels, stainedpixels;
 	
 	
 	static BufferedImage FiletoBufferedImage(File in) 
@@ -78,8 +78,13 @@ public class ImageManipulation {
 		    	 r = (pixel >> 16) & 0xFF;
 		    	 g = (pixel >> 8) & 0xFF;
 		    	 b = (pixel) & 0xFF;
-		    	if (
-		    			(r>rgb[0][0]
+		    	 dblTotalPixels++;
+		    	if (r==255&&g==255&&b==255)
+    			{
+		    		//it is already white. 
+		    		//It has already been counted and should only be in totalpixels
+    			}
+		    	else if((r>rgb[0][0]
 		    			||r<rgb[0][1])
 		    			||
 		    			(g>rgb[1][0]
@@ -88,6 +93,7 @@ public class ImageManipulation {
 		    			(b>rgb[2][0]
     					||b<rgb[2][1]))
 		    	{
+		    		coloredpixels++;
 			        copy.setRGB(x, y, new Color(255,255,255).getRGB());
 		        }
 		    	else
@@ -107,10 +113,13 @@ public class ImageManipulation {
 		    		
 		    		DatatoSave.add(pix);
 		    		
+		    		coloredpixels++;
+		    		stainedpixels++;
 		    	}
 		    }// For x
 		}// For y
-
+		  System.out.println("Total:" + dblTotalPixels + " Colored: " + coloredpixels + " Stained:" + stainedpixels + " perc: " + stainedpixels/coloredpixels);
+			
 		return copy;
 	}
 	static BufferedImage MakeIgnoredPixelsWhite(BufferedImage img, int th, int R, int G, int B, ArrayList<pixelData> DatatoSave)
@@ -126,20 +135,41 @@ public class ImageManipulation {
 		    	 r = (pixel >> 16) & 0xFF;
 		    	 g = (pixel >> 8) & 0xFF;
 		    	 b = (pixel) & 0xFF;
-		    	if ((r>R+th||r<R-th)||
+		    	 dblTotalPixels++;
+		    	if (r==255&&g==255&&b==255)
+    			{
+		    		//it is already white. 
+		    		//It has already been counted and should only be in totalpixels
+    			}
+		    	else if ((r>R+th||r<R-th)||
 	    			(g>G+th||g<G-th)||
 		    		(b>B+th||b<B-th))
 		    	{
+		    		coloredpixels++;
 			        copy.setRGB(x, y, new Color(255,255,255).getRGB());
 		        }
 		    	else
 		    	{
 		    		float hsb[] = Color.RGBtoHSB(r, g, b, null);
-			        System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b + " H:" + hsb[0] + " s:" + hsb[1] + " b:" + hsb[2]);
+		    		pixelData pix = new pixelData();
+		    		pix.x = x;
+		    		pix.y = y;
+		    		pix.r = r;
+		    		pix.g = g;
+		    		pix.b = b;
+		    		pix.h = hsb[0];
+		    		pix.s = hsb[1];
+		    		pix.br = hsb[2];
+	    		
+	    		DatatoSave.add(pix);
+		    		coloredpixels++;
+		    		stainedpixels++;
+		    	    System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b + " H:" + hsb[0] + " s:" + hsb[1] + " b:" + hsb[2]);
 		    	}
 		    }// For x
 		}// For y
-
+		  System.out.println("Total:" + dblTotalPixels + " Colored: " + coloredpixels + " Stained:" + stainedpixels + " perc: " + stainedpixels/coloredpixels );
+	    	
 		return copy;
 	}
 	static BufferedImage ActuallyChangeSaturation(BufferedImage img, int saturationchange, int R, int B, int G)
