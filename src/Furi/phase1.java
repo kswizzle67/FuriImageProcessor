@@ -407,7 +407,7 @@ public class phase1 extends JFrame {
 	           	txtB.setText("140");
 	        }
 	    });
-		rdoIFC = new JRadioButton("IFC");
+		rdoIFC = new JRadioButton("IFC (green)");
 		rdoIFC.setBounds(50,100,200,30);
 		rdoIFC.setLocation(650,240);
 
@@ -417,6 +417,30 @@ public class phase1 extends JFrame {
 
 		FramePicture.getContentPane().add(rdoIFC);
 		FramePicture.getContentPane().add(rdoHRP);
+		
+		rdoIFC.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				// set rgb to 0,254,0
+			}
+			
+			
+		});
+		
+		rdoHRP.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				// set rgb to 171,171,141
+			}
+			
+			
+		});
 	}
 
 	public static void AddTrackClicksCheckBox()
