@@ -57,8 +57,8 @@ public class Furi extends JFrame {
 		FileOpenFolder = new JMenuItem("Open Folder");
 
 		imgLabel = new JLabel();
-		imgLabel.setSize(600,600);
-		imgLabel.setLocation(100, 100);
+		imgLabel.setSize(300,300);
+		imgLabel.setLocation(100, 50);
 		imgLabel.setBorder(BorderFactory.createLineBorder(Color.black));
 		FramePicture.add(imgLabel);
 
@@ -81,12 +81,12 @@ public class Furi extends JFrame {
          });
 
 		lbllblFileNameTop = new JLabel("Filename: ");
-		lbllblFileNameTop.setSize(70,40);
+		lbllblFileNameTop.setSize(70,30);
 		lbllblFileNameTop.setLocation(130, 10);
 		FramePicture.add(lbllblFileNameTop);
 
 		lblFileNameTop = new JLabel();
-		lblFileNameTop.setSize(400,40);
+		lblFileNameTop.setSize(200,30);
 		lblFileNameTop.setLocation(200, 10);
 		lblFileNameTop.setBorder(BorderFactory.createLineBorder(Color.black));
 		FramePicture.add(lblFileNameTop);
@@ -110,7 +110,7 @@ public class Furi extends JFrame {
 		AddHRPandIFCRadios();
 		AddTrackClicksCheckBox();
 
-		FramePicture.setSize(800,1000);
+		FramePicture.setSize(800,800);
 		FramePicture.setLayout(null);
 		FramePicture.setVisible(true);
 
@@ -172,7 +172,7 @@ public class Furi extends JFrame {
 	{
 		btnForwardImg  = new JButton(">>");
 		btnForwardImg.setBounds(50,100,50,30);
-		btnForwardImg.setLocation(710,400);
+		btnForwardImg.setLocation(710,350);
 		btnForwardImg.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -187,7 +187,7 @@ public class Furi extends JFrame {
 
 		btnBackImg = new JButton("<<");
 		btnBackImg.setBounds(50,100,50,30);
-		btnBackImg.setLocation(10,400);
+		btnBackImg.setLocation(10,350);
 		btnBackImg.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -239,17 +239,17 @@ public class Furi extends JFrame {
 	{
 		lblSaveTo = new JLabel("Save Files to:");
 		lblSaveTo.setSize(200,30);
-		lblSaveTo.setLocation(25,870);
+		lblSaveTo.setLocation(25,810);
 		FramePicture.add(lblSaveTo);
 
 		txtSaveTo = new JTextField();
 		txtSaveTo.setSize(250, 30);
-		txtSaveTo.setLocation(25,900);
+		txtSaveTo.setLocation(25,840);
 		FramePicture.add(txtSaveTo);
 
 		btnSaveToLocation = new JButton("...");
 		btnSaveToLocation.setBounds(50,100,50,30);
-		btnSaveToLocation.setLocation(270,900);
+		btnSaveToLocation.setLocation(270,840);
 		btnSaveToLocation.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -259,7 +259,7 @@ public class Furi extends JFrame {
 		FramePicture.add(btnSaveToLocation);
 		btnSave = new JButton("Save Image");
 		btnSave.setBounds(25,100,95,30);
-		btnSave.setLocation(25,920);
+		btnSave.setLocation(25,860);
 		btnSave.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -325,33 +325,33 @@ public class Furi extends JFrame {
 	{
 		JLabel lblRGB = new JLabel("r,g,b:");
 		lblRGB.setSize(200,30);
-		lblRGB.setLocation(450,750);
+		lblRGB.setLocation(450,690);
 		FramePicture.add(lblRGB);
 
 		 txtR = new JTextField("255");
 		txtR.setSize(40, 30);
-		txtR.setLocation(450,780);
+		txtR.setLocation(450,720);
 		FramePicture.add(txtR);
 
 		 txtG = new JTextField("255");
 		txtG.setSize(40, 30);
-		txtG.setLocation(490,780);
+		txtG.setLocation(490,720);
 		FramePicture.add(txtG);
 
 		 txtB = new JTextField("255");
 		txtB.setSize(40, 30);
-		txtB.setLocation(530,780);
+		txtB.setLocation(530,720);
 		FramePicture.add(txtB);
 
 		 txtThreshold = new JTextField("20");
 		 txtThreshold.setSize(40, 30);
-		 txtThreshold.setLocation(630,820);
+		 txtThreshold.setLocation(630,760);
 			FramePicture.add(txtThreshold);
 
 		JButton btnProcessImage = new JButton("Estimate Values");
 		btnProcessImage.setBounds(50,100,200,30);
 		//btnProcessImage.setBorder(BorderFactory.createLineBorder(Color.black));
-		btnProcessImage.setLocation(440,720);
+		btnProcessImage.setLocation(440,660);
 		btnProcessImage.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -368,7 +368,7 @@ public class Furi extends JFrame {
 
 		JButton btnMakeWhite = new JButton("Make white");
 		btnMakeWhite.setBounds(50,100,200,30);
-		btnMakeWhite.setLocation(440,820);
+		btnMakeWhite.setLocation(440,760);
 		btnMakeWhite.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -391,7 +391,7 @@ public class Furi extends JFrame {
 
 		JButton btnMakeWhiteUsingTrackedClicks = new JButton("Make white (Use Tracked Clicks)");
 		btnMakeWhiteUsingTrackedClicks.setBounds(50,100,250,30);
-		btnMakeWhiteUsingTrackedClicks.setLocation(440,850);
+		btnMakeWhiteUsingTrackedClicks.setLocation(440,790);
 		btnMakeWhiteUsingTrackedClicks.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -417,7 +417,7 @@ public class Furi extends JFrame {
 
 		lblHRPIFC = new JLabel("Type:");
 		lblHRPIFC.setSize(70,40);
-		lblHRPIFC.setLocation(25, 710);
+		lblHRPIFC.setLocation(25, 650);
 		FramePicture.add(lblHRPIFC);
 
 		// for IFC (green): r = 0, g = 254, b = 0;
@@ -426,7 +426,7 @@ public class Furi extends JFrame {
 
 		rdoHRP = new JRadioButton("HRP");
 		rdoHRP.setBounds(25,20,200,30);
-		rdoHRP.setLocation(25,730);
+		rdoHRP.setLocation(25,670);
 		rdoHRP.addActionListener(new ActionListener() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
@@ -435,9 +435,9 @@ public class Furi extends JFrame {
 	           	txtB.setText("140");
 	        }
 	    });
-		rdoIFC = new JRadioButton("IFC");
+		rdoIFC = new JRadioButton("IFC (green)");
 		rdoIFC.setBounds(25,20,200,30);
-		rdoIFC.setLocation(25,750);
+		rdoIFC.setLocation(25,690);
 
 		rdoGroup = new ButtonGroup();
 		rdoGroup.add(rdoHRP);
@@ -475,7 +475,7 @@ public class Furi extends JFrame {
 	{
 		chkTrackClicks = new JCheckBox("Track Clicks!");
 		chkTrackClicks.setBounds(50,50, 150,50);
-		chkTrackClicks.setLocation(300,740);
+		chkTrackClicks.setLocation(300,680);
 		FramePicture.getContentPane().add(chkTrackClicks);
 	}
 

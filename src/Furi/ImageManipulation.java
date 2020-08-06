@@ -34,15 +34,15 @@ public class ImageManipulation {
 		  int w = img.getWidth();
 		    int h = img.getHeight();
 		    double reduceby = 1;
-		    if(w>600||h<600)//see if the image is already small.
+		    if(w>300||h<300)//see if the image is already small.
 		    {
 			    if(w>h)
 			    {
-			    	reduceby = (double)w/(double)600;
+			    	reduceby = (double)w/(double)300;
 			    }
 			    else
 			    {
-			    	reduceby = (double)h/(double)600;			    }
+			    	reduceby = (double)h/(double)300;			    }
 		    }
 		    return reduceby;
 	}
