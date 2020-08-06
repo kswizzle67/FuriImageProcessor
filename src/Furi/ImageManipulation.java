@@ -101,17 +101,7 @@ public class ImageManipulation {
 		    		float hsb[] = Color.RGBtoHSB(r, g, b, null);
 			        System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b + " H:" + hsb[0] + " s:" + hsb[1] + " b:" + hsb[2]);
 		    		// pixel with stain
-		    		pixelData pix = new pixelData();
-		    		pix.x = x;
-		    		pix.y = y;
-		    		pix.r = r;
-		    		pix.g = g;
-		    		pix.b = b;
-		    		pix.h = hsb[0];
-		    		pix.s = hsb[1];
-		    		pix.br = hsb[2];
 		    		
-		    		DatatoSave.add(pix);
 		    		
 		    		coloredpixels++;
 		    		stainedpixels++;
@@ -119,7 +109,13 @@ public class ImageManipulation {
 		    }// For x
 		}// For y
 		  System.out.println("Total:" + dblTotalPixels + " Colored: " + coloredpixels + " Stained:" + stainedpixels + " perc: " + stainedpixels/coloredpixels);
-			
+		  pixelData pix = new pixelData();
+		  pix.dblTotalPixels = dblTotalPixels;
+		  pix.coloredpixels = coloredpixels;
+		  pix.stainedpixels = stainedpixels;
+		  pix.signal = stainedpixels/coloredpixels;
+	    	
+		  DatatoSave.add(pix);
 		return copy;
 	}
 	static BufferedImage MakeIgnoredPixelsWhite(BufferedImage img, int th, int R, int G, int B, ArrayList<pixelData> DatatoSave)
@@ -151,17 +147,7 @@ public class ImageManipulation {
 		    	else
 		    	{
 		    		float hsb[] = Color.RGBtoHSB(r, g, b, null);
-		    		pixelData pix = new pixelData();
-		    		pix.x = x;
-		    		pix.y = y;
-		    		pix.r = r;
-		    		pix.g = g;
-		    		pix.b = b;
-		    		pix.h = hsb[0];
-		    		pix.s = hsb[1];
-		    		pix.br = hsb[2];
-	    		
-	    		DatatoSave.add(pix);
+		    		
 		    		coloredpixels++;
 		    		stainedpixels++;
 		    	    System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b + " H:" + hsb[0] + " s:" + hsb[1] + " b:" + hsb[2]);
@@ -169,7 +155,13 @@ public class ImageManipulation {
 		    }// For x
 		}// For y
 		  System.out.println("Total:" + dblTotalPixels + " Colored: " + coloredpixels + " Stained:" + stainedpixels + " perc: " + stainedpixels/coloredpixels );
-	    	
+		  pixelData pix = new pixelData();
+		  pix.dblTotalPixels = dblTotalPixels;
+		  pix.coloredpixels = coloredpixels;
+		  pix.stainedpixels = stainedpixels;
+		  pix.signal = stainedpixels/coloredpixels;
+		  
+  			DatatoSave.add(pix);
 		return copy;
 	}
 	static BufferedImage ActuallyChangeSaturation(BufferedImage img, int saturationchange, int R, int B, int G)
