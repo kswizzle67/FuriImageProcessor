@@ -24,7 +24,7 @@ public class exportData {
 	
 	}
 	
-	public static void exporttocsvfile(File csvfile, ArrayList<pixelData> DtoS) {
+	public static void exporttocsvfile(String csvfile, ArrayList<pixelData> DtoS) {
 		
 		String comma = ","; 
 		String separator = "\n"; 

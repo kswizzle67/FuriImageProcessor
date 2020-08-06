@@ -9,6 +9,8 @@ public class pixelData {
 	public pixelData() {
 		// TODO Auto-generated constructor stub
 		
+		
+		
 		signal = 0.0; 
 		
 	}
