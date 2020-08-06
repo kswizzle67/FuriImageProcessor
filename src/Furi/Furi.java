@@ -18,7 +18,7 @@ import javax.imageio.ImageIO;
 import java.util.ArrayList;
 
 // 2222
-public class phase1 extends JFrame {
+public class Furi extends JFrame {
 
 	static ArrayList<pixelData> DatatoSave = new ArrayList<pixelData>();
 	static JMenuBar mb;// = new JMenuBar();
@@ -29,7 +29,7 @@ public class phase1 extends JFrame {
 	static ArrayList<File> arrFiles = new ArrayList<File>();
 	static JButton btnSave, btnSaveToLocation, btnForwardImg, btnBackImg;
 	static JTextField txtSaveTo, txtR, txtG, txtB,txtThreshold;
-	static JLabel lblSaveTo, imgLabel;
+	static JLabel lblSaveTo, imgLabel, lblFileNameTop,lbllblFileNameTop,lblHRPIFC;
 	static int intCurrentFile = 0;
 	static BufferedImage imgSource, imgWorking;
 	static Image resizedImage;
@@ -58,8 +58,10 @@ public class phase1 extends JFrame {
 
 		imgLabel = new JLabel();
 		imgLabel.setSize(600,600);
-		imgLabel.setLocation(50, 1);
+		imgLabel.setLocation(100, 100);
 		imgLabel.setBorder(BorderFactory.createLineBorder(Color.black));
+		FramePicture.add(imgLabel);
+
 
 		//JAS
 		imgLabel.addMouseListener(new MouseAdapter() {
@@ -78,15 +80,28 @@ public class phase1 extends JFrame {
              }
          });
 
+		lbllblFileNameTop = new JLabel("Filename: ");
+		lbllblFileNameTop.setSize(70,40);
+		lbllblFileNameTop.setLocation(130, 10);
+		FramePicture.add(lbllblFileNameTop);
+
+		lblFileNameTop = new JLabel();
+		lblFileNameTop.setSize(400,40);
+		lblFileNameTop.setLocation(200, 10);
+		lblFileNameTop.setBorder(BorderFactory.createLineBorder(Color.black));
+		FramePicture.add(lblFileNameTop);
+
 		mFile.add(FileOpenFile);
 		mFile.add(FileOpenFolder);
 
 		mb.add(mFile);
 		FramePicture.setJMenuBar(mb);
-		FramePicture.add(imgLabel);
 
-		AddSaveButton();
-		AddSlider();
+
+
+
+		//Not using slider anymore?
+		//AddSlider();
 		AddtxtSaveTo();
 		AddForwardandBackButtons();
 
@@ -95,7 +110,7 @@ public class phase1 extends JFrame {
 		AddHRPandIFCRadios();
 		AddTrackClicksCheckBox();
 
-		FramePicture.setSize(900,850);
+		FramePicture.setSize(800,1000);
 		FramePicture.setLayout(null);
 		FramePicture.setVisible(true);
 
@@ -106,6 +121,7 @@ public class phase1 extends JFrame {
 					  //start at the first one...
 		            intCurrentFile = 0;
 					arrFiles = fileManipulation.folderopener();
+					ChangeImageLabel(arrFiles.get(intCurrentFile).getName());
 					imgSource = ImageIO.read(arrFiles.get(intCurrentFile));
 		            imgWorking = ImageManipulation.deepCopyImage(imgSource);
 		            LoadImageIntoUI(imgSource);
@@ -119,8 +135,9 @@ public class phase1 extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					File newfile = fileManipulation.fileopener(FramePicture);
-
+					intCurrentFile = 0;
 					arrFiles.add(newfile);
+					ChangeImageLabel(arrFiles.get(intCurrentFile).getName());
 					imgSource =  ImageManipulation.FiletoBufferedImage(arrFiles.get(0));
 					imgWorking = ImageManipulation.deepCopyImage(imgSource);
 			    	LoadImageIntoUI(imgSource);
@@ -143,25 +160,7 @@ public class phase1 extends JFrame {
 		    imgLabel.setIcon(icon);
 	}
 
-	public static void AddSaveButton()
-	{
-		btnSave = new JButton("Save Image");
-		btnSave.setBounds(50,100,95,30);
-		btnSave.setLocation(50,730);
-		btnSave.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-					try {
-						fileManipulation.SaveFile(txtSaveTo.getText(), arrFiles.get(intCurrentFile));
-						exporttocsvfile();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			}
-		});
-		FramePicture.add(btnSave);
-	}
+
 
 
 	protected static void exporttocsvfile() {
@@ -173,7 +172,7 @@ public class phase1 extends JFrame {
 	{
 		btnForwardImg  = new JButton(">>");
 		btnForwardImg.setBounds(50,100,50,30);
-		btnForwardImg.setLocation(330,605);
+		btnForwardImg.setLocation(710,400);
 		btnForwardImg.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -188,7 +187,7 @@ public class phase1 extends JFrame {
 
 		btnBackImg = new JButton("<<");
 		btnBackImg.setBounds(50,100,50,30);
-		btnBackImg.setLocation(290,605);
+		btnBackImg.setLocation(10,400);
 		btnBackImg.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -210,6 +209,7 @@ public class phase1 extends JFrame {
 		if (intCurrentFile+1 < arrFiles.size())
 		{
 			intCurrentFile++;
+			ChangeImageLabel(arrFiles.get(intCurrentFile).getName());
 			 imgSource = ImageIO.read(arrFiles.get(intCurrentFile));
 			 imgWorking = ImageManipulation.deepCopyImage(imgSource);
 	    	LoadImageIntoUI(imgSource);
@@ -221,6 +221,7 @@ public class phase1 extends JFrame {
 		//TODO: this method ;)
 		if (intCurrentFile != 0) {
 			intCurrentFile--;
+			ChangeImageLabel(arrFiles.get(intCurrentFile).getName());
 			imgSource = ImageIO.read(arrFiles.get(intCurrentFile));
 			imgWorking = ImageManipulation.deepCopyImage(imgSource);
 			LoadImageIntoUI(imgSource);
@@ -228,21 +229,27 @@ public class phase1 extends JFrame {
 		}
 	}
 
+	public static void ChangeImageLabel(String ImageName)
+	{
+		lblFileNameTop.setText(ImageName);
+	}
+
+
 	public static void AddtxtSaveTo()
 	{
 		lblSaveTo = new JLabel("Save Files to:");
 		lblSaveTo.setSize(200,30);
-		lblSaveTo.setLocation(50,665);
+		lblSaveTo.setLocation(25,870);
 		FramePicture.add(lblSaveTo);
 
 		txtSaveTo = new JTextField();
 		txtSaveTo.setSize(250, 30);
-		txtSaveTo.setLocation(50,700);
+		txtSaveTo.setLocation(25,900);
 		FramePicture.add(txtSaveTo);
 
 		btnSaveToLocation = new JButton("...");
 		btnSaveToLocation.setBounds(50,100,50,30);
-		btnSaveToLocation.setLocation(290,700);
+		btnSaveToLocation.setLocation(270,900);
 		btnSaveToLocation.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -250,6 +257,22 @@ public class phase1 extends JFrame {
 			}
 		});
 		FramePicture.add(btnSaveToLocation);
+		btnSave = new JButton("Save Image");
+		btnSave.setBounds(25,100,95,30);
+		btnSave.setLocation(25,920);
+		btnSave.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+					try {
+						fileManipulation.SaveFile(txtSaveTo.getText(), arrFiles.get(intCurrentFile));
+						exporttocsvfile();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			}
+		});
+		FramePicture.add(btnSave);
 	}
 
 	public static void AddSlider()
@@ -302,33 +325,33 @@ public class phase1 extends JFrame {
 	{
 		JLabel lblRGB = new JLabel("r,g,b:");
 		lblRGB.setSize(200,30);
-		lblRGB.setLocation(660,300);
+		lblRGB.setLocation(450,750);
 		FramePicture.add(lblRGB);
 
 		 txtR = new JTextField("255");
 		txtR.setSize(40, 30);
-		txtR.setLocation(660,330);
+		txtR.setLocation(450,780);
 		FramePicture.add(txtR);
 
 		 txtG = new JTextField("255");
 		txtG.setSize(40, 30);
-		txtG.setLocation(700,330);
+		txtG.setLocation(490,780);
 		FramePicture.add(txtG);
 
 		 txtB = new JTextField("255");
 		txtB.setSize(40, 30);
-		txtB.setLocation(740,330);
+		txtB.setLocation(530,780);
 		FramePicture.add(txtB);
 
 		 txtThreshold = new JTextField("20");
 		 txtThreshold.setSize(40, 30);
-		 txtThreshold.setLocation(840,370);
+		 txtThreshold.setLocation(630,820);
 			FramePicture.add(txtThreshold);
 
 		JButton btnProcessImage = new JButton("Estimate Values");
 		btnProcessImage.setBounds(50,100,200,30);
 		//btnProcessImage.setBorder(BorderFactory.createLineBorder(Color.black));
-		btnProcessImage.setLocation(650,270);
+		btnProcessImage.setLocation(440,720);
 		btnProcessImage.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -345,7 +368,7 @@ public class phase1 extends JFrame {
 
 		JButton btnMakeWhite = new JButton("Make white");
 		btnMakeWhite.setBounds(50,100,200,30);
-		btnMakeWhite.setLocation(650,370);
+		btnMakeWhite.setLocation(440,820);
 		btnMakeWhite.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -368,7 +391,7 @@ public class phase1 extends JFrame {
 
 		JButton btnMakeWhiteUsingTrackedClicks = new JButton("Make white (Use Tracked Clicks)");
 		btnMakeWhiteUsingTrackedClicks.setBounds(50,100,250,30);
-		btnMakeWhiteUsingTrackedClicks.setLocation(650,400);
+		btnMakeWhiteUsingTrackedClicks.setLocation(440,850);
 		btnMakeWhiteUsingTrackedClicks.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -391,14 +414,19 @@ public class phase1 extends JFrame {
 	{
 		//btnProcessImage.setBounds(50,100,200,30);
 		//btnProcessImage.setLocation(650,270);
-		
-		// for IFC (green): r = 0, g = 254, b = 0; 
-		// for HRP: r = 171, g = 171, b = 141; 
-		// both have range +/- 20 for "make white". The button should "make white" as well. 
-		
+
+		lblHRPIFC = new JLabel("Type:");
+		lblHRPIFC.setSize(70,40);
+		lblHRPIFC.setLocation(25, 710);
+		FramePicture.add(lblHRPIFC);
+
+		// for IFC (green): r = 0, g = 254, b = 0;
+		// for HRP: r = 171, g = 171, b = 141;
+		// both have range +/- 20 for "make white". The button should "make white" as well.
+
 		rdoHRP = new JRadioButton("HRP");
-		rdoHRP.setBounds(50,100,200,30);
-		rdoHRP.setLocation(650,200);
+		rdoHRP.setBounds(25,20,200,30);
+		rdoHRP.setLocation(25,730);
 		rdoHRP.addActionListener(new ActionListener() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
@@ -407,9 +435,9 @@ public class phase1 extends JFrame {
 	           	txtB.setText("140");
 	        }
 	    });
-		rdoIFC = new JRadioButton("IFC (green)");
-		rdoIFC.setBounds(50,100,200,30);
-		rdoIFC.setLocation(650,240);
+		rdoIFC = new JRadioButton("IFC");
+		rdoIFC.setBounds(25,20,200,30);
+		rdoIFC.setLocation(25,750);
 
 		rdoGroup = new ButtonGroup();
 		rdoGroup.add(rdoHRP);
@@ -417,37 +445,37 @@ public class phase1 extends JFrame {
 
 		FramePicture.getContentPane().add(rdoIFC);
 		FramePicture.getContentPane().add(rdoHRP);
-		
+
 		rdoIFC.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+
 				// set rgb to 0,254,0
 			}
-			
-			
+
+
 		});
-		
+
 		rdoHRP.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+
 				// set rgb to 171,171,141
 			}
-			
-			
+
+
 		});
 	}
 
 	public static void AddTrackClicksCheckBox()
 	{
 		chkTrackClicks = new JCheckBox("Track Clicks!");
-		chkTrackClicks.setBounds(100,100, 150,50);
-		chkTrackClicks.setLocation(650,160);
+		chkTrackClicks.setBounds(50,50, 150,50);
+		chkTrackClicks.setLocation(300,740);
 		FramePicture.getContentPane().add(chkTrackClicks);
 	}
 
