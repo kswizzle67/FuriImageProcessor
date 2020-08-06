@@ -122,6 +122,7 @@ public class Furi extends JFrame {
 		            intCurrentFile = 0;
 					arrFiles = fileManipulation.folderopener();
 					ChangeImageLabel(arrFiles.get(intCurrentFile).getName());
+					txtSaveTo.setText(arrFiles.get(intCurrentFile).getPath() + "output.csv");
 					imgSource = ImageIO.read(arrFiles.get(intCurrentFile));
 		            imgWorking = ImageManipulation.deepCopyImage(imgSource);
 		            LoadImageIntoUI(imgSource);
@@ -138,6 +139,7 @@ public class Furi extends JFrame {
 					intCurrentFile = 0;
 					arrFiles.add(newfile);
 					ChangeImageLabel(arrFiles.get(intCurrentFile).getName());
+					txtSaveTo.setText(newfile.getPath() + "output.csv");
 					imgSource =  ImageManipulation.FiletoBufferedImage(arrFiles.get(0));
 					imgWorking = ImageManipulation.deepCopyImage(imgSource);
 			    	LoadImageIntoUI(imgSource);
