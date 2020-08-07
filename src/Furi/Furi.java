@@ -122,7 +122,7 @@ public class Furi extends JFrame {
 		            intCurrentFile = 0;
 					arrFiles = fileManipulation.folderopener();
 					ChangeImageLabel(arrFiles.get(intCurrentFile).getName());
-					txtSaveTo.setText(arrFiles.get(intCurrentFile).getPath() + "output.csv");
+					txtSaveTo.setText(arrFiles.get(intCurrentFile).getPath().substring(0, arrFiles.get(intCurrentFile).getPath().lastIndexOf("/")+1) + "output.csv");
 					imgSource = ImageIO.read(arrFiles.get(intCurrentFile));
 		            imgWorking = ImageManipulation.deepCopyImage(imgSource);
 		            LoadImageIntoUI(imgSource);
@@ -139,7 +139,7 @@ public class Furi extends JFrame {
 					intCurrentFile = 0;
 					arrFiles.add(newfile);
 					ChangeImageLabel(arrFiles.get(intCurrentFile).getName());
-					txtSaveTo.setText(newfile.getPath() + "output.csv");
+					txtSaveTo.setText(arrFiles.get(intCurrentFile).getPath().substring(0, arrFiles.get(intCurrentFile).getPath().lastIndexOf("/")+1) + "output.csv");
 					imgSource =  ImageManipulation.FiletoBufferedImage(arrFiles.get(0));
 					imgWorking = ImageManipulation.deepCopyImage(imgSource);
 			    	LoadImageIntoUI(imgSource);
@@ -165,10 +165,7 @@ public class Furi extends JFrame {
 
 
 
-	protected static void exporttocsvfile() {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	public static void AddForwardandBackButtons()
 	{
@@ -259,19 +256,14 @@ public class Furi extends JFrame {
 			}
 		});
 		FramePicture.add(btnSaveToLocation);
-		btnSave = new JButton("Save Image");
+		btnSave = new JButton("Save Data to CSV");
 		btnSave.setBounds(25,100,95,30);
 		btnSave.setLocation(25,435);
 		btnSave.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-					try {
-						fileManipulation.SaveFile(txtSaveTo.getText(), arrFiles.get(intCurrentFile));
-						exportData.exporttocsvfile(txtSaveTo.getText(), DatatoSave);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					//fileManipulation.SaveFile(txtSaveTo.getText(), arrFiles.get(intCurrentFile));
+					exportData.exporttocsvfile(txtSaveTo.getText(), DatatoSave);
 			}
 		});
 		FramePicture.add(btnSave);
