@@ -265,7 +265,7 @@ public class Furi extends JFrame {
 					//fileManipulation.SaveFile(txtSaveTo.getText(), arrFiles.get(intCurrentFile));
 					exportData.exporttocsvfile(txtSaveTo.getText(), DatatoSave);
 			}
-		});
+		}); 	
 		FramePicture.add(btnSave);
 	}
 
