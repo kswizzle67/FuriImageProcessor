@@ -138,6 +138,7 @@ public class Furi extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
+					ResetVariables(true);
 					File newfile = fileManipulation.fileopener(FramePicture);
 					intCurrentFile = 0;
 					arrFiles.add(newfile);
@@ -508,27 +509,29 @@ public class Furi extends JFrame {
 	{
 		//everything will tell us if they opened a new folder or file...
 		//We should warn them if they haven't saved...
-		DatatoSave.clear();
-		arrFiles.clear();
-		intCurrentFile = 0;
-		imgSource = null;
-		imgWorking = null;
-		resizedImage = null;
+		if (everything)
+		{
+			DatatoSave.clear();
+			arrFiles.clear();
+			intCurrentFile = 0;
+			lblFileNameTop.setText("");
+			ImageIcon icon = new ImageIcon(); //use resizedImage here
+	        imgLabel.setSize(300,300);
+		    imgLabel.setIcon(icon);
+			imgSource = null;
+			imgWorking = null;
+			resizedImage = null;
+		}
+		
+		//these are just the temp vars. 
 		rgb[0][0] = 0;
 		rgb[0][1] = 255;
 		rgb[0][0] = 0;
 		rgb[0][1] = 255;
 		rgb[0][0] = 0;
 		rgb[0][1] = 255;
-		lblFileNameTop.setText("");
-		ImageIcon icon = new ImageIcon(); //use resizedImage here
-        imgLabel.setSize(300,300);
-	    imgLabel.setIcon(icon);
 	    txtR.setText("255");
 	    txtG.setText("255");
 	    txtB.setText("255");
-	    
-	    
-
 	}
 }
