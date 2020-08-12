@@ -20,24 +20,27 @@ import java.util.ArrayList;
 // 2222
 public class Furi extends JFrame {
 
+	//these are things that may need to be reset. 
 	static ArrayList<pixelData> DatatoSave = new ArrayList<pixelData>();
+	static ArrayList<File> arrFiles = new ArrayList<File>();
+	static int intCurrentFile = 0;
+	static BufferedImage imgSource, imgWorking;
+	static Image resizedImage;
+	static int[][] rgb = {{0,255},{0,255},{0,255}}; //these are actually reversed.
+	
+	
 	static JMenuBar mb;// = new JMenuBar();
 	static JMenu mFile;// = new JMenu("Open File");
 	static JMenuItem FileOpenFile, FileOpenFolder;
 	static JFrame FramePicture = new JFrame("Image Processor");
 	static JSlider s;
-	static ArrayList<File> arrFiles = new ArrayList<File>();
 	static JButton btnSave, btnSaveToLocation, btnForwardImg, btnBackImg;
 	static JTextField txtSaveTo, txtR, txtG, txtB,txtThreshold;
 	static JLabel lblSaveTo, imgLabel, lblFileNameTop,lbllblFileNameTop,lblHRPIFC;
-	static int intCurrentFile = 0;
-	static BufferedImage imgSource, imgWorking;
-	static Image resizedImage;
 	static JRadioButton rdoHRP, rdoIFC;
 	static ButtonGroup rdoGroup;
 	static JPanel rdoPanel;
 	static JCheckBox chkTrackClicks; //used to track clicks and estimate colors
-	static int[][] rgb = {{0,255},{0,255},{0,255}}; //these are actually reversed.
 	static File csvfile;
 
 	private static final long serialVersionUID = 1L;
@@ -383,6 +386,18 @@ public class Furi extends JFrame {
 		});
 		FramePicture.add(btnMakeWhite);
 
+		JButton btnReset = new JButton("Reset");
+		btnReset.setBounds(50,100,200,30);
+		btnReset.setLocation(450,380);
+		btnReset.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+					ResetVariables(false); //not everything
+				}
+		});
+		FramePicture.add(btnReset);
+
+		
 		JButton btnMakeWhiteUsingTrackedClicks = new JButton("Make white (Use Tracked Clicks)");
 		btnMakeWhiteUsingTrackedClicks.setBounds(50,100,250,30);
 		btnMakeWhiteUsingTrackedClicks.setLocation(450,135);
@@ -487,5 +502,33 @@ public class Furi extends JFrame {
 			rgb[2][0] = B;
 		if (B<rgb[2][1])
 			rgb[2][1] = B;
+	}
+	
+	public static void ResetVariables(boolean everything)
+	{
+		//everything will tell us if they opened a new folder or file...
+		//We should warn them if they haven't saved...
+		DatatoSave.clear();
+		arrFiles.clear();
+		intCurrentFile = 0;
+		imgSource = null;
+		imgWorking = null;
+		resizedImage = null;
+		rgb[0][0] = 0;
+		rgb[0][1] = 255;
+		rgb[0][0] = 0;
+		rgb[0][1] = 255;
+		rgb[0][0] = 0;
+		rgb[0][1] = 255;
+		lblFileNameTop.setText("");
+		ImageIcon icon = new ImageIcon(); //use resizedImage here
+        imgLabel.setSize(300,300);
+	    imgLabel.setIcon(icon);
+	    txtR.setText("255");
+	    txtG.setText("255");
+	    txtB.setText("255");
+	    
+	    
+
 	}
 }
