@@ -259,7 +259,7 @@ public class Furi extends JFrame {
 			}
 		});
 		FramePicture.add(btnSaveToLocation);
-		btnSave = new JButton("Save Image");
+		btnSave = new JButton("Save");
 		btnSave.setBounds(25,100,95,30);
 		btnSave.setLocation(25,435);
 		btnSave.addActionListener(new ActionListener(){
