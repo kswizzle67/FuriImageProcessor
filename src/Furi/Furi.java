@@ -397,6 +397,18 @@ public class Furi extends JFrame {
 					ResetVariables(false); //not everything
 					//but we do need to reload the image.
 
+					intCurrentFile = 0;
+					ChangeImageLabel(arrFiles.get(intCurrentFile).getName());
+					txtSaveTo.setText(arrFiles.get(intCurrentFile).getPath().substring(0, arrFiles.get(intCurrentFile).getPath().lastIndexOf("/")+1) + "output.csv");
+					imgSource =  ImageManipulation.FiletoBufferedImage(arrFiles.get(0));
+					imgWorking = ImageManipulation.deepCopyImage(imgSource);
+			    	try {
+						LoadImageIntoUI(imgSource);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
 				}
 		});
 		FramePicture.add(btnReset);
