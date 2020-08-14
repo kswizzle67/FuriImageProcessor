@@ -122,6 +122,7 @@ public class Furi extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					  //start at the first one...
+					ResetVariables(true);
 		            intCurrentFile = 0;
 					arrFiles = fileManipulation.folderopener();
 					ChangeImageLabel(arrFiles.get(intCurrentFile).getName());
@@ -394,6 +395,8 @@ public class Furi extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 					ResetVariables(false); //not everything
+					//but we do need to reload the image.
+
 				}
 		});
 		FramePicture.add(btnReset);
@@ -476,8 +479,6 @@ public class Furi extends JFrame {
 
 				// set rgb to 171,171,141
 			}
-
-
 		});
 	}
 
