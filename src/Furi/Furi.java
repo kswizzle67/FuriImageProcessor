@@ -440,9 +440,9 @@ public class Furi extends JFrame {
 		rdoHRP.addActionListener(new ActionListener() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
-	           	txtR.setText("140");
-	           	txtG.setText("140");
-	           	txtB.setText("140");
+	           	txtR.setText("171");
+	           	txtG.setText("171");
+	           	txtB.setText("141");
 	        }
 	    });
 		rdoIFC = new JRadioButton("IFC (green)");
@@ -460,9 +460,9 @@ public class Furi extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
-				// set rgb to 0,254,0
+				txtR.setText("0");
+	           	txtG.setText("254");
+	           	txtB.setText("0");
 			}
 
 
