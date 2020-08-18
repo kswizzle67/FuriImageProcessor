@@ -114,7 +114,11 @@ public class ImageManipulation {
 		  pix.coloredpixels = coloredpixels;
 		  pix.stainedpixels = stainedpixels;
 		  pix.signal = stainedpixels/coloredpixels;
-	    	
+		  //we should really have the current file without going back to the
+		  //furi class
+		  File fyl = Furi.arrFiles.get(Furi.intCurrentFile);
+		  pix.filename = fyl.getName();
+		  pix.foldername = fyl.getParent();
 		  DatatoSave.add(pix);
 		return copy;
 	}
@@ -156,6 +160,11 @@ public class ImageManipulation {
 		}// For y
 		  System.out.println("Total:" + dblTotalPixels + " Colored: " + coloredpixels + " Stained:" + stainedpixels + " perc: " + stainedpixels/coloredpixels );
 		  pixelData pix = new pixelData();
+		  //we should really have the current file without going back to the
+		  //furi class
+		  File fyl = Furi.arrFiles.get(Furi.intCurrentFile);
+		  pix.filename = fyl.getName();
+		  pix.foldername = fyl.getParent();
 		  pix.dblTotalPixels = dblTotalPixels;
 		  pix.coloredpixels = coloredpixels;
 		  pix.stainedpixels = stainedpixels;
