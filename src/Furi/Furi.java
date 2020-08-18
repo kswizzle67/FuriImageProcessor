@@ -354,7 +354,13 @@ public class Furi extends JFrame {
 		btnProcessImage.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				ImageManipulation.ProcessImage(imgSource);
+				String rgb[] = ImageManipulation.ProcessImage(imgSource);
+				if (rgb != null)
+				{
+					txtR.setText(rgb[0]);
+					txtG.setText(rgb[1]);
+					txtB.setText(rgb[2]);
+				}
 				try {
 					LoadImageIntoUI(imgWorking);
 				} catch (IOException e) {
