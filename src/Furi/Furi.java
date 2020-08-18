@@ -145,7 +145,7 @@ public class Furi extends JFrame {
 					arrFiles.add(newfile);
 					ChangeImageLabel(arrFiles.get(intCurrentFile).getName());
 					txtSaveTo.setText(arrFiles.get(intCurrentFile).getPath().substring(0, arrFiles.get(intCurrentFile).getPath().lastIndexOf("/")+1) + "output.csv");
-					imgSource =  ImageManipulation.FiletoBufferedImage(arrFiles.get(0));
+					imgSource =  ImageManipulation.FiletoBufferedImage(arrFiles.get(intCurrentFile));
 					imgWorking = ImageManipulation.deepCopyImage(imgSource);
 			    	LoadImageIntoUI(imgSource);
 				} catch (IOException e) {
@@ -402,11 +402,12 @@ public class Furi extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 					ResetVariables(false); //not everything
 					//but we do need to reload the image.
-
-					intCurrentFile = 0;
+					//if there is a current image... leave it. 
+					
+					//intCurrentFile = 0;
 					ChangeImageLabel(arrFiles.get(intCurrentFile).getName());
 					txtSaveTo.setText(arrFiles.get(intCurrentFile).getPath().substring(0, arrFiles.get(intCurrentFile).getPath().lastIndexOf("/")+1) + "output.csv");
-					imgSource =  ImageManipulation.FiletoBufferedImage(arrFiles.get(0));
+					imgSource =  ImageManipulation.FiletoBufferedImage(arrFiles.get(intCurrentFile));
 					imgWorking = ImageManipulation.deepCopyImage(imgSource);
 			    	try {
 						LoadImageIntoUI(imgSource);
