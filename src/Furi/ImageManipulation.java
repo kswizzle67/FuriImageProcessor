@@ -1,6 +1,7 @@
 package Furi;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -10,6 +11,7 @@ import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
 
@@ -237,4 +239,15 @@ public class ImageManipulation {
 				Integer.toString(sumB/count)};
 		
 	}
+	static void automatefolder(ArrayList<File> arrFiles, int[][] rgb, int th, ArrayList<pixelData> DatatoSave) 
+	{
+		
+			for(File fyl : arrFiles) {
+				
+			MakeIgnoredPixelsWhiteUsingRange(FiletoBufferedImage(fyl), rgb, DatatoSave);
+			
+			}
+	}
+
+	
 }

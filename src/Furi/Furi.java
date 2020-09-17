@@ -42,7 +42,7 @@ public class Furi extends JFrame {
 	static JPanel rdoPanel;
 	static JCheckBox chkTrackClicks; //used to track clicks and estimate colors
 	static File csvfile;
-	static JCheckBox chkAuto; //used to automate folder analysis
+	static JButton butAuto; //used to automate folder analysis
 
 	private static final long serialVersionUID = 1L;
 
@@ -113,7 +113,7 @@ public class Furi extends JFrame {
 		AddExtraUI();
 		AddHRPandIFCRadios();
 		AddTrackClicksCheckBox();
-		AddAutomateCheckBox(); 
+
 
 		FramePicture.setSize(800,800);
 		FramePicture.setLayout(null);
@@ -501,13 +501,26 @@ public class Furi extends JFrame {
 				// set rgb to 171,171,141
 			}
 		});
-	}
-	public static void AddAutomateCheckBox()
-	{
-		chkAuto = new JCheckBox("Analyze Current Folder!"); 
-		chkAuto.setBounds(50,50,220,50);
-		chkAuto.setLocation(450, 150);
-		FramePicture.getContentPane().add(chkAuto); 
+	
+	
+	
+		butAuto = new JButton("Analyze Current Folder!"); 
+		butAuto.setBounds(50,50,220,50);
+		butAuto.setLocation(450, 150);
+	FramePicture.getContentPane().add(butAuto); 
+	
+	butAuto.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+						
+			ImageManipulation.automatefolder(arrFiles, rgb, Integer.parseInt(txtThreshold.getText()), DatatoSave); 
+
+			
+			
+		
+		}
+
+		});
 	}
 	public static void AddTrackClicksCheckBox()
 	{
