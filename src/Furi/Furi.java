@@ -30,11 +30,11 @@ public class Furi extends JFrame {
 
 
 	static JMenuBar mb;// = new JMenuBar();
-	static JMenu mFile;// = new JMenu("Open File");
-	static JMenuItem FileOpenFile, FileOpenFolder;
+	static JMenu mFile, mHelp;// = new JMenu("Open File");
+	static JMenuItem FileOpenFile, FileOpenFolder, mHelpDiag;
 	static JFrame FramePicture = new JFrame("Image Processor");
 	static JSlider s;
-	static JButton btnSave, btnSaveToLocation, btnForwardImg, btnBackImg;
+	static JButton btnSave, btnSaveToLocation, btnForwardImg, btnBackImg, btnAuto;
 	static JTextField txtSaveTo, txtR, txtG, txtB,txtThreshold;
 	static JLabel lblSaveTo, imgLabel, lblFileNameTop,lbllblFileNameTop,lblHRPIFC;
 	static JRadioButton rdoHRP, rdoIFC;
@@ -42,8 +42,7 @@ public class Furi extends JFrame {
 	static JPanel rdoPanel;
 	static JCheckBox chkTrackClicks; //used to track clicks and estimate colors
 	static File csvfile;
-	static JButton butAuto; //used to automate folder analysis
-
+	
 	private static final long serialVersionUID = 1L;
 
 	public static void main(String[] args){
@@ -53,12 +52,14 @@ public class Furi extends JFrame {
 	public static void UI(){
 		JMenuBar mb;// = new JMenuBar();
 		JMenu mFile;// = new JMenu("Open File");
-		 JMenuItem FileOpenFile, FileOpenFolder;
+		 JMenuItem FileOpenFile, FileOpenFolder, mHelpDiag;
 
 		mb = new JMenuBar();
 		mFile = new JMenu("File");
+		mHelp = new JMenu ("Help");
 		FileOpenFile = new JMenuItem("Open File");
 		FileOpenFolder = new JMenuItem("Open Folder");
+		mHelpDiag = new JMenuItem("Get Help");
 
 		imgLabel = new JLabel();
 		imgLabel.setSize(300,300);
@@ -97,8 +98,11 @@ public class Furi extends JFrame {
 
 		mFile.add(FileOpenFile);
 		mFile.add(FileOpenFolder);
-
+		
+		
+		mHelp.add(mHelpDiag);
 		mb.add(mFile);
+		mb.add(mHelp);
 		FramePicture.setJMenuBar(mb);
 
 
@@ -115,7 +119,7 @@ public class Furi extends JFrame {
 		AddTrackClicksCheckBox();
 
 
-		FramePicture.setSize(800,800);
+		FramePicture.setSize(700,550);
 		FramePicture.setLayout(null);
 		FramePicture.setVisible(true);
 
@@ -123,6 +127,8 @@ public class Furi extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
+					//should enable the auto button if they have clicked a folder
+					btnAuto.setEnabled(true);
 					  //start at the first one...
 					ResetVariables(true);
 		            intCurrentFile = 0;
@@ -141,6 +147,8 @@ public class Furi extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
+					//should disable the folder option if they haven't clicked a folder
+					btnAuto.setEnabled(false);
 					ResetVariables(true);
 					File newfile = fileManipulation.fileopener(FramePicture);
 					intCurrentFile = 0;
@@ -154,6 +162,12 @@ public class Furi extends JFrame {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}
+		});
+		mHelpDiag.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JOptionPane.showMessageDialog(FramePicture,"Please email KristinHuber@gmail.com for assistance!");	
 			}
 		});
 	}
@@ -178,7 +192,7 @@ public class Furi extends JFrame {
 	{
 		btnForwardImg  = new JButton(">>");
 		btnForwardImg.setBounds(50,100,50,30);
-		btnForwardImg.setLocation(450,190);
+		btnForwardImg.setLocation(450,200);
 		btnForwardImg.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -193,7 +207,7 @@ public class Furi extends JFrame {
 
 		btnBackImg = new JButton("<<");
 		btnBackImg.setBounds(50,100,50,30);
-		btnBackImg.setLocation(10,190);
+		btnBackImg.setLocation(10,200);
 		btnBackImg.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -264,7 +278,7 @@ public class Furi extends JFrame {
 		});
 		FramePicture.add(btnSaveToLocation);
 		btnSave = new JButton("Save Data to CSV");
-		btnSave.setBounds(25,100,95,30);
+		btnSave.setBounds(25,100,150,30);
 		btnSave.setLocation(25,435);
 		btnSave.addActionListener(new ActionListener(){
 			@Override
@@ -346,7 +360,7 @@ public class Furi extends JFrame {
 
 		 txtThreshold = new JTextField("20");
 		 txtThreshold.setSize(40, 30);
-		 txtThreshold.setLocation(630,330);
+		 txtThreshold.setLocation(650,330);
 			FramePicture.add(txtThreshold);
 
 		JButton btnProcessImage = new JButton("Estimate Values");
@@ -425,7 +439,7 @@ public class Furi extends JFrame {
 
 		JButton btnMakeWhiteUsingTrackedClicks = new JButton("Make white (Use Tracked Clicks)");
 		btnMakeWhiteUsingTrackedClicks.setBounds(50,100,250,30);
-		btnMakeWhiteUsingTrackedClicks.setLocation(450,135);
+		btnMakeWhiteUsingTrackedClicks.setLocation(450,115);
 		btnMakeWhiteUsingTrackedClicks.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -451,7 +465,7 @@ public class Furi extends JFrame {
 
 		lblHRPIFC = new JLabel("Type:");
 		lblHRPIFC.setSize(70,40);
-		lblHRPIFC.setLocation(450, 30);
+		lblHRPIFC.setLocation(450, 10);
 		FramePicture.add(lblHRPIFC);
 
 		// for IFC (green): r = 0, g = 254, b = 0;
@@ -460,7 +474,7 @@ public class Furi extends JFrame {
 
 		rdoHRP = new JRadioButton("HRP");
 		rdoHRP.setBounds(25,20,200,30);
-		rdoHRP.setLocation(450,55);
+		rdoHRP.setLocation(450,35);
 		rdoHRP.addActionListener(new ActionListener() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
@@ -471,7 +485,7 @@ public class Furi extends JFrame {
 	    });
 		rdoIFC = new JRadioButton("IFC (green)");
 		rdoIFC.setBounds(25,20,200,30);
-		rdoIFC.setLocation(450,75);
+		rdoIFC.setLocation(450,55);
 
 		rdoGroup = new ButtonGroup();
 		rdoGroup.add(rdoHRP);
@@ -481,52 +495,32 @@ public class Furi extends JFrame {
 		FramePicture.getContentPane().add(rdoHRP);
 
 		rdoIFC.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				txtR.setText("0");
 	           	txtG.setText("254");
 	           	txtB.setText("0");
 			}
-
-
 		});
 
-		rdoHRP.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
-				// set rgb to 171,171,141
-			}
-		});
+		btnAuto = new JButton("Analyze Current Folder!"); 
+		btnAuto.setBounds(50,50,220,50);
+		btnAuto.setLocation(450, 150);
+	FramePicture.getContentPane().add(btnAuto); 
+	btnAuto.setEnabled(false);
 	
-	
-	
-		butAuto = new JButton("Analyze Current Folder!"); 
-		butAuto.setBounds(50,50,220,50);
-		butAuto.setLocation(450, 150);
-	FramePicture.getContentPane().add(butAuto); 
-	
-	butAuto.addActionListener(new ActionListener() {
+	btnAuto.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-						
 			ImageManipulation.automatefolder(arrFiles, rgb, Integer.parseInt(txtThreshold.getText()), DatatoSave); 
-
-			
-			
-		
-		}
-
+			}
 		});
 	}
 	public static void AddTrackClicksCheckBox()
 	{
 		chkTrackClicks = new JCheckBox("Track Clicks!");
 		chkTrackClicks.setBounds(50,50, 150,50);
-		chkTrackClicks.setLocation(450,95);
+		chkTrackClicks.setLocation(450,75);
 		FramePicture.getContentPane().add(chkTrackClicks);
 	}
 
