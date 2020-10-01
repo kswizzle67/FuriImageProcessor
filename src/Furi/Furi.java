@@ -29,6 +29,7 @@ public class Furi extends JFrame {
 	static int[][] rgb = {{0,255},{0,255},{0,255}}; //these are actually reversed.
 
 
+
 	static JMenuBar mb;// = new JMenuBar();
 	static JMenu mFile, mHelp;// = new JMenu("Open File");
 	static JMenuItem FileOpenFile, FileOpenFolder, mHelpDiag;

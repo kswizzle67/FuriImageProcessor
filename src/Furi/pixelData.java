@@ -5,6 +5,8 @@ public class pixelData {
 	public String filename, foldername; 
 	public double dblTotalPixels, coloredpixels, stainedpixels; 
 	public double signal; 
+	// public int[] x1 = {0};
+	// public int[] y1 = {0};
 	
 	public pixelData() {
 		// TODO Auto-generated constructor stub
@@ -14,6 +16,7 @@ public class pixelData {
 		dblTotalPixels = 0;
 		coloredpixels = 0;
 		stainedpixels = 0;
+		
 	}
 
 }

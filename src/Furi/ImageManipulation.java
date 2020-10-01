@@ -248,6 +248,70 @@ public class ImageManipulation {
 			
 			}
 	}
+	static BufferedImage MakeIgnoredPixelsWhiteCellCount(BufferedImage img, int th, int R, int G, int B, ArrayList<pixelData> DatatoSave)
+	{
+		
+		int w = img.getWidth();
+		int h = img.getHeight();
+		int r,g,b,pixel;
+		BufferedImage copy = ImageManipulation.deepCopyImage(img);
+		
+		
+		int[] yarr = {h};
+		System.out.println(yarr);
+		int[] xarr = {w};
+		System.out.println(xarr);
+		
+		
+		for(int y = 0; y < h; y++) {
+		    for(int x = 0; x < w; x++) {
+		    	 pixel = img.getRGB(x, y);
+		    	 r = (pixel >> 16) & 0xFF;
+		    	 g = (pixel >> 8) & 0xFF;
+		    	 b = (pixel) & 0xFF;
+		    	 dblTotalPixels++;
+		    	 int[] arrx = {x};
+		    	 int[] arry = {y};
+		    	 
+		    	if (r==255&&g==255&&b==255)
+    			{
+		    		//it is already white. 
+		    		//It has already been counted and should only be in totalpixels
+    			}
+		    	else if ((r>R+th||r<R-th)||
+	    			(g>G+th||g<G-th)||
+		    		(b>B+th||b<B-th))
+		    	{
+		    		coloredpixels++;
+			        copy.setRGB(x, y, new Color(255,255,255).getRGB());
+		        }
+		    	else
+		    	{
+		    		float hsb[] = Color.RGBtoHSB(r, g, b, null);
+		    		
+		    		coloredpixels++;
+		    		stainedpixels++;
+		    	    System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b + " H:" + hsb[0] + " s:" + hsb[1] + " b:" + hsb[2]);
+		    	}
+		    }// For x
+		}// For y
+		  System.out.println("Total:" + dblTotalPixels + " Colored: " + coloredpixels + " Stained:" + stainedpixels + " perc: " + stainedpixels/coloredpixels );
+		  pixelData pix = new pixelData();
+		  //we should really have the current file without going back to the
+		  //furi class
+		  File fyl = Furi.arrFiles.get(Furi.intCurrentFile);
+		  pix.filename = fyl.getName();
+		  pix.foldername = fyl.getParent();
+		  pix.dblTotalPixels = dblTotalPixels;
+		  pix.coloredpixels = coloredpixels;
+		  pix.stainedpixels = stainedpixels;
+		  pix.signal = stainedpixels/coloredpixels;
+		  
+  			DatatoSave.add(pix);
+		return copy;
+		
+	
+	}
 
 	
 }
