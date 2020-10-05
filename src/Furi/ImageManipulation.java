@@ -21,6 +21,11 @@ public class ImageManipulation {
 	static double dblTotalPixels,coloredpixels, stainedpixels;
 	
 	
+	//List<xy> arrxy = new ArrayList<xy>;
+	// Need to know how to make a type "xy". 
+	
+	
+	
 	static BufferedImage FiletoBufferedImage(File in) 
 	{
 		try {
@@ -257,11 +262,11 @@ public class ImageManipulation {
 		BufferedImage copy = ImageManipulation.deepCopyImage(img);
 		
 		
-		int[] yarr = {h};
-		System.out.println(yarr);
-		int[] xarr = {w};
-		System.out.println(xarr);
-		
+		//int[] yarr = {h};
+		//System.out.println(yarr);
+		//int[] xarr = {w};
+		//System.out.println(xarr);
+		//make x y arrays
 		
 		for(int y = 0; y < h; y++) {
 		    for(int x = 0; x < w; x++) {
@@ -270,8 +275,8 @@ public class ImageManipulation {
 		    	 g = (pixel >> 8) & 0xFF;
 		    	 b = (pixel) & 0xFF;
 		    	 dblTotalPixels++;
-		    	 int[] arrx = {x};
-		    	 int[] arry = {y};
+		    	// int[] arrx = {x};
+		    	// int[] arry = {y};
 		    	 
 		    	if (r==255&&g==255&&b==255)
     			{
@@ -282,6 +287,9 @@ public class ImageManipulation {
 	    			(g>G+th||g<G-th)||
 		    		(b>B+th||b<B-th))
 		    	{
+		    		//assign the x y coord to array (2D array)
+		    		//int[][] arrxy = new int[x][y];
+		    		//
 		    		coloredpixels++;
 			        copy.setRGB(x, y, new Color(255,255,255).getRGB());
 		        }
