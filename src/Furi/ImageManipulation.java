@@ -280,7 +280,8 @@ public class ImageManipulation {
 		    	 dblTotalPixels++;
 		    	// int[] arrx = {x};
 		    	// int[] arry = {y};
-		    	 
+		    	 System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b);
+			    	
 		    	if (r==255&&g==255&&b==255)
     			{
 		    		//it is already white. 
