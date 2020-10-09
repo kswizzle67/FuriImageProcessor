@@ -340,18 +340,28 @@ public class ImageManipulation {
 			//we should be able to query the ArrayList, but for now let's create a method to do so.
 			//easy, but we can make it better.
 			
-			int GreenNearMe = FindGreenPixelsNearby(pd.x,pd.y);
+			if(FindGreenPixelsNearby(pd, GreenPixels)<3)
+			{
+				GreenPixels.remove(pd);
+			}
+			
 	    }
-		
-		
-		
 		return copy;
-		
-	
 	}
-	private static int FindGreenPixelsNearby(int x, int y) {
-		// TODO Auto-generated method stub
-		return 0;
+	private static int FindGreenPixelsNearby(pixelData pd, ArrayList<pixelData> GreenPixels) {
+		int surroundingpixels = 0;
+		
+		//woah this is wasteful
+		for (pixelData pix : GreenPixels) 
+		{       	
+			if((pix.x < pd.x +3 && pix.x > pd.x -3) &&
+					(pix.y < pd.y +3 && pix.y > pd.y -3))
+			{
+				//we have another pixel within +-3
+				surroundingpixels++;
+			}
+	    }	
+		return surroundingpixels;
 	}
 
 	
