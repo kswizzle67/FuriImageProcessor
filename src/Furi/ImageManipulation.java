@@ -253,6 +253,8 @@ public class ImageManipulation {
 			
 			}
 	}
+	
+	//this is for the green cells
 	static BufferedImage MakeIgnoredPixelsWhiteCellCount(BufferedImage img, int th, int R, int G, int B, ArrayList<pixelData> DatatoSave)
 	{
 		
@@ -261,6 +263,7 @@ public class ImageManipulation {
 		int r,g,b,pixel;
 		BufferedImage copy = ImageManipulation.deepCopyImage(img);
 		
+		ArrayList<pixelData> GreenPixels = new ArrayList<pixelData>();
 		
 		//int[] yarr = {h};
 		//System.out.println(yarr);
@@ -289,13 +292,24 @@ public class ImageManipulation {
 		    	{
 		    		//assign the x y coord to array (2D array)
 		    		//int[][] arrxy = new int[x][y];
-		    		//
+		    		//this is a colored pixel, but it isn't a green one.
+		    		//we really may not need to capture this, but it was already there so we kept it.
 		    		coloredpixels++;
 			        copy.setRGB(x, y, new Color(255,255,255).getRGB());
 		        }
 		    	else
 		    	{
+		    		
+		    		//this is a green pixel. 
+		    		//it doesn't mean it is a "cell" it means it is a single ixel
 		    		float hsb[] = Color.RGBtoHSB(r, g, b, null);
+		    		//create a pixelData object to store the green cell location.
+		    		//TODO: anything else here?
+		    		pixelData pixeldata = new pixelData();
+		    		pixeldata.x = x;
+		    		pixeldata.y = y;
+		    		GreenPixels.add(pixeldata);
+		    		
 		    		
 		    		coloredpixels++;
 		    		stainedpixels++;
@@ -303,11 +317,11 @@ public class ImageManipulation {
 		    	}
 		    }// For x
 		}// For y
-		  System.out.println("Total:" + dblTotalPixels + " Colored: " + coloredpixels + " Stained:" + stainedpixels + " perc: " + stainedpixels/coloredpixels );
-		  pixelData pix = new pixelData();
+		//  System.out.println("Total:" + dblTotalPixels + " Colored: " + coloredpixels + " Stained:" + stainedpixels + " perc: " + stainedpixels/coloredpixels );
+		  //pixelData pix = new pixelData();
 		  //we should really have the current file without going back to the
 		  //furi class
-		  File fyl = Furi.arrFiles.get(Furi.intCurrentFile);
+		  /*File fyl = Furi.arrFiles.get(Furi.intCurrentFile);
 		  pix.filename = fyl.getName();
 		  pix.foldername = fyl.getParent();
 		  pix.dblTotalPixels = dblTotalPixels;
@@ -315,10 +329,29 @@ public class ImageManipulation {
 		  pix.stainedpixels = stainedpixels;
 		  pix.signal = stainedpixels/coloredpixels;
 		  
-  			DatatoSave.add(pix);
+  			DatatoSave.add(pix);*/
+		//we should be adjusting the pixels here I assume in the COPY image that we return..
+		//So return is last which gives us the option to adjust the cell colors like we discussed.
+		
+		
+		for (pixelData pd : GreenPixels) 
+		{       
+			//here we need to look around the pixel we are on to see if it is "surrounded" by other greens
+			//we should be able to query the ArrayList, but for now let's create a method to do so.
+			//easy, but we can make it better.
+			
+			int GreenNearMe = FindGreenPixelsNearby(pd.x,pd.y);
+	    }
+		
+		
+		
 		return copy;
 		
 	
+	}
+	private static int FindGreenPixelsNearby(int x, int y) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	
