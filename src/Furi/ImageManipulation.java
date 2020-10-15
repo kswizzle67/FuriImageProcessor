@@ -296,11 +296,10 @@ public class ImageManipulation {
 		    		//this is a colored pixel, but it isn't a green one.
 		    		//we really may not need to capture this, but it was already there so we kept it.
 		    		coloredpixels++;
-			        copy.setRGB(x, y, new Color(255,255,255).getRGB());
+			        //copy.setRGB(x, y, new Color(255,255,255).getRGB());
 		        }
 		    	else
 		    	{
-		    		
 		    		//this is a green pixel. 
 		    		//it doesn't mean it is a "cell" it means it is a single ixel
 		    		float hsb[] = Color.RGBtoHSB(r, g, b, null);
@@ -311,14 +310,13 @@ public class ImageManipulation {
 		    		pixeldata.y = y;
 		    		GreenPixels.add(pixeldata);
 		    		
-		    		
 		    		coloredpixels++;
 		    		stainedpixels++;
 		    	    System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b + " H:" + hsb[0] + " s:" + hsb[1] + " b:" + hsb[2]);
 		    	}
 		    }// For x
 		}// For y
-		//  System.out.println("Total:" + dblTotalPixels + " Colored: " + coloredpixels + " Stained:" + stainedpixels + " perc: " + stainedpixels/coloredpixels );
+		  //System.out.println("Total:" + dblTotalPixels + " Colored: " + coloredpixels + " Stained:" + stainedpixels + " perc: " + stainedpixels/coloredpixels );
 		  //pixelData pix = new pixelData();
 		  //we should really have the current file without going back to the
 		  //furi class
@@ -335,18 +333,33 @@ public class ImageManipulation {
 		//So return is last which gives us the option to adjust the cell colors like we discussed.
 		
 		
+		ArrayList<pixelData> GoodPixels = new ArrayList<pixelData>();
+		
 		for (pixelData pd : GreenPixels) 
 		{       
 			//here we need to look around the pixel we are on to see if it is "surrounded" by other greens
 			//we should be able to query the ArrayList, but for now let's create a method to do so.
 			//easy, but we can make it better.
 			
-			if(FindGreenPixelsNearby(pd, GreenPixels)<3)
+			if(FindGreenPixelsNearby(pd, GreenPixels)>=3)
 			{
-				GreenPixels.remove(pd);
+				GoodPixels.add(pd);	
+				copy.setRGB(pd.x, pd.y, new Color(255,0,0).getRGB());
 			}
-			
 	    }
+		//here I can adjust "copy" to turn the green pixels "red" or whatever...
+		// I think the thing is I have two sets of pixels.
+		//for now I will loop again..
+		//we really do need to learn how to query an arraylist...
+		//wait. I think I can do this above..
+		
+		
+		/*for(int y = 0; y < h; y++) {
+		    for(int x = 0; x < w; x++) {
+		    	 //so find this x,y in the green pixels arraylist. 
+		    }
+		}
+		*/
 		return copy;
 	}
 	private static int FindGreenPixelsNearby(pixelData pd, ArrayList<pixelData> GreenPixels) {
