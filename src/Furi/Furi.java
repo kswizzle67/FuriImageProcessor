@@ -42,6 +42,11 @@ public class Furi extends JFrame {
 	static JPanel rdoPanel;
 	static JCheckBox chkTrackClicks; //used to track clicks and estimate colors
 	static File csvfile;
+<<<<<<< Updated upstream
+=======
+	static JButton countCells;
+	static JRadioButton rdoBlueIFC;
+>>>>>>> Stashed changes
 	
 	private static final long serialVersionUID = 1L;
 
@@ -503,6 +508,21 @@ public class Furi extends JFrame {
 			}
 		});
 
+		rdoBlueIFC = new JRadioButton("IFC (blue)");
+		rdoBlueIFC.setBounds(25,20,200,30);
+		rdoBlueIFC.setLocation(450,70); // edit this placement 
+		FramePicture.getContentPane().add(rdoBlueIFC);
+		rdoBlueIFC.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				txtR.setText("39");
+	           	txtG.setText("0");
+	           	txtB.setText("232"); 
+	           	//user needs to allow for margin of 120. 
+				}
+			});
+		
+		
 		btnAuto = new JButton("Analyze Current Folder!"); 
 		btnAuto.setBounds(50,50,220,50);
 		btnAuto.setLocation(450, 150);
