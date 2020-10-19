@@ -120,7 +120,7 @@ public class ImageManipulation {
 		  pix.dblTotalPixels = dblTotalPixels;
 		  pix.coloredpixels = coloredpixels;
 		  pix.stainedpixels = stainedpixels;
-		  pix.signal = stainedpixels/coloredpixels;
+		  pix.signal = stainedpixels/dblTotalPixels;
 		  //we should really have the current file without going back to the
 		  //furi class
 		  File fyl = Furi.arrFiles.get(Furi.intCurrentFile);
