@@ -20,7 +20,7 @@ public class exportData {
 		String comma = ","; 
 		String separator = "\n"; 
 		
-		String header = "FileName, FolderName, TotalPixels, ColoredPixels, StainedPixels, Signal";
+		String header = "FileName, FolderName, TotalPixels, ColoredPixels, StainedPixels, Signal (Stained/Colored)";
 		
 		FileWriter fileWriter = null; 
 			try {
