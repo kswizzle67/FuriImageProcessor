@@ -29,6 +29,7 @@ public class Furi extends JFrame {
 	static int[][] rgb = {{0,255},{0,255},{0,255}}; //these are actually reversed.
 
 
+
 	static JMenuBar mb;// = new JMenuBar();
 	static JMenu mFile, mHelp;// = new JMenu("Open File");
 	static JMenuItem FileOpenFile, FileOpenFolder, mHelpDiag;
@@ -42,12 +43,24 @@ public class Furi extends JFrame {
 	static JPanel rdoPanel;
 	static JCheckBox chkTrackClicks; //used to track clicks and estimate colors
 	static File csvfile;
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 	static JButton countCells;
 	static JRadioButton rdoBlueIFC;
 >>>>>>> Stashed changes
+=======
+
+	static JButton countCells;
+
 	
+	static JRadioButton rdoBlueIFC;
+
+
+
+>>>>>>> CellCount
+	
+
 	private static final long serialVersionUID = 1L;
 
 	public static void main(String[] args){
@@ -122,6 +135,7 @@ public class Furi extends JFrame {
 		AddExtraUI();
 		AddHRPandIFCRadios();
 		AddTrackClicksCheckBox();
+		CellCount();
 
 
 		FramePicture.setSize(700,550);
@@ -588,5 +602,31 @@ public class Furi extends JFrame {
 	    txtR.setText("255");
 	    txtG.setText("255");
 	    txtB.setText("255");
+	}
+	public static void CellCount(){
+		countCells = new JButton("Cell Count!");
+		countCells.setBounds(50,100,200,30);
+		countCells.setLocation(450,450);
+		FramePicture.getContentPane().add(countCells); 
+		// countCells.setEnabled(false);
+		countCells.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhiteCellCount(imgSource,
+								Integer.parseInt(txtThreshold.getText()),
+								Integer.parseInt(txtR.getText()),
+								Integer.parseInt(txtG.getText()),
+								Integer.parseInt(txtB.getText()), DatatoSave));
+					LoadImageIntoUI(imgWorking); //use resizedImage here
+
+				} catch (IOException z) {
+					// TODO Auto-generated catch block
+					z.printStackTrace();
+				} //use resizedImage here
+			}
+				
+		
+		});
 	}
 }
