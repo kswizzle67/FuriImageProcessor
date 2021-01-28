@@ -43,13 +43,16 @@ public class Furi extends JFrame {
 	static JPanel rdoPanel;
 	static JCheckBox chkTrackClicks; //used to track clicks and estimate colors
 	static File csvfile;
+
 	static JButton countCells;
 
 	
 	static JRadioButton rdoBlueIFC;
 
 
+
 	
+
 	private static final long serialVersionUID = 1L;
 
 	public static void main(String[] args){
