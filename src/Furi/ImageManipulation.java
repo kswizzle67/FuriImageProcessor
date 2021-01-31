@@ -19,12 +19,7 @@ import javax.imageio.ImageIO;
 public class ImageManipulation {
 	
 	static double dblTotalPixels,coloredpixels, stainedpixels;
-	
-	
-	//List<xy> arrxy = new ArrayList<xy>;
-	// Need to know how to make a type "xy". 
-	
-	
+
 	
 	static BufferedImage FiletoBufferedImage(File in) 
 	{
