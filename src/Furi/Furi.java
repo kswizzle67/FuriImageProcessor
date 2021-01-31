@@ -23,11 +23,12 @@ public class Furi extends JFrame {
 	//these are things that may need to be reset.
 	static ArrayList<pixelData> DatatoSave = new ArrayList<pixelData>();
 	static ArrayList<File> arrFiles = new ArrayList<File>();
+	static ArrayList<Integer> MultiColors = new ArrayList<Integer>();
+	
 	static int intCurrentFile = 0;
 	static BufferedImage imgSource, imgWorking;
 	static Image resizedImage;
 	static int[][] rgb = {{0,255},{0,255},{0,255}}; //these are actually reversed.
-
 
 
 	static JMenuBar mb;// = new JMenuBar();
@@ -44,6 +45,7 @@ public class Furi extends JFrame {
 	static JPanel rdoPanel;
 	static JCheckBox chkTrackClicks; //used to track clicks and estimate colors
 	static File csvfile;
+	static JScrollPane sbrText;
 
 	static JButton countCells;
 	static JRadioButton rdoBlueIFC;
@@ -88,7 +90,16 @@ public class Furi extends JFrame {
 	                txtB.setText(Integer.toString(color.getBlue()));
 	                if(chkTrackClicks.isSelected())
 	                {
-	                	AddToClickRGBAverage(color.getRed(), color.getGreen(), color.getBlue());
+	                		AddToClickRGBAverage(color.getRed(), color.getGreen(), color.getBlue());
+	                }
+	                if(rdoMultiColor.isSelected())
+	                {
+	                	//here is where we will track which pixels go into which index of the array
+	                	//when the user is doing multicolor, they get to tell us which index to apply the color too. 
+	                	//what we need to end up with is list of upper and lower bounds for each type of color.
+	                	//it will be like trackclicks, but more than one color...
+	                	
+	                
 	                }
             	 }
              }
@@ -108,14 +119,10 @@ public class Furi extends JFrame {
 		mFile.add(FileOpenFile);
 		mFile.add(FileOpenFolder);
 		
-		
 		mHelp.add(mHelpDiag);
 		mb.add(mFile);
 		mb.add(mHelp);
 		FramePicture.setJMenuBar(mb);
-
-
-
 
 		//Not using slider anymore?
 		//AddSlider();
@@ -484,7 +491,16 @@ public class Furi extends JFrame {
 		lblOutput.setSize(275, 150);
 		lblOutput.setLocation(400,150);
 		lblOutput.setLineWrap(true);
-		FramePicture.add(lblOutput);
+		
+		sbrText = new JScrollPane(lblOutput);
+		sbrText.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		sbrText.setVisible(true);
+		sbrText.setLocation(400,300);
+		
+		FramePicture.getContentPane().add(lblOutput);
+		FramePicture.getContentPane().add(sbrText);
+		
+		
 	}
 
 	public static void AddHRPandIFCRadios()
@@ -593,7 +609,7 @@ public class Furi extends JFrame {
 	
 	public static void OutPutThis(String x)
 	{
-		lblOutput.setText(lblOutput.getText() +x + "\n");
+		lblOutput.setText(x + "\n" + lblOutput.getText());
        	//user needs to allow for margin of 120. 
 	}
 	
@@ -619,6 +635,10 @@ public class Furi extends JFrame {
 			rgb[2][0] = B;
 		if (B<rgb[2][1])
 			rgb[2][1] = B;
+		String s = "R=" + rgb[0][0] + "-" + rgb[0][1] + "\n"
+				+ "G=" + rgb[1][0] + "-" + rgb[1][1] + "\n"
+				+ "B=" + rgb[2][0] + "-" + rgb[2][1] + "\n";
+		OutPutThis(s);
 	}
 
 	public static void ResetVariables(boolean everything)
