@@ -38,6 +38,7 @@ public class Furi extends JFrame {
 	static JButton btnSave, btnSaveToLocation, btnForwardImg, btnBackImg, btnAuto;
 	static JTextField txtSaveTo, txtR, txtG, txtB,txtThreshold;
 	static JLabel lblSaveTo, imgLabel, lblFileNameTop,lbllblFileNameTop,lblHRPIFC;
+	static JTextArea lblOutput;
 	static JRadioButton rdoHRP, rdoIFC, rdoMultiColor;
 	static ButtonGroup rdoGroup;
 	static JPanel rdoPanel;
@@ -478,6 +479,12 @@ public class Furi extends JFrame {
 			}
 		});
 		FramePicture.add(btnMakeWhiteUsingTrackedClicks);
+		
+		lblOutput = new JTextArea();
+		lblOutput.setSize(275, 150);
+		lblOutput.setLocation(400,150);
+		lblOutput.setLineWrap(true);
+		FramePicture.add(lblOutput);
 	}
 
 	public static void AddHRPandIFCRadios()
@@ -541,26 +548,55 @@ public class Furi extends JFrame {
 			});
 		
 		rdoMultiColor = new JRadioButton("Multi Colors");
-		rdoMultiColor.setBounds(25,20,200,30);
+		rdoMultiColor.setBounds(25,20,120,30);
 		rdoMultiColor.setLocation(450,95); // edit this placement 
 		FramePicture.getContentPane().add(rdoMultiColor);
 		rdoGroup.add(rdoMultiColor);
+		rdoMultiColor.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				OutPutThis( 
+						"You have selected to use multiple Colors. \n" + 
+						"The dropdown above should be on 1.\n" + 
+						"This means you are selecting the first color\n" + 
+						"When you want to select the second color, change the dropdown\n" );
+	           
+				}
+			});
 		
-	
+		String[] choices = {"1","2","3","4","5"};
+	    final JComboBox<String> cblMultiColors = new JComboBox<String>(choices);
+	    cblMultiColors.setBounds(25,20,75,30);
+	    cblMultiColors.setLocation(550,95); // edit this placement 
+	    FramePicture.getContentPane().add(cblMultiColors);
+	    cblMultiColors.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				OutPutThis("You are now working with Color #" + cblMultiColors.getItemAt(cblMultiColors.getSelectedIndex()));
+				}
+			});
+		
 		
 		btnAuto = new JButton("Analyze Current Folder!"); 
 		btnAuto.setBounds(50,50,220,50);
 		btnAuto.setLocation(450, 420);
-	FramePicture.getContentPane().add(btnAuto); 
-	btnAuto.setEnabled(false);
+		FramePicture.getContentPane().add(btnAuto); 
+		btnAuto.setEnabled(false);
 	
-	btnAuto.addActionListener(new ActionListener() {
+		btnAuto.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			ImageManipulation.automatefolder(arrFiles, rgb, Integer.parseInt(txtThreshold.getText()), DatatoSave); 
 			}
 		});
 	}
+	
+	public static void OutPutThis(String x)
+	{
+		lblOutput.setText(lblOutput.getText() +x + "\n");
+       	//user needs to allow for margin of 120. 
+	}
+	
 	public static void AddTrackClicksCheckBox()
 	{
 		chkTrackClicks = new JCheckBox("Track Clicks!");
