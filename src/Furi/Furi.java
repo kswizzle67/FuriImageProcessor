@@ -38,7 +38,7 @@ public class Furi extends JFrame {
 	static JButton btnSave, btnSaveToLocation, btnForwardImg, btnBackImg, btnAuto;
 	static JTextField txtSaveTo, txtR, txtG, txtB,txtThreshold;
 	static JLabel lblSaveTo, imgLabel, lblFileNameTop,lbllblFileNameTop,lblHRPIFC;
-	static JRadioButton rdoHRP, rdoIFC;
+	static JRadioButton rdoHRP, rdoIFC, rdoMultiColor;
 	static ButtonGroup rdoGroup;
 	static JPanel rdoPanel;
 	static JCheckBox chkTrackClicks; //used to track clicks and estimate colors
@@ -69,7 +69,7 @@ public class Furi extends JFrame {
 
 		imgLabel = new JLabel();
 		imgLabel.setSize(300,300);
-		imgLabel.setLocation(100, 50);
+		imgLabel.setLocation(50, 50);
 		imgLabel.setBorder(BorderFactory.createLineBorder(Color.black));
 		FramePicture.add(imgLabel);
 
@@ -78,28 +78,30 @@ public class Furi extends JFrame {
 		imgLabel.addMouseListener(new MouseAdapter() {
              @Override
              public void mouseClicked(MouseEvent e) {
-            	 BufferedImage img = (BufferedImage)resizedImage;
-                 int packedInt = img.getRGB(e.getX(), e.getY());
-                 Color color = new Color(packedInt, true);
-                txtR.setText(Integer.toString(color.getRed()));
-                txtG.setText(Integer.toString(color.getGreen()));
-                txtB.setText(Integer.toString(color.getBlue()));
-                if(chkTrackClicks.isSelected())
-                {
-                	AddToClickRGBAverage(color.getRed(), color.getGreen(), color.getBlue());
-                }
+            	 if (resizedImage != null) {
+	            	 BufferedImage img = (BufferedImage)resizedImage;
+	                 int packedInt = img.getRGB(e.getX(), e.getY());
+	                 Color color = new Color(packedInt, true);
+	                txtR.setText(Integer.toString(color.getRed()));
+	                txtG.setText(Integer.toString(color.getGreen()));
+	                txtB.setText(Integer.toString(color.getBlue()));
+	                if(chkTrackClicks.isSelected())
+	                {
+	                	AddToClickRGBAverage(color.getRed(), color.getGreen(), color.getBlue());
+	                }
+            	 }
              }
          });
 
 		lbllblFileNameTop = new JLabel("Filename: ");
 		lbllblFileNameTop.setSize(70,30);
-		lbllblFileNameTop.setLocation(130, 10);
+		lbllblFileNameTop.setLocation(10, -5);
 		FramePicture.add(lbllblFileNameTop);
 
 		lblFileNameTop = new JLabel();
-		lblFileNameTop.setSize(200,30);
-		lblFileNameTop.setLocation(200, 10);
-		lblFileNameTop.setBorder(BorderFactory.createLineBorder(Color.black));
+		lblFileNameTop.setSize(400,20);
+		lblFileNameTop.setLocation(10, 16);
+		lblFileNameTop.setBorder(BorderFactory.createLineBorder(Color.gray));
 		FramePicture.add(lblFileNameTop);
 
 		mFile.add(FileOpenFile);
@@ -199,7 +201,7 @@ public class Furi extends JFrame {
 	{
 		btnForwardImg  = new JButton(">>");
 		btnForwardImg.setBounds(50,100,50,30);
-		btnForwardImg.setLocation(450,200);
+		btnForwardImg.setLocation(350,200);
 		btnForwardImg.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -214,7 +216,7 @@ public class Furi extends JFrame {
 
 		btnBackImg = new JButton("<<");
 		btnBackImg.setBounds(50,100,50,30);
-		btnBackImg.setLocation(10,200);
+		btnBackImg.setLocation(5, 200);
 		btnBackImg.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -345,24 +347,34 @@ public class Furi extends JFrame {
 
 	public static void AddExtraUI()
 	{
-		JLabel lblRGB = new JLabel("r,g,b:");
-		lblRGB.setSize(200,30);
-		lblRGB.setLocation(450, 230);
-		FramePicture.add(lblRGB);
+		JLabel lblR = new JLabel("Red:");
+		lblR.setSize(200,30);
+		lblR.setLocation(580, 30);
+		FramePicture.add(lblR);
+
+		JLabel lblG = new JLabel("Green:");
+		lblG.setSize(200,30);
+		lblG.setLocation(580, 50);
+		FramePicture.add(lblG);
+
+		JLabel lblB = new JLabel("Blue:");
+		lblB.setSize(200,30);
+		lblB.setLocation(580, 70);
+		FramePicture.add(lblB);
 
 		 txtR = new JTextField("255");
 		txtR.setSize(40, 30);
-		txtR.setLocation(450,260);
+		txtR.setLocation(620,30);
 		FramePicture.add(txtR);
 
 		 txtG = new JTextField("255");
 		txtG.setSize(40, 30);
-		txtG.setLocation(490,260);
+		txtG.setLocation(620,50);
 		FramePicture.add(txtG);
 
 		 txtB = new JTextField("255");
 		txtB.setSize(40, 30);
-		txtB.setLocation(530,260);
+		txtB.setLocation(620,70);
 		FramePicture.add(txtB);
 
 		 txtThreshold = new JTextField("20");
@@ -385,7 +397,10 @@ public class Furi extends JFrame {
 					txtB.setText(rgb[2]);
 				}
 				try {
-					LoadImageIntoUI(imgWorking);
+					if(imgWorking != null)
+					{
+						LoadImageIntoUI(imgWorking);
+					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -419,26 +434,26 @@ public class Furi extends JFrame {
 
 		JButton btnReset = new JButton("Reset");
 		btnReset.setBounds(50,100,200,30);
-		btnReset.setLocation(450,380);
+		btnReset.setLocation(150,350);
 		btnReset.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 					ResetVariables(false); //not everything
 					//but we do need to reload the image.
 					//if there is a current image... leave it. 
-					
 					//intCurrentFile = 0;
-					ChangeImageLabel(arrFiles.get(intCurrentFile).getName());
-					txtSaveTo.setText(arrFiles.get(intCurrentFile).getPath().substring(0, arrFiles.get(intCurrentFile).getPath().lastIndexOf("/")+1) + "output.csv");
-					imgSource =  ImageManipulation.FiletoBufferedImage(arrFiles.get(intCurrentFile));
-					imgWorking = ImageManipulation.deepCopyImage(imgSource);
-			    	try {
-						LoadImageIntoUI(imgSource);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					if(!arrFiles.isEmpty()) {
+						ChangeImageLabel(arrFiles.get(intCurrentFile).getName());
+						txtSaveTo.setText(arrFiles.get(intCurrentFile).getPath().substring(0, arrFiles.get(intCurrentFile).getPath().lastIndexOf("/")+1) + "output.csv");
+						imgSource =  ImageManipulation.FiletoBufferedImage(arrFiles.get(intCurrentFile));
+						imgWorking = ImageManipulation.deepCopyImage(imgSource);
+				    	try {
+							LoadImageIntoUI(imgSource);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
-
 				}
 		});
 		FramePicture.add(btnReset);
@@ -446,7 +461,7 @@ public class Furi extends JFrame {
 
 		JButton btnMakeWhiteUsingTrackedClicks = new JButton("Make white (Use Tracked Clicks)");
 		btnMakeWhiteUsingTrackedClicks.setBounds(50,100,250,30);
-		btnMakeWhiteUsingTrackedClicks.setLocation(450,115);
+		btnMakeWhiteUsingTrackedClicks.setLocation(450,355);
 		btnMakeWhiteUsingTrackedClicks.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -512,8 +527,9 @@ public class Furi extends JFrame {
 
 		rdoBlueIFC = new JRadioButton("IFC (blue)");
 		rdoBlueIFC.setBounds(25,20,200,30);
-		rdoBlueIFC.setLocation(450,70); // edit this placement 
+		rdoBlueIFC.setLocation(450,75); // edit this placement 
 		FramePicture.getContentPane().add(rdoBlueIFC);
+		rdoGroup.add(rdoBlueIFC);
 		rdoBlueIFC.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -524,10 +540,17 @@ public class Furi extends JFrame {
 				}
 			});
 		
+		rdoMultiColor = new JRadioButton("Multi Colors");
+		rdoMultiColor.setBounds(25,20,200,30);
+		rdoMultiColor.setLocation(450,95); // edit this placement 
+		FramePicture.getContentPane().add(rdoMultiColor);
+		rdoGroup.add(rdoMultiColor);
+		
+	
 		
 		btnAuto = new JButton("Analyze Current Folder!"); 
 		btnAuto.setBounds(50,50,220,50);
-		btnAuto.setLocation(450, 150);
+		btnAuto.setLocation(450, 420);
 	FramePicture.getContentPane().add(btnAuto); 
 	btnAuto.setEnabled(false);
 	
@@ -542,7 +565,7 @@ public class Furi extends JFrame {
 	{
 		chkTrackClicks = new JCheckBox("Track Clicks!");
 		chkTrackClicks.setBounds(50,50, 150,50);
-		chkTrackClicks.setLocation(450,75);
+		chkTrackClicks.setLocation(450,110);
 		FramePicture.getContentPane().add(chkTrackClicks);
 	}
 
@@ -594,24 +617,27 @@ public class Furi extends JFrame {
 	public static void CellCount(){
 		countCells = new JButton("Cell Count!");
 		countCells.setBounds(50,100,200,30);
-		countCells.setLocation(450,450);
+		countCells.setLocation(450,380);
 		FramePicture.getContentPane().add(countCells); 
 		// countCells.setEnabled(false);
 		countCells.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhiteCellCount(imgSource,
-								Integer.parseInt(txtThreshold.getText()),
-								Integer.parseInt(txtR.getText()),
-								Integer.parseInt(txtG.getText()),
-								Integer.parseInt(txtB.getText()), DatatoSave));
-					LoadImageIntoUI(imgWorking); //use resizedImage here
-
-				} catch (IOException z) {
-					// TODO Auto-generated catch block
-					z.printStackTrace();
-				} //use resizedImage here
+				if(imgSource != null)
+				{
+					try {
+						imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhiteCellCount(imgSource,
+									Integer.parseInt(txtThreshold.getText()),
+									Integer.parseInt(txtR.getText()),
+									Integer.parseInt(txtG.getText()),
+									Integer.parseInt(txtB.getText()), DatatoSave));
+						LoadImageIntoUI(imgWorking); //use resizedImage here
+	
+					} catch (IOException z) {
+						// TODO Auto-generated catch block
+						z.printStackTrace();
+					} //use resizedImage here
+				}
 			}
 				
 		

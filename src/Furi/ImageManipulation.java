@@ -70,10 +70,14 @@ public class ImageManipulation {
 
 	static BufferedImage MakeIgnoredPixelsWhiteUsingRange(BufferedImage img, int[][] rgb, ArrayList<pixelData> DatatoSave)
 	{
+		BufferedImage copy = new BufferedImage(1, 1, 1);
+		if(img != null)
+		{	
+			
 		int w = img.getWidth();
 		int h = img.getHeight();
 		int r,g,b,pixel;
-		BufferedImage copy = deepCopyImage(img);
+		copy = deepCopyImage(img);
 		for(int y = 0; y < h; y++) {
 		    for(int x = 0; x < w; x++) {
 		    	 pixel = img.getRGB(x, y);
@@ -122,14 +126,19 @@ public class ImageManipulation {
 		  pix.filename = fyl.getName();
 		  pix.foldername = fyl.getParent();
 		  DatatoSave.add(pix);
+		}
 		return copy;
 	}
 	static BufferedImage MakeIgnoredPixelsWhite(BufferedImage img, int th, int R, int G, int B, ArrayList<pixelData> DatatoSave)
 	{
+
+		BufferedImage copy = new BufferedImage(1, 1, 1);
+		if(img != null)
+		{	
 		int w = img.getWidth();
 		int h = img.getHeight();
 		int r,g,b,pixel;
-		BufferedImage copy = ImageManipulation.deepCopyImage(img);
+		copy = ImageManipulation.deepCopyImage(img);
 		
 		for(int y = 0; y < h; y++) {
 		    for(int x = 0; x < w; x++) {
@@ -173,6 +182,7 @@ public class ImageManipulation {
 		  pix.signal = stainedpixels/coloredpixels;
 		  
   			DatatoSave.add(pix);
+		}
 		return copy;
 	}
 	static BufferedImage ActuallyChangeSaturation(BufferedImage img, int saturationchange, int R, int B, int G)
@@ -206,37 +216,47 @@ public class ImageManipulation {
 	}
 	static String[] ProcessImage(BufferedImage img)
 	{
-		int w = img.getWidth();
-		int h = img.getHeight();
 		int r,g,b,pixel,sumR, sumG, sumB,count;
 		sumR = 0;
 		sumG = 0;
 		sumB = 0;
 		count = 0;
-		for(int y = 0; y < h; y++) {
-		    for(int x = 0; x < w; x++) {
-		    	 pixel = img.getRGB(x, y);
-		    	 r = (pixel >> 16) & 0xFF;
-		    	 g = (pixel >> 8) & 0xFF;
-		    	 b = (pixel) & 0xFF;
-		    	 float hsb[] = Color.RGBtoHSB(r, g, b, null);
-
-		    	if (r<255&&g<255&&b<255&&hsb[1]>.30)
-		    	{
-		    		System.out.print(hsb[1]>.30);
-		    		System.out.println(" s =" + hsb[1]);
-			       //Let's try just the sum of them...
-		    		sumR += r;
-		    		sumG += g;
-		    		sumB += b;
-		    		count++;
-		        }
-		    }// For x
-		}// For y
-		return new String[] {
-				Integer.toString(sumR/count),
-				Integer.toString(sumG/count),
-				Integer.toString(sumB/count)};
+		if(img != null)
+		{
+			int w = img.getWidth();
+			int h = img.getHeight();
+			
+			for(int y = 0; y < h; y++) {
+			    for(int x = 0; x < w; x++) {
+			    	 pixel = img.getRGB(x, y);
+			    	 r = (pixel >> 16) & 0xFF;
+			    	 g = (pixel >> 8) & 0xFF;
+			    	 b = (pixel) & 0xFF;
+			    	 float hsb[] = Color.RGBtoHSB(r, g, b, null);
+	
+			    	if (r<255&&g<255&&b<255&&hsb[1]>.30)
+			    	{
+			    		System.out.print(hsb[1]>.30);
+			    		System.out.println(" s =" + hsb[1]);
+				       //Let's try just the sum of them...
+			    		sumR += r;
+			    		sumG += g;
+			    		sumB += b;
+			    		count++;
+			        }
+			    }// For x
+			}// For y
+			return new String[] {
+					Integer.toString(sumR/count),
+					Integer.toString(sumG/count),
+					Integer.toString(sumB/count)};
+		}
+		else
+		{
+			return new String[] {"0","0","0"};
+					
+		}
+		
 		
 	}
 	static void automatefolder(ArrayList<File> arrFiles, int[][] rgb, int th, ArrayList<pixelData> DatatoSave) 
