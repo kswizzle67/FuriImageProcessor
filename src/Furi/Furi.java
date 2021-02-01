@@ -357,32 +357,32 @@ public class Furi extends JFrame {
 	{
 		JLabel lblR = new JLabel("Red:");
 		lblR.setSize(200,30);
-		lblR.setLocation(580, 30);
+		lblR.setLocation(600, 15);
 		FramePicture.add(lblR);
 
 		JLabel lblG = new JLabel("Green:");
 		lblG.setSize(200,30);
-		lblG.setLocation(580, 50);
+		lblG.setLocation(600, 35);
 		FramePicture.add(lblG);
 
 		JLabel lblB = new JLabel("Blue:");
 		lblB.setSize(200,30);
-		lblB.setLocation(580, 70);
+		lblB.setLocation(600, 55);
 		FramePicture.add(lblB);
 
 		 txtR = new JTextField("255");
 		txtR.setSize(40, 30);
-		txtR.setLocation(620,30);
+		txtR.setLocation(640,15);
 		FramePicture.add(txtR);
 
 		 txtG = new JTextField("255");
 		txtG.setSize(40, 30);
-		txtG.setLocation(620,50);
+		txtG.setLocation(640,35);
 		FramePicture.add(txtG);
 
 		 txtB = new JTextField("255");
 		txtB.setSize(40, 30);
-		txtB.setLocation(620,70);
+		txtB.setLocation(640,55);
 		FramePicture.add(txtB);
 
 		 txtThreshold = new JTextField("20");
@@ -510,7 +510,7 @@ public class Furi extends JFrame {
 
 		lblHRPIFC = new JLabel("Type:");
 		lblHRPIFC.setSize(70,40);
-		lblHRPIFC.setLocation(450, 10);
+		lblHRPIFC.setLocation(450, 5);
 		FramePicture.add(lblHRPIFC);
 
 		// for IFC (green): r = 0, g = 254, b = 0;
@@ -518,7 +518,7 @@ public class Furi extends JFrame {
 		// both have range +/- 20 for "make white". The button should "make white" as well.
 
 		rdoHRP = new JRadioButton("HRP");
-		rdoHRP.setBounds(25,20,200,30);
+		rdoHRP.setBounds(25,20,150,30);
 		rdoHRP.setLocation(450,35);
 		rdoHRP.addActionListener(new ActionListener() {
 	        @Override
@@ -529,7 +529,7 @@ public class Furi extends JFrame {
 	        }
 	    });
 		rdoIFC = new JRadioButton("IFC (green)");
-		rdoIFC.setBounds(25,20,200,30);
+		rdoIFC.setBounds(25,20,150,30);
 		rdoIFC.setLocation(450,55);
 
 		rdoGroup = new ButtonGroup();
@@ -549,7 +549,7 @@ public class Furi extends JFrame {
 		});
 
 		rdoBlueIFC = new JRadioButton("IFC (blue)");
-		rdoBlueIFC.setBounds(25,20,200,30);
+		rdoBlueIFC.setBounds(25,20,150,30);
 		rdoBlueIFC.setLocation(450,75); // edit this placement 
 		FramePicture.getContentPane().add(rdoBlueIFC);
 		rdoGroup.add(rdoBlueIFC);
@@ -564,7 +564,7 @@ public class Furi extends JFrame {
 			});
 		
 		rdoMultiColor = new JRadioButton("Multi Colors");
-		rdoMultiColor.setBounds(25,20,120,30);
+		rdoMultiColor.setBounds(25,20,100,30);
 		rdoMultiColor.setLocation(450,95); // edit this placement 
 		FramePicture.getContentPane().add(rdoMultiColor);
 		rdoGroup.add(rdoMultiColor);
@@ -583,7 +583,7 @@ public class Furi extends JFrame {
 		String[] choices = {"1","2","3","4","5"};
 	    final JComboBox<String> cblMultiColors = new JComboBox<String>(choices);
 	    cblMultiColors.setBounds(25,20,75,30);
-	    cblMultiColors.setLocation(550,95); // edit this placement 
+	    cblMultiColors.setLocation(600,100); // edit this placement 
 	    FramePicture.getContentPane().add(cblMultiColors);
 	    cblMultiColors.addActionListener(new ActionListener() {
 			@Override
@@ -616,8 +616,8 @@ public class Furi extends JFrame {
 	public static void AddTrackClicksCheckBox()
 	{
 		chkTrackClicks = new JCheckBox("Track Clicks!");
-		chkTrackClicks.setBounds(50,50, 150,50);
-		chkTrackClicks.setLocation(450,110);
+		chkTrackClicks.setBounds(10,10,100,20);
+		chkTrackClicks.setLocation(450,120);
 		FramePicture.getContentPane().add(chkTrackClicks);
 	}
 
