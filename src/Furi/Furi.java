@@ -695,8 +695,6 @@ public class Furi extends JFrame {
 					} //use resizedImage here
 				}
 			}
-				
-		
 		});
 	}
 }
