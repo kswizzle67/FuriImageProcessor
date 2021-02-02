@@ -253,11 +253,8 @@ public class ImageManipulation {
 		}
 		else
 		{
-			return new String[] {"0","0","0"};
-					
+			return new String[] {"0","0","0"};		
 		}
-		
-		
 	}
 	static void automatefolder(ArrayList<File> arrFiles, int[][] rgb, int th, ArrayList<pixelData> DatatoSave) 
 	{
@@ -268,11 +265,11 @@ public class ImageManipulation {
 			
 			}
 	}
-	
+	static int cellgroupid = 0;
 	//this is for the green cells
 	static BufferedImage MakeIgnoredPixelsWhiteCellCount(BufferedImage img, int th, int R, int G, int B, ArrayList<pixelData> DatatoSave)
 	{
-		
+		cellgroupid = 0;
 		int w = img.getWidth();
 		int h = img.getHeight();
 		int r,g,b,pixel;
@@ -355,42 +352,50 @@ public class ImageManipulation {
 			//here we need to look around the pixel we are on to see if it is "surrounded" by other greens
 			//we should be able to query the ArrayList, but for now let's create a method to do so.
 			//easy, but we can make it better.
-			
-			if(FindGreenPixelsNearby(pd, GreenPixels)>=3)
+			if(!pd.counted)
 			{
-				GoodPixels.add(pd);	
-				copy.setRGB(pd.x, pd.y, new Color(255,0,0).getRGB());
+				//todo: revisit.... after completing lines 383 etc.
+				ArrayList<pixelData> GroupedPixels = FindGreenPixelsNearby(pd, GreenPixels);
+				
+				if(GroupedPixels.size()>=7)
+				{ 	
+					cellgroupid++;
+					//add the pixel I am comparing. We know it is in a cell.
+					GoodPixels.add(pd);	
+					pd.cellgroupid = cellgroupid;
+					pd.counted = true;
+					//turn it red
+					copy.setRGB(pd.x, pd.y, new Color(255,0,0).getRGB());
+					
+					for (pixelData pix : GroupedPixels) 
+					{ 	
+						int i = GreenPixels.indexOf(pix);
+						GreenPixels.get(i).counted = true;
+						GreenPixels.get(i).cellgroupid = cellgroupid;
+						Furi.OutPutThis(String.valueOf(cellgroupid));
+						GoodPixels.add(pix);	
+						copy.setRGB(pix.x, pix.y, new Color(255,0,0).getRGB());
+					}
+				}
 			}
 	    }
-		//here I can adjust "copy" to turn the green pixels "red" or whatever...
-		// I think the thing is I have two sets of pixels.
-		//for now I will loop again..
-		//we really do need to learn how to query an arraylist...
-		//wait. I think I can do this above..
-		
-		
-		/*for(int y = 0; y < h; y++) {
-		    for(int x = 0; x < w; x++) {
-		    	 //so find this x,y in the green pixels arraylist. 
-		    }
-		}
-		*/
 		return copy;
 	}
-	private static int FindGreenPixelsNearby(pixelData pd, ArrayList<pixelData> GreenPixels) {
+	private static ArrayList<pixelData> FindGreenPixelsNearby(pixelData pd, ArrayList<pixelData> GreenPixels) {
 		int surroundingpixels = 0;
 		
-		//woah this is wasteful
+		ArrayList<pixelData> GroupedPixels = new ArrayList<pixelData>();
+		
 		for (pixelData pix : GreenPixels) 
 		{       	
-			if((pix.x < pd.x +3 && pix.x > pd.x -3) &&
-					(pix.y < pd.y +3 && pix.y > pd.y -3))
+			if(!pix.counted && ((pix.x < pd.x +2 && pix.x > pd.x -2) &&
+					(pix.y < pd.y +2 && pix.y > pd.y -2)))
 			{
-				//we have another pixel within +-3
-				surroundingpixels++;
+				GroupedPixels.add(pix);	
 			}
-	    }	
-		return surroundingpixels;
+	    }
+		
+		return GroupedPixels;
 	}
 
 	
