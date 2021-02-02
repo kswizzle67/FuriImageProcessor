@@ -316,7 +316,7 @@ public class ImageManipulation {
 		    	else
 		    	{
 		    		//this is a green pixel. 
-		    		//it doesn't mean it is a "cell" it means it is a single ixel
+		    		//it doesn't mean it is a "cell" it means it is a single pixel
 		    		float hsb[] = Color.RGBtoHSB(r, g, b, null);
 		    		//create a pixelData object to store the green cell location.
 		    		//TODO: anything else here?

@@ -1,3 +1,4 @@
+
 package Furi;
 
 public class pixelData {
