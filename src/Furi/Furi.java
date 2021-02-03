@@ -466,7 +466,6 @@ public class Furi extends JFrame {
 		});
 		FramePicture.add(btnReset);
 
-
 		JButton btnMakeWhiteUsingTrackedClicks = new JButton("Make white (Use Tracked Clicks)");
 		btnMakeWhiteUsingTrackedClicks.setBounds(50,100,250,30);
 		btnMakeWhiteUsingTrackedClicks.setLocation(450,390);
@@ -487,20 +486,19 @@ public class Furi extends JFrame {
 		});
 		FramePicture.add(btnMakeWhiteUsingTrackedClicks);
 		
-		lblOutput = new JTextArea();
+		lblOutput = new JTextArea("");
 		lblOutput.setSize(205, 150);
 		lblOutput.setLocation(450,150);
 		lblOutput.setLineWrap(true);
 		
 		sbrText = new JScrollPane(lblOutput);
 		sbrText.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		sbrText.setVisible(true);
-		sbrText.setLocation(550,355);
+		//sbrText.setVisible(true);
+		sbrText.setLocation(450,155);
 		
-		FramePicture.getContentPane().add(lblOutput);
-		FramePicture.getContentPane().add(sbrText);
-		
-		
+		//FramePicture.add(lblOutput);
+		//FramePicture.add(sbrText);
+		//FramePicture.setVisible(true);
 	}
 
 	public static void AddHRPandIFCRadios()
@@ -609,8 +607,9 @@ public class Furi extends JFrame {
 	
 	public static void OutPutThis(String x)
 	{
-		lblOutput.setText(x + "\n" + lblOutput.getText());
+		//lblOutput.setText(x + "\n" + lblOutput.getText());
        	//user needs to allow for margin of 120. 
+		System.out.println(x);
 	}
 	
 	public static void AddTrackClicksCheckBox()
