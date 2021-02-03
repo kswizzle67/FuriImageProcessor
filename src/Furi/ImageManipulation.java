@@ -357,7 +357,7 @@ public class ImageManipulation {
 				//todo: revisit.... after completing lines 383 etc.
 				ArrayList<pixelData> GroupedPixels = FindGreenPixelsNearby(pd, GreenPixels);
 				
-				if(GroupedPixels.size()>=7)
+				if(GroupedPixels.size()>=8)
 				{ 	
 					cellgroupid++;
 					//add the pixel I am comparing. We know it is in a cell.
