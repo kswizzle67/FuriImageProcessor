@@ -387,13 +387,13 @@ public class Furi extends JFrame {
 
 		 txtThreshold = new JTextField("20");
 		 txtThreshold.setSize(40, 30);
-		 txtThreshold.setLocation(650,330);
+		 txtThreshold.setLocation(650,360);
 			FramePicture.add(txtThreshold);
 
 		JButton btnProcessImage = new JButton("Estimate Values");
 		btnProcessImage.setBounds(50,100,200,30);
 		//btnProcessImage.setBorder(BorderFactory.createLineBorder(Color.black));
-		btnProcessImage.setLocation(450,300);
+		btnProcessImage.setLocation(450,330);
 		btnProcessImage.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -419,7 +419,7 @@ public class Furi extends JFrame {
 
 		JButton btnMakeWhite = new JButton("Make white");
 		btnMakeWhite.setBounds(50,100,200,30);
-		btnMakeWhite.setLocation(450,330);
+		btnMakeWhite.setLocation(450,360);
 		btnMakeWhite.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -469,7 +469,7 @@ public class Furi extends JFrame {
 
 		JButton btnMakeWhiteUsingTrackedClicks = new JButton("Make white (Use Tracked Clicks)");
 		btnMakeWhiteUsingTrackedClicks.setBounds(50,100,250,30);
-		btnMakeWhiteUsingTrackedClicks.setLocation(450,355);
+		btnMakeWhiteUsingTrackedClicks.setLocation(450,390);
 		btnMakeWhiteUsingTrackedClicks.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -488,14 +488,14 @@ public class Furi extends JFrame {
 		FramePicture.add(btnMakeWhiteUsingTrackedClicks);
 		
 		lblOutput = new JTextArea();
-		lblOutput.setSize(275, 150);
-		lblOutput.setLocation(400,150);
+		lblOutput.setSize(205, 150);
+		lblOutput.setLocation(450,150);
 		lblOutput.setLineWrap(true);
 		
 		sbrText = new JScrollPane(lblOutput);
 		sbrText.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		sbrText.setVisible(true);
-		sbrText.setLocation(400,300);
+		sbrText.setLocation(550,355);
 		
 		FramePicture.getContentPane().add(lblOutput);
 		FramePicture.getContentPane().add(sbrText);
@@ -564,7 +564,7 @@ public class Furi extends JFrame {
 			});
 		
 		rdoMultiColor = new JRadioButton("Multi Colors");
-		rdoMultiColor.setBounds(25,20,100,30);
+		rdoMultiColor.setBounds(25,20,120,30);
 		rdoMultiColor.setLocation(450,95); // edit this placement 
 		FramePicture.getContentPane().add(rdoMultiColor);
 		rdoGroup.add(rdoMultiColor);
@@ -595,7 +595,7 @@ public class Furi extends JFrame {
 		
 		btnAuto = new JButton("Analyze Current Folder!"); 
 		btnAuto.setBounds(50,50,220,50);
-		btnAuto.setLocation(450, 420);
+		btnAuto.setLocation(450, 450);
 		FramePicture.getContentPane().add(btnAuto); 
 		btnAuto.setEnabled(false);
 	
@@ -616,7 +616,7 @@ public class Furi extends JFrame {
 	public static void AddTrackClicksCheckBox()
 	{
 		chkTrackClicks = new JCheckBox("Track Clicks!");
-		chkTrackClicks.setBounds(10,10,100,20);
+		chkTrackClicks.setBounds(10,10,120,20);
 		chkTrackClicks.setLocation(450,120);
 		FramePicture.getContentPane().add(chkTrackClicks);
 	}
@@ -669,11 +669,14 @@ public class Furi extends JFrame {
 	    txtR.setText("255");
 	    txtG.setText("255");
 	    txtB.setText("255");
+	    rdoGroup.clearSelection();
+	    lblOutput.setText("");
+
 	}
 	public static void CellCount(){
 		countCells = new JButton("Cell Count!");
 		countCells.setBounds(50,100,200,30);
-		countCells.setLocation(450,380);
+		countCells.setLocation(450,420);
 		FramePicture.getContentPane().add(countCells); 
 		// countCells.setEnabled(false);
 		countCells.addActionListener(new ActionListener() {
