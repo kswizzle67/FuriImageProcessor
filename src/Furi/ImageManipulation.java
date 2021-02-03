@@ -19,7 +19,25 @@ import javax.imageio.ImageIO;
 public class ImageManipulation {
 	
 	static double dblTotalPixels,coloredpixels, stainedpixels;
-
+	static ArrayList<RedGreenBlue> rgbMulti = new ArrayList<RedGreenBlue>(); //this holds the RGB that the user selected for multi colors
+	static int mcPosition; 
+	
+	static void SetColorIndexForMultiColor(int i) {mcPosition = i;}
+	
+	static void SetColorForMultiColor(int i, Color c) {
+		mcPosition = i;
+		RedGreenBlue rgb = new RedGreenBlue();
+		rgb.r = c.getRed();
+		rgb.g = c.getGreen();
+		rgb.b = c.getBlue();
+		
+		if(rgbMulti.size()<i)
+		{
+			rgbMulti.add(i-1, rgb);
+		}
+		Furi.OutPutThis("Color index " + i + " : " + rgb.toString());
+	}
+	
 	
 	static BufferedImage FiletoBufferedImage(File in) 
 	{
@@ -31,6 +49,7 @@ public class ImageManipulation {
 			return null;
 		}
 	}
+	
 	static double getReduceBy(BufferedImage img)
 	{
 		  int w = img.getWidth();
@@ -328,23 +347,7 @@ public class ImageManipulation {
 		    	}
 		    }// For x
 		}// For y
-		  //System.out.println("Total:" + dblTotalPixels + " Colored: " + coloredpixels + " Stained:" + stainedpixels + " perc: " + stainedpixels/coloredpixels );
-		  //pixelData pix = new pixelData();
-		  //we should really have the current file without going back to the
-		  //furi class
-		  /*File fyl = Furi.arrFiles.get(Furi.intCurrentFile);
-		  pix.filename = fyl.getName();
-		  pix.foldername = fyl.getParent();
-		  pix.dblTotalPixels = dblTotalPixels;
-		  pix.coloredpixels = coloredpixels;
-		  pix.stainedpixels = stainedpixels;
-		  pix.signal = stainedpixels/coloredpixels;
 		  
-  			DatatoSave.add(pix);*/
-		//we should be adjusting the pixels here I assume in the COPY image that we return..
-		//So return is last which gives us the option to adjust the cell colors like we discussed.
-		
-		
 		ArrayList<pixelData> GoodPixels = new ArrayList<pixelData>();
 		
 		for (pixelData pd : GreenPixels) 
@@ -352,16 +355,17 @@ public class ImageManipulation {
 			//here we need to look around the pixel we are on to see if it is "surrounded" by other greens
 			//we should be able to query the ArrayList, but for now let's create a method to do so.
 			//easy, but we can make it better.
+			CountPixelsThatAreCounted(GreenPixels);
 			if(!pd.counted)
 			{
-				//todo: revisit.... after completing lines 383 etc.
 				ArrayList<pixelData> GroupedPixels = FindGreenPixelsNearby(pd, GreenPixels);
 				
 				if(GroupedPixels.size()>=8)
 				{ 	
 					cellgroupid++;
 					//add the pixel I am comparing. We know it is in a cell.
-					GoodPixels.add(pd);	
+					//Furi.OutPutThis("Adding:" + String.valueOf(pd.x) + ":" + String.valueOf(pd.y));
+					//GoodPixels.add(pd);	
 					pd.cellgroupid = cellgroupid;
 					pd.counted = true;
 					//turn it red
@@ -373,12 +377,14 @@ public class ImageManipulation {
 						GreenPixels.get(i).counted = true;
 						GreenPixels.get(i).cellgroupid = cellgroupid;
 						Furi.OutPutThis(String.valueOf(cellgroupid));
+						Furi.OutPutThis("Adding:" + String.valueOf(pix.x) + ":" + String.valueOf(pix.y));
 						GoodPixels.add(pix);	
 						copy.setRGB(pix.x, pix.y, new Color(255,0,0).getRGB());
 					}
 				}
 			}
 	    }
+		Furi.OutPutThis("Good Pixels:" + String.valueOf(GoodPixels.size()));
 		return copy;
 	}
 	private static ArrayList<pixelData> FindGreenPixelsNearby(pixelData pd, ArrayList<pixelData> GreenPixels) {
@@ -398,5 +404,17 @@ public class ImageManipulation {
 		return GroupedPixels;
 	}
 
+	private static void CountPixelsThatAreCounted(ArrayList<pixelData> PixelArray)
+	{
+		int counted = 0;
+		for (pixelData pd : PixelArray) 
+		{
+			if(pd.counted)
+			{
+				counted++;
+			}
+		}
+		Furi.OutPutThis("Counted:" + String.valueOf(counted));
+	}
 	
 }

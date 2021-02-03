@@ -38,7 +38,7 @@ public class Furi extends JFrame {
 	static JSlider s;
 	static JButton btnSave, btnSaveToLocation, btnForwardImg, btnBackImg, btnAuto;
 	static JTextField txtSaveTo, txtR, txtG, txtB,txtThreshold;
-	static JLabel lblSaveTo, imgLabel, lblFileNameTop,lbllblFileNameTop,lblHRPIFC;
+	static JLabel lblSaveTo, imgLabel, lblFileNameTop,lbllblFileNameTop,lblHRPIFC, lblColor;
 	static JTextArea lblOutput;
 	static JRadioButton rdoHRP, rdoIFC, rdoMultiColor;
 	static ButtonGroup rdoGroup;
@@ -49,6 +49,7 @@ public class Furi extends JFrame {
 
 	static JButton countCells;
 	static JRadioButton rdoBlueIFC;
+	static JComboBox<String> cblMultiColors;
 
 	
 
@@ -82,12 +83,14 @@ public class Furi extends JFrame {
              @Override
              public void mouseClicked(MouseEvent e) {
             	 if (resizedImage != null) {
+            		 //this just sets the RGD textboxes
 	            	 BufferedImage img = (BufferedImage)resizedImage;
 	                 int packedInt = img.getRGB(e.getX(), e.getY());
 	                 Color color = new Color(packedInt, true);
 	                txtR.setText(Integer.toString(color.getRed()));
 	                txtG.setText(Integer.toString(color.getGreen()));
 	                txtB.setText(Integer.toString(color.getBlue()));
+	                lblColor.setBackground(color);
 	                if(chkTrackClicks.isSelected())
 	                {
 	                		AddToClickRGBAverage(color.getRed(), color.getGreen(), color.getBlue());
@@ -98,8 +101,9 @@ public class Furi extends JFrame {
 	                	//when the user is doing multicolor, they get to tell us which index to apply the color too. 
 	                	//what we need to end up with is list of upper and lower bounds for each type of color.
 	                	//it will be like trackclicks, but more than one color...
-	                	
-	                
+	                ImageManipulation.SetColorForMultiColor(Integer.parseInt(cblMultiColors.getItemAt(cblMultiColors.getSelectedIndex())), color);
+	        		
+
 	                }
             	 }
              }
@@ -349,10 +353,6 @@ public class Furi extends JFrame {
 		LoadImageIntoUI(imgWorking); //use resizedImage here
 	}
 
-
-
-
-
 	public static void AddExtraUI()
 	{
 		JLabel lblR = new JLabel("Red:");
@@ -385,15 +385,23 @@ public class Furi extends JFrame {
 		txtB.setLocation(640,55);
 		FramePicture.add(txtB);
 
+		lblColor = new JLabel("");
+		lblColor.setSize(30,20);
+		lblColor.setLocation(640, 85);
+		lblColor.setOpaque(true);
+		lblColor.setBackground(Color.lightGray);
+		FramePicture.add(lblColor);
+
+		
 		 txtThreshold = new JTextField("20");
 		 txtThreshold.setSize(40, 30);
-		 txtThreshold.setLocation(650,330);
+		 txtThreshold.setLocation(650,360);
 			FramePicture.add(txtThreshold);
 
 		JButton btnProcessImage = new JButton("Estimate Values");
 		btnProcessImage.setBounds(50,100,200,30);
 		//btnProcessImage.setBorder(BorderFactory.createLineBorder(Color.black));
-		btnProcessImage.setLocation(450,300);
+		btnProcessImage.setLocation(450,330);
 		btnProcessImage.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -419,7 +427,7 @@ public class Furi extends JFrame {
 
 		JButton btnMakeWhite = new JButton("Make white");
 		btnMakeWhite.setBounds(50,100,200,30);
-		btnMakeWhite.setLocation(450,330);
+		btnMakeWhite.setLocation(450,360);
 		btnMakeWhite.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -466,10 +474,9 @@ public class Furi extends JFrame {
 		});
 		FramePicture.add(btnReset);
 
-
 		JButton btnMakeWhiteUsingTrackedClicks = new JButton("Make white (Use Tracked Clicks)");
 		btnMakeWhiteUsingTrackedClicks.setBounds(50,100,250,30);
-		btnMakeWhiteUsingTrackedClicks.setLocation(450,355);
+		btnMakeWhiteUsingTrackedClicks.setLocation(450,390);
 		btnMakeWhiteUsingTrackedClicks.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -487,20 +494,19 @@ public class Furi extends JFrame {
 		});
 		FramePicture.add(btnMakeWhiteUsingTrackedClicks);
 		
-		lblOutput = new JTextArea();
-		lblOutput.setSize(275, 150);
-		lblOutput.setLocation(400,150);
+		lblOutput = new JTextArea("");
+		lblOutput.setSize(205, 150);
+		lblOutput.setLocation(450,150);
 		lblOutput.setLineWrap(true);
 		
 		sbrText = new JScrollPane(lblOutput);
 		sbrText.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		sbrText.setVisible(true);
-		sbrText.setLocation(400,300);
+		//sbrText.setVisible(true);
+		sbrText.setLocation(450,155);
 		
-		FramePicture.getContentPane().add(lblOutput);
-		FramePicture.getContentPane().add(sbrText);
-		
-		
+		//FramePicture.add(lblOutput);
+		//FramePicture.add(sbrText);
+		//FramePicture.setVisible(true);
 	}
 
 	public static void AddHRPandIFCRadios()
@@ -564,7 +570,7 @@ public class Furi extends JFrame {
 			});
 		
 		rdoMultiColor = new JRadioButton("Multi Colors");
-		rdoMultiColor.setBounds(25,20,100,30);
+		rdoMultiColor.setBounds(25,20,120,30);
 		rdoMultiColor.setLocation(450,95); // edit this placement 
 		FramePicture.getContentPane().add(rdoMultiColor);
 		rdoGroup.add(rdoMultiColor);
@@ -581,21 +587,45 @@ public class Furi extends JFrame {
 			});
 		
 		String[] choices = {"1","2","3","4","5"};
-	    final JComboBox<String> cblMultiColors = new JComboBox<String>(choices);
+	    cblMultiColors = new JComboBox<String>(choices);
 	    cblMultiColors.setBounds(25,20,75,30);
 	    cblMultiColors.setLocation(600,100); // edit this placement 
 	    FramePicture.getContentPane().add(cblMultiColors);
 	    cblMultiColors.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				OutPutThis("You are now working with Color #" + cblMultiColors.getItemAt(cblMultiColors.getSelectedIndex()));
+				
+				int colornumber = Integer.parseInt(cblMultiColors.getItemAt(cblMultiColors.getSelectedIndex()));
+				OutPutThis("You are now working with Color #" + colornumber);
+				
+				
+				int r,g,b;
+				if (ImageManipulation.rgbMulti.size()>=colornumber)
+				{
+					r = ImageManipulation.rgbMulti.get(colornumber).r;
+					g = ImageManipulation.rgbMulti.get(colornumber).g;
+					b = ImageManipulation.rgbMulti.get(colornumber).b;
+				}
+				else
+				{
+					r=255;
+					g=255;
+					b=255;
+				}
+				Color color = new Color(r,g,b);
+					
+               txtR.setText(String.valueOf(r));
+               txtG.setText(String.valueOf(g));
+	           txtB.setText(String.valueOf(b));
+               lblColor.setBackground(color);
+               
 				}
 			});
 		
 		
 		btnAuto = new JButton("Analyze Current Folder!"); 
 		btnAuto.setBounds(50,50,220,50);
-		btnAuto.setLocation(450, 420);
+		btnAuto.setLocation(450, 450);
 		FramePicture.getContentPane().add(btnAuto); 
 		btnAuto.setEnabled(false);
 	
@@ -609,14 +639,15 @@ public class Furi extends JFrame {
 	
 	public static void OutPutThis(String x)
 	{
-		lblOutput.setText(x + "\n" + lblOutput.getText());
+		//lblOutput.setText(x + "\n" + lblOutput.getText());
        	//user needs to allow for margin of 120. 
+		System.out.println(x);
 	}
 	
 	public static void AddTrackClicksCheckBox()
 	{
 		chkTrackClicks = new JCheckBox("Track Clicks!");
-		chkTrackClicks.setBounds(10,10,100,20);
+		chkTrackClicks.setBounds(10,10,120,20);
 		chkTrackClicks.setLocation(450,120);
 		FramePicture.getContentPane().add(chkTrackClicks);
 	}
@@ -669,11 +700,14 @@ public class Furi extends JFrame {
 	    txtR.setText("255");
 	    txtG.setText("255");
 	    txtB.setText("255");
+	    rdoGroup.clearSelection();
+	    lblOutput.setText("");
+
 	}
 	public static void CellCount(){
 		countCells = new JButton("Cell Count!");
 		countCells.setBounds(50,100,200,30);
-		countCells.setLocation(450,380);
+		countCells.setLocation(450,420);
 		FramePicture.getContentPane().add(countCells); 
 		// countCells.setEnabled(false);
 		countCells.addActionListener(new ActionListener() {
