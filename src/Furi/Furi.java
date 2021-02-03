@@ -38,7 +38,7 @@ public class Furi extends JFrame {
 	static JSlider s;
 	static JButton btnSave, btnSaveToLocation, btnForwardImg, btnBackImg, btnAuto;
 	static JTextField txtSaveTo, txtR, txtG, txtB,txtThreshold;
-	static JLabel lblSaveTo, imgLabel, lblFileNameTop,lbllblFileNameTop,lblHRPIFC;
+	static JLabel lblSaveTo, imgLabel, lblFileNameTop,lbllblFileNameTop,lblHRPIFC, lblColor;
 	static JTextArea lblOutput;
 	static JRadioButton rdoHRP, rdoIFC, rdoMultiColor;
 	static ButtonGroup rdoGroup;
@@ -49,6 +49,7 @@ public class Furi extends JFrame {
 
 	static JButton countCells;
 	static JRadioButton rdoBlueIFC;
+	static JComboBox<String> cblMultiColors;
 
 	
 
@@ -82,12 +83,14 @@ public class Furi extends JFrame {
              @Override
              public void mouseClicked(MouseEvent e) {
             	 if (resizedImage != null) {
+            		 //this just sets the RGD textboxes
 	            	 BufferedImage img = (BufferedImage)resizedImage;
 	                 int packedInt = img.getRGB(e.getX(), e.getY());
 	                 Color color = new Color(packedInt, true);
 	                txtR.setText(Integer.toString(color.getRed()));
 	                txtG.setText(Integer.toString(color.getGreen()));
 	                txtB.setText(Integer.toString(color.getBlue()));
+	                lblColor.setBackground(color);
 	                if(chkTrackClicks.isSelected())
 	                {
 	                		AddToClickRGBAverage(color.getRed(), color.getGreen(), color.getBlue());
@@ -98,8 +101,9 @@ public class Furi extends JFrame {
 	                	//when the user is doing multicolor, they get to tell us which index to apply the color too. 
 	                	//what we need to end up with is list of upper and lower bounds for each type of color.
 	                	//it will be like trackclicks, but more than one color...
-	                	
-	                
+	                ImageManipulation.SetColorForMultiColor(Integer.parseInt(cblMultiColors.getItemAt(cblMultiColors.getSelectedIndex())), color);
+	        		
+
 	                }
             	 }
              }
@@ -349,10 +353,6 @@ public class Furi extends JFrame {
 		LoadImageIntoUI(imgWorking); //use resizedImage here
 	}
 
-
-
-
-
 	public static void AddExtraUI()
 	{
 		JLabel lblR = new JLabel("Red:");
@@ -385,6 +385,14 @@ public class Furi extends JFrame {
 		txtB.setLocation(640,55);
 		FramePicture.add(txtB);
 
+		lblColor = new JLabel("");
+		lblColor.setSize(30,20);
+		lblColor.setLocation(640, 85);
+		lblColor.setOpaque(true);
+		lblColor.setBackground(Color.lightGray);
+		FramePicture.add(lblColor);
+
+		
 		 txtThreshold = new JTextField("20");
 		 txtThreshold.setSize(40, 30);
 		 txtThreshold.setLocation(650,360);
@@ -579,14 +587,38 @@ public class Furi extends JFrame {
 			});
 		
 		String[] choices = {"1","2","3","4","5"};
-	    final JComboBox<String> cblMultiColors = new JComboBox<String>(choices);
+	    cblMultiColors = new JComboBox<String>(choices);
 	    cblMultiColors.setBounds(25,20,75,30);
 	    cblMultiColors.setLocation(600,100); // edit this placement 
 	    FramePicture.getContentPane().add(cblMultiColors);
 	    cblMultiColors.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				OutPutThis("You are now working with Color #" + cblMultiColors.getItemAt(cblMultiColors.getSelectedIndex()));
+				
+				int colornumber = Integer.parseInt(cblMultiColors.getItemAt(cblMultiColors.getSelectedIndex()));
+				OutPutThis("You are now working with Color #" + colornumber);
+				
+				
+				int r,g,b;
+				if (ImageManipulation.rgbMulti.size()>=colornumber)
+				{
+					r = ImageManipulation.rgbMulti.get(colornumber).r;
+					g = ImageManipulation.rgbMulti.get(colornumber).g;
+					b = ImageManipulation.rgbMulti.get(colornumber).b;
+				}
+				else
+				{
+					r=255;
+					g=255;
+					b=255;
+				}
+				Color color = new Color(r,g,b);
+					
+               txtR.setText(String.valueOf(r));
+               txtG.setText(String.valueOf(g));
+	           txtB.setText(String.valueOf(b));
+               lblColor.setBackground(color);
+               
 				}
 			});
 		

@@ -19,7 +19,25 @@ import javax.imageio.ImageIO;
 public class ImageManipulation {
 	
 	static double dblTotalPixels,coloredpixels, stainedpixels;
-
+	static ArrayList<RedGreenBlue> rgbMulti = new ArrayList<RedGreenBlue>(); //this holds the RGB that the user selected for multi colors
+	static int mcPosition; 
+	
+	static void SetColorIndexForMultiColor(int i) {mcPosition = i;}
+	
+	static void SetColorForMultiColor(int i, Color c) {
+		mcPosition = i;
+		RedGreenBlue rgb = new RedGreenBlue();
+		rgb.r = c.getRed();
+		rgb.g = c.getGreen();
+		rgb.b = c.getBlue();
+		
+		if(rgbMulti.size()<i)
+		{
+			rgbMulti.add(i-1, rgb);
+		}
+		Furi.OutPutThis("Color index " + i + " : " + rgb.toString());
+	}
+	
 	
 	static BufferedImage FiletoBufferedImage(File in) 
 	{
@@ -31,6 +49,7 @@ public class ImageManipulation {
 			return null;
 		}
 	}
+	
 	static double getReduceBy(BufferedImage img)
 	{
 		  int w = img.getWidth();
