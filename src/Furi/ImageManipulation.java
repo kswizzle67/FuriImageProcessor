@@ -417,4 +417,124 @@ public class ImageManipulation {
 		Furi.OutPutThis("Counted:" + String.valueOf(counted));
 	}
 	
+	static BufferedImage MakeIgnoredPixelsWhiteCellCountMult(BufferedImage img, int th, int R, int G, int B, ArrayList<pixelData> DatatoSave)
+	{
+		cellgroupid = 0;
+		int w = img.getWidth();
+		int h = img.getHeight();
+		int r,g,b,pixel;
+		BufferedImage copy = ImageManipulation.deepCopyImage(img);
+		
+		
+	
+		
+		for(int y = 0; y < h; y++) {
+		    for(int x = 0; x < w; x++) {
+		    	 pixel = img.getRGB(x, y);
+		    	 r = (pixel >> 16) & 0xFF;
+		    	 g = (pixel >> 8) & 0xFF;
+		    	 b = (pixel) & 0xFF;
+		    	 dblTotalPixels++;
+		    	
+		    	 System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b);
+			    	
+		    	if (r==255&&g==255&&b==255)
+    			{
+		    		//it is already white. 
+		    		//It has already been counted and should only be in totalpixels
+    			}
+		    	else if ((r>R+th||r<R-th)||
+	    			(g>G+th||g<G-th)||
+		    		(b>B+th||b<B-th))
+		    	{
+		    		
+		    		coloredpixels++;
+			        
+		        }
+		    	else
+		    	{
+		    		
+		    		float hsb[] = Color.RGBtoHSB(r, g, b, null);
+		    		
+		    		RedGreenBlue pixeldata = new RedGreenBlue();
+		    		pixeldata.x = x;
+		    		pixeldata.y = y;
+		    		rgbMulti.add(pixeldata);
+		    		
+		    		coloredpixels++;
+		    		stainedpixels++;
+		    	    System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b + " H:" + hsb[0] + " s:" + hsb[1] + " b:" + hsb[2]);
+		    	}
+		    }// For x
+		}// For y
+		  
+		ArrayList<RedGreenBlue> GoodPixels = new ArrayList<RedGreenBlue>();
+		
+		for (RedGreenBlue pd : rgbMulti) 
+		{       
+			//here we need to look around the pixel we are on to see if it is "surrounded" by other greens
+			//we should be able to query the ArrayList, but for now let's create a method to do so.
+			//easy, but we can make it better.
+			CountPixelsThatAreCountedMult(rgbMulti);
+			if(!pd.counted)
+			{
+				ArrayList<RedGreenBlue> GroupedPixels = FindMultiPixelsNearby(pd, rgbMulti);
+				
+				if(GroupedPixels.size()>=8)
+				{ 	
+					cellgroupid++;
+					//add the pixel I am comparing. We know it is in a cell.
+					//Furi.OutPutThis("Adding:" + String.valueOf(pd.x) + ":" + String.valueOf(pd.y));
+					//GoodPixels.add(pd);	
+					pd.cellgroupid = cellgroupid;
+					pd.counted = true;
+					//turn it red
+					copy.setRGB(pd.x, pd.y, new Color(255,0,0).getRGB());
+					
+					for (RedGreenBlue pix : GroupedPixels) 
+					{ 	
+						int i = rgbMulti.indexOf(pix);
+						rgbMulti.get(i).counted = true;
+						rgbMulti.get(i).cellgroupid = cellgroupid;
+						Furi.OutPutThis(String.valueOf(cellgroupid));
+						Furi.OutPutThis("Adding:" + String.valueOf(pix.x) + ":" + String.valueOf(pix.y));
+						GoodPixels.add(pix);	
+						copy.setRGB(pix.x, pix.y, new Color(255,0,0).getRGB());
+					}
+				}
+			}
+	    }
+		Furi.OutPutThis("Good Pixels:" + String.valueOf(GoodPixels.size()));
+		return copy;
+	}
+	private static ArrayList<RedGreenBlue> FindMultiPixelsNearby(RedGreenBlue pd, ArrayList<RedGreenBlue> rgbMulti) {
+		int surroundingpixels = 0;
+		
+		ArrayList<RedGreenBlue> GroupedPixels = new ArrayList<RedGreenBlue>();
+		
+		for (RedGreenBlue pix : rgbMulti) 
+		{       	
+			if(!pix.counted && ((pix.x < pd.x +2 && pix.x > pd.x -2) &&
+					(pix.y < pd.y +2 && pix.y > pd.y -2)))
+			{
+				GroupedPixels.add(pix);	
+			}
+	    }
+		
+		return GroupedPixels;
+	}
+
+	private static void CountPixelsThatAreCountedMult(ArrayList<RedGreenBlue> rgbMulti)
+	{
+		int counted = 0;
+		for (RedGreenBlue pd : rgbMulti) 
+		{
+			if(pd.counted)
+			{
+				counted++;
+			}
+		}
+		Furi.OutPutThis("Counted:" + String.valueOf(counted));
+	}
+	
 }

@@ -50,6 +50,7 @@ public class Furi extends JFrame {
 	static JButton countCells;
 	static JRadioButton rdoBlueIFC;
 	static JComboBox<String> cblMultiColors;
+	static JButton countCellsMult;
 
 	
 
@@ -132,6 +133,7 @@ public class Furi extends JFrame {
 		//AddSlider();
 		AddtxtSaveTo();
 		AddForwardandBackButtons();
+		CellCountMult();
 
 		//JAS
 		AddExtraUI();
@@ -731,4 +733,31 @@ public class Furi extends JFrame {
 			}
 		});
 	}
+	public static void CellCountMult(){
+		countCellsMult = new JButton("Cell Count - Multi!");
+		countCellsMult.setBounds(50,100,150,30);
+		countCellsMult.setLocation(450,270);
+		FramePicture.getContentPane().add(countCellsMult); 
+		// countCells.setEnabled(false);
+		countCellsMult.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(imgSource != null)
+				{
+					try {
+						imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhiteCellCountMult(imgSource,
+									Integer.parseInt(txtThreshold.getText()),
+									Integer.parseInt(txtR.getText()),
+									Integer.parseInt(txtG.getText()),
+									Integer.parseInt(txtB.getText()), DatatoSave));
+						LoadImageIntoUI(imgWorking); //use resizedImage here
+	
+					} catch (IOException z) {
+						// TODO Auto-generated catch block
+						z.printStackTrace();
+					} //use resizedImage here
+				}
+			}
+		});
+}
 }
