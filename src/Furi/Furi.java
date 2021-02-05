@@ -307,7 +307,7 @@ public class Furi extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 					//fileManipulation.SaveFile(txtSaveTo.getText(), arrFiles.get(intCurrentFile));
-					exportData.exporttocsvfile(txtSaveTo.getText(), DatatoSave);
+					exportData.exporttocsvfile(txtSaveTo.getText(), DatatoSave, null, null);
 			}
 		});
 		FramePicture.add(btnSave);

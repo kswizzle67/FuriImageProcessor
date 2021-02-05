@@ -15,12 +15,12 @@ public class exportData {
 
 	}
 	
-	public static void exporttocsvfile(String csvfile, ArrayList<pixelData> DtoS) {
+	public static void exporttocsvfile(String csvfile, ArrayList<pixelData> DtoS, ArrayList<pixelData> GoodPix, ArrayList<RedGreenBlue> GoodMultPixels) {
 		
 		String comma = ","; 
 		String separator = "\n"; 
 		
-		String header = "FileName, FolderName, TotalPixels, ColoredPixels, StainedPixels, Signal (Stained/Colored)";
+		String header = "FileName, FolderName, TotalPixels, ColoredPixels, StainedPixels, Signal (Stained/Colored), Cell Count (Single Stain), Cell Count (Multi Stain)";
 		
 		FileWriter fileWriter = null; 
 			try {
@@ -41,6 +41,10 @@ public class exportData {
 				fileWriter.append(Double.toString(pd.stainedpixels));
 				fileWriter.append(comma);
 				fileWriter.append(Double.toString(pd.signal));
+				fileWriter.append(separator);
+				fileWriter.append(Boolean.toString(pixelData.counted));
+				fileWriter.append(separator);
+				fileWriter.append(Boolean.toString(RedGreenBlue.counted));
 				fileWriter.append(separator);
 			}
 			fileWriter.close();
