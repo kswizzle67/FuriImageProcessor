@@ -35,6 +35,7 @@ public class ImageManipulation {
 		{
 			rgbMulti.add(i-1, rgb);
 		}
+		
 		Furi.OutPutThis("Color index " + i + " : " + rgb.toString());
 	}
 	
@@ -288,6 +289,7 @@ public class ImageManipulation {
 				MakeIgnoredPixelsWhiteUsingRange(FiletoBufferedImage(fyl), rgb, DatatoSave, fyl);
 			}
 	}
+	
 	static int cellgroupid = 0;
 	//this is for the green cells
 	static BufferedImage MakeIgnoredPixelsWhiteCellCount(BufferedImage img, int th, int R, int G, int B, ArrayList<pixelData> DatatoSave)
@@ -391,6 +393,7 @@ public class ImageManipulation {
 		Furi.OutPutThis("Good Pixels:" + String.valueOf(GoodPixels.size()));
 		return copy;
 	}
+	
 	private static ArrayList<pixelData> FindGreenPixelsNearby(pixelData pd, ArrayList<pixelData> GreenPixels) {
 		int surroundingpixels = 0;
 		
@@ -421,7 +424,8 @@ public class ImageManipulation {
 		Furi.OutPutThis("Counted:" + String.valueOf(counted));
 	}
 	
-	static BufferedImage MakeIgnoredPixelsWhiteCellCountMulti(BufferedImage img, int th, int R, int G, int B, ArrayList<pixelData> DatatoSave)
+	static BufferedImage MakeIgnoredPixelsWhiteCellCountMulti(BufferedImage img, int th, int R, int G, int B, 
+			ArrayList<pixelData> DatatoSave, ArrayList<Integer> MultiColors)
 	{
 		cellgroupid = 0;
 		int w = img.getWidth();
@@ -454,7 +458,6 @@ public class ImageManipulation {
 		        }
 		    	else
 		    	{
-		    		
 		    		float hsb[] = Color.RGBtoHSB(r, g, b, null);
 		    		
 		    		RedGreenBlue pixeldata = new RedGreenBlue();
