@@ -439,7 +439,7 @@ public class Furi extends JFrame {
 								Integer.parseInt(txtThreshold.getText()),
 								Integer.parseInt(txtR.getText()),
 								Integer.parseInt(txtG.getText()),
-								Integer.parseInt(txtB.getText()), DatatoSave));
+								Integer.parseInt(txtB.getText()), DatatoSave,null) );
 					LoadImageIntoUI(imgWorking); //use resizedImage here
 
 				} catch (IOException e) {
@@ -485,7 +485,7 @@ public class Furi extends JFrame {
 				//ProcessImage(imgSource);
 				try {
 					imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhiteUsingRange(
-							imgSource, rgb, DatatoSave));
+							imgSource, rgb, DatatoSave, null));
 					LoadImageIntoUI(imgWorking); //use resizedImage here
 
 				} catch (IOException e) {
@@ -744,7 +744,7 @@ public class Furi extends JFrame {
 				if(imgSource != null)
 				{
 					try {
-						imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhiteCellCountMult(imgSource,
+						imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhiteCellCountMulti(imgSource,
 									Integer.parseInt(txtThreshold.getText()),
 									Integer.parseInt(txtR.getText()),
 									Integer.parseInt(txtG.getText()),

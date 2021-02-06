@@ -421,7 +421,7 @@ public class ImageManipulation {
 		Furi.OutPutThis("Counted:" + String.valueOf(counted));
 	}
 	
-	static BufferedImage MakeIgnoredPixelsWhiteCellCountMult(BufferedImage img, int th, int R, int G, int B, ArrayList<pixelData> DatatoSave)
+	static BufferedImage MakeIgnoredPixelsWhiteCellCountMulti(BufferedImage img, int th, int R, int G, int B, ArrayList<pixelData> DatatoSave)
 	{
 		cellgroupid = 0;
 		int w = img.getWidth();
