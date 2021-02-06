@@ -624,7 +624,6 @@ public class Furi extends JFrame {
 				}
 			});
 		
-		
 		btnAuto = new JButton("Analyze Current Folder!"); 
 		btnAuto.setBounds(50,50,220,50);
 		btnAuto.setLocation(450, 450);

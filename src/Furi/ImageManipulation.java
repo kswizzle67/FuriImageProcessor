@@ -87,7 +87,7 @@ public class ImageManipulation {
 		 return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
 		}
 
-	static BufferedImage MakeIgnoredPixelsWhiteUsingRange(BufferedImage img, int[][] rgb, ArrayList<pixelData> DatatoSave)
+	static BufferedImage MakeIgnoredPixelsWhiteUsingRange(BufferedImage img, int[][] rgb, ArrayList<pixelData> DatatoSave, File fyl)
 	{
 		BufferedImage copy = new BufferedImage(1, 1, 1);
 		if(img != null)
@@ -141,14 +141,19 @@ public class ImageManipulation {
 		  pix.signal = stainedpixels/dblTotalPixels;
 		  //we should really have the current file without going back to the
 		  //furi class
-		  File fyl = Furi.arrFiles.get(Furi.intCurrentFile);
-		  pix.filename = fyl.getName();
-		  pix.foldername = fyl.getParent();
-		  DatatoSave.add(pix);
+		  //I think this is the problem... I am not sure we move CurrentFile...
+		  if(fyl != null)
+		  {
+			  pix.filename = fyl.getName();
+			  pix.foldername = fyl.getParent();
+		  }
+		DatatoSave.add(pix);
 		}
 		return copy;
 	}
-	static BufferedImage MakeIgnoredPixelsWhite(BufferedImage img, int th, int R, int G, int B, ArrayList<pixelData> DatatoSave)
+	
+	
+	static BufferedImage MakeIgnoredPixelsWhite(BufferedImage img, int th, int R, int G, int B, ArrayList<pixelData> DatatoSave, File fyl)
 	{
 
 		BufferedImage copy = new BufferedImage(1, 1, 1);
@@ -192,9 +197,11 @@ public class ImageManipulation {
 		  pixelData pix = new pixelData();
 		  //we should really have the current file without going back to the
 		  //furi class
-		  File fyl = Furi.arrFiles.get(Furi.intCurrentFile);
-		  pix.filename = fyl.getName();
-		  pix.foldername = fyl.getParent();
+		  if(fyl != null)
+		  {
+			  pix.filename = fyl.getName();
+			  pix.foldername = fyl.getParent();
+		  }
 		  pix.dblTotalPixels = dblTotalPixels;
 		  pix.coloredpixels = coloredpixels;
 		  pix.stainedpixels = stainedpixels;
@@ -277,11 +284,8 @@ public class ImageManipulation {
 	}
 	static void automatefolder(ArrayList<File> arrFiles, int[][] rgb, int th, ArrayList<pixelData> DatatoSave) 
 	{
-		
 			for(File fyl : arrFiles) {
-				
-			MakeIgnoredPixelsWhiteUsingRange(FiletoBufferedImage(fyl), rgb, DatatoSave);
-			
+				MakeIgnoredPixelsWhiteUsingRange(FiletoBufferedImage(fyl), rgb, DatatoSave, fyl);
 			}
 	}
 	static int cellgroupid = 0;
@@ -425,9 +429,6 @@ public class ImageManipulation {
 		int r,g,b,pixel;
 		BufferedImage copy = ImageManipulation.deepCopyImage(img);
 		
-		
-	
-		
 		for(int y = 0; y < h; y++) {
 		    for(int x = 0; x < w; x++) {
 		    	 pixel = img.getRGB(x, y);
@@ -475,7 +476,7 @@ public class ImageManipulation {
 			//here we need to look around the pixel we are on to see if it is "surrounded" by other greens
 			//we should be able to query the ArrayList, but for now let's create a method to do so.
 			//easy, but we can make it better.
-			CountPixelsThatAreCountedMult(rgbMulti);
+			CountPixelsThatAreCountedMulti(rgbMulti);
 			if(!pd.counted)
 			{
 				ArrayList<RedGreenBlue> GroupedPixels = FindMultiPixelsNearby(pd, rgbMulti);
@@ -524,7 +525,7 @@ public class ImageManipulation {
 		return GroupedPixels;
 	}
 
-	private static void CountPixelsThatAreCountedMult(ArrayList<RedGreenBlue> rgbMulti)
+	private static void CountPixelsThatAreCountedMulti(ArrayList<RedGreenBlue> rgbMulti)
 	{
 		int counted = 0;
 		for (RedGreenBlue pd : rgbMulti) 
