@@ -457,9 +457,6 @@ public class Furi extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 					ResetVariables(false); //not everything
-					//but we do need to reload the image.
-					//if there is a current image... leave it. 
-					//intCurrentFile = 0;
 					if(!arrFiles.isEmpty()) {
 						ChangeImageLabel(arrFiles.get(intCurrentFile).getName());
 						txtSaveTo.setText(arrFiles.get(intCurrentFile).getPath().substring(0, arrFiles.get(intCurrentFile).getPath().lastIndexOf("/")+1) + "output.csv");

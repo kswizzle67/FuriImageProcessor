@@ -22,23 +22,18 @@ public class ImageManipulation {
 	static ArrayList<RedGreenBlue> rgbMulti = new ArrayList<RedGreenBlue>(); //this holds the RGB that the user selected for multi colors
 	static int mcPosition; 
 	
-	static void SetColorIndexForMultiColor(int i) {mcPosition = i;}
-	
 	static void SetColorForMultiColor(int i, Color c) {
 		mcPosition = i;
 		RedGreenBlue rgb = new RedGreenBlue();
 		rgb.r = c.getRed();
 		rgb.g = c.getGreen();
 		rgb.b = c.getBlue();
-		
 		if(rgbMulti.size()<i)
 		{
 			rgbMulti.add(i-1, rgb);
-		}
-		
+		}	
 		Furi.OutPutThis("Color index " + i + " : " + rgb.toString());
 	}
-	
 	
 	static BufferedImage FiletoBufferedImage(File in) 
 	{
@@ -53,19 +48,19 @@ public class ImageManipulation {
 	
 	static double getReduceBy(BufferedImage img)
 	{
-		  int w = img.getWidth();
-		    int h = img.getHeight();
-		    double reduceby = 1;
-		    if(w>300||h<300)//see if the image is already small.
+	  	int w = img.getWidth();
+	    int h = img.getHeight();
+	    double reduceby = 1;
+	    if(w>300||h<300)//see if the image is already small.
+	    {
+		    if(w>h)
 		    {
-			    if(w>h)
-			    {
-			    	reduceby = (double)w/(double)300;
-			    }
-			    else
-			    {
-			    	reduceby = (double)h/(double)300;			    }
+		    	reduceby = (double)w/(double)300;
 		    }
+		    else
+		    {
+		    	reduceby = (double)h/(double)300;			    }
+	    	}
 		    return reduceby;
 	}
 	
@@ -153,10 +148,8 @@ public class ImageManipulation {
 		return copy;
 	}
 	
-	
 	static BufferedImage MakeIgnoredPixelsWhite(BufferedImage img, int th, int R, int G, int B, ArrayList<pixelData> DatatoSave, File fyl)
 	{
-
 		BufferedImage copy = new BufferedImage(1, 1, 1);
 		if(img != null)
 		{	
@@ -432,45 +425,6 @@ public class ImageManipulation {
 		int h = img.getHeight();
 		int r,g,b,pixel;
 		BufferedImage copy = ImageManipulation.deepCopyImage(img);
-		
-		for(int y = 0; y < h; y++) {
-		    for(int x = 0; x < w; x++) {
-		    	 pixel = img.getRGB(x, y);
-		    	 r = (pixel >> 16) & 0xFF;
-		    	 g = (pixel >> 8) & 0xFF;
-		    	 b = (pixel) & 0xFF;
-		    	 dblTotalPixels++;
-		    	
-		    	 System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b);
-			    	
-		    	if (r==255&&g==255&&b==255)
-    			{
-		    		//it is already white. 
-		    		//It has already been counted and should only be in totalpixels
-    			}
-		    	else if ((r>R+th||r<R-th)||
-	    			(g>G+th||g<G-th)||
-		    		(b>B+th||b<B-th))
-		    	{
-		    		
-		    		coloredpixels++;
-			        
-		        }
-		    	else
-		    	{
-		    		float hsb[] = Color.RGBtoHSB(r, g, b, null);
-		    		
-		    		RedGreenBlue pixeldata = new RedGreenBlue();
-		    		pixeldata.x = x;
-		    		pixeldata.y = y;
-		    		rgbMulti.add(pixeldata);
-		    		
-		    		coloredpixels++;
-		    		stainedpixels++;
-		    	    System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b + " H:" + hsb[0] + " s:" + hsb[1] + " b:" + hsb[2]);
-		    	}
-		    }// For x
-		}// For y
 		  
 		ArrayList<RedGreenBlue> GoodPixels = new ArrayList<RedGreenBlue>();
 		
@@ -480,8 +434,7 @@ public class ImageManipulation {
 			//we should be able to query the ArrayList, but for now let's create a method to do so.
 			//easy, but we can make it better.
 			CountPixelsThatAreCountedMulti(rgbMulti);
-			if(!pd.counted)
-			{
+			
 				ArrayList<RedGreenBlue> GroupedPixels = FindMultiPixelsNearby(pd, rgbMulti);
 				
 				if(GroupedPixels.size()>=8)
@@ -524,7 +477,6 @@ public class ImageManipulation {
 				GroupedPixels.add(pix);	
 			}
 	    }
-		
 		return GroupedPixels;
 	}
 
