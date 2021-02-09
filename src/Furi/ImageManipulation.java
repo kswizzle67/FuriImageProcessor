@@ -234,6 +234,7 @@ public class ImageManipulation {
         System.out.println("End! change:" + satchange);
 		return copy;
 	}
+	
 	static String[] ProcessImage(BufferedImage img)
 	{
 		int r,g,b,pixel,sumR, sumG, sumB,count;
@@ -295,12 +296,6 @@ public class ImageManipulation {
 		
 		ArrayList<pixelData> GreenPixels = new ArrayList<pixelData>();
 		
-		//int[] yarr = {h};
-		//System.out.println(yarr);
-		//int[] xarr = {w};
-		//System.out.println(xarr);
-		//make x y arrays
-		
 		for(int y = 0; y < h; y++) {
 		    for(int x = 0; x < w; x++) {
 		    	 pixel = img.getRGB(x, y);
@@ -321,20 +316,10 @@ public class ImageManipulation {
 	    			(g>G+th||g<G-th)||
 		    		(b>B+th||b<B-th))
 		    	{
-		    		//assign the x y coord to array (2D array)
-		    		//int[][] arrxy = new int[x][y];
-		    		//this is a colored pixel, but it isn't a green one.
-		    		//we really may not need to capture this, but it was already there so we kept it.
 		    		coloredpixels++;
-			        //copy.setRGB(x, y, new Color(255,255,255).getRGB());
 		        }
 		    	else
 		    	{
-		    		//this is a green pixel. 
-		    		//it doesn't mean it is a "cell" it means it is a single pixel
-		    		float hsb[] = Color.RGBtoHSB(r, g, b, null);
-		    		//create a pixelData object to store the green cell location.
-		    		//TODO: anything else here?
 		    		pixelData pixeldata = new pixelData();
 		    		pixeldata.x = x;
 		    		pixeldata.y = y;
@@ -342,7 +327,7 @@ public class ImageManipulation {
 		    		
 		    		coloredpixels++;
 		    		stainedpixels++;
-		    	    System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b + " H:" + hsb[0] + " s:" + hsb[1] + " b:" + hsb[2]);
+		    	    System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b);
 		    	}
 		    }// For x
 		}// For y
@@ -417,17 +402,60 @@ public class ImageManipulation {
 		Furi.OutPutThis("Counted:" + String.valueOf(counted));
 	}
 	
-	static BufferedImage MakeIgnoredPixelsWhiteCellCountMulti(BufferedImage img, int th, int R, int G, int B, 
-			ArrayList<pixelData> DatatoSave, ArrayList<Integer> MultiColors)
+	static BufferedImage MakeIgnoredPixelsWhiteCellCountMulti(BufferedImage img, int th, ArrayList<pixelData> DatatoSave)
 	{
 		cellgroupid = 0;
 		int w = img.getWidth();
 		int h = img.getHeight();
 		int r,g,b,pixel;
 		BufferedImage copy = ImageManipulation.deepCopyImage(img);
-		  
+		coloredpixels = 0;
+		stainedpixels = 0;
 		ArrayList<RedGreenBlue> GoodPixels = new ArrayList<RedGreenBlue>();
+		for(int y = 0; y < h; y++) {
+		    for(int x = 0; x < w; x++) {
+		    	 pixel = img.getRGB(x, y);
+		    	 r = (pixel >> 16) & 0xFF;
+		    	 g = (pixel >> 8) & 0xFF;
+		    	 b = (pixel) & 0xFF;
+		    	 dblTotalPixels++;
+		    	// int[] arrx = {x};
+		    	// int[] arry = {y};
+		    	 System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b);
+		    	 boolean thisisagoodpixel = false;	
+		    	for (RedGreenBlue rgb: rgbMulti)
+		    	{
+		    		//21,2,27
+		    		
+		    		//r:19 g:2 b:68, r:78 g:34 b:174]
+		    		//th = 5
+		    		//now I can loop through this array and see if the pixel fits...
+		    		if ((r<rgb.r+th&&r>rgb.r-th)&&
+			    		(g<rgb.g+th&&g>rgb.g-th)&&
+				    	(b<rgb.b+th&&b>rgb.b-th))
+		    		{
+		    			thisisagoodpixel = true;
+			    		pixelData pixeldata = new pixelData();
+			    		pixeldata.x = x;
+			    		pixeldata.y = y;
+			    		//GreenPixels.add(pixeldata);
+			    		
+			    		coloredpixels++;
+			    		stainedpixels++;
+			    	    System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b + "Good");
+			    	    System.out.println("Colored count:" + coloredpixels + ", Stained Count:" + stainedpixels);
+		    		}
+		    	}
+		    	//still need this to turn the pixel white if it isn't found in the above loop
+		    	if(thisisagoodpixel == false)
+		    	{
+		    		 copy.setRGB(x, y, new Color(255,255,255).getRGB());
+		    	}
+		    }// For x
+		}// For y
+		/*
 		
+		//rgbMulti shouldn't be used here
 		for (RedGreenBlue pd : rgbMulti) 
 		{       
 			//here we need to look around the pixel we are on to see if it is "surrounded" by other greens
@@ -460,8 +488,9 @@ public class ImageManipulation {
 					}
 				}
 			}
-	    }
+	    
 		Furi.OutPutThis("Good Pixels:" + String.valueOf(GoodPixels.size()));
+		*/
 		return copy;
 	}
 	private static ArrayList<RedGreenBlue> FindMultiPixelsNearby(RedGreenBlue pd, ArrayList<RedGreenBlue> rgbMulti) {

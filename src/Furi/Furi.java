@@ -206,11 +206,6 @@ public class Furi extends JFrame {
 		    imgLabel.setIcon(icon);
 	}
 
-
-
-
-
-
 	public static void AddForwardandBackButtons()
 	{
 		btnForwardImg  = new JButton(">>");
@@ -750,9 +745,7 @@ public class Furi extends JFrame {
 					try {
 						imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhiteCellCountMulti(imgSource,
 									Integer.parseInt(txtThreshold.getText()),
-									Integer.parseInt(txtR.getText()),
-									Integer.parseInt(txtG.getText()),
-									Integer.parseInt(txtB.getText()), DatatoSave, MultiColors));
+									 DatatoSave));
 						LoadImageIntoUI(imgWorking); //use resizedImage here
 	
 					} catch (IOException z) {
