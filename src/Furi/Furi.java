@@ -25,6 +25,7 @@ public class Furi extends JFrame {
 	static ArrayList<File> arrFiles = new ArrayList<File>();
 	static ArrayList<Integer> MultiColors = new ArrayList<Integer>();
 	
+	
 	static int intCurrentFile = 0;
 	static BufferedImage imgSource, imgWorking;
 	static Image resizedImage;
