@@ -85,7 +85,7 @@ public class Furi extends JFrame {
              @Override
              public void mouseClicked(MouseEvent e) {
             	 if (resizedImage != null) {
-            		 //this just sets the RGD textboxes
+            		 //this just sets the RGB textboxes
 	            	 BufferedImage img = (BufferedImage)resizedImage;
 	                 int packedInt = img.getRGB(e.getX(), e.getY());
 	                 Color color = new Color(packedInt, true);
@@ -134,7 +134,7 @@ public class Furi extends JFrame {
 		//AddSlider();
 		AddtxtSaveTo();
 		AddForwardandBackButtons();
-		CellCountMult();
+		CellCountMulti();
 
 		//JAS
 		AddExtraUI();
@@ -206,11 +206,6 @@ public class Furi extends JFrame {
 	        imgLabel.setSize(icon.getIconWidth(), icon.getIconHeight());
 		    imgLabel.setIcon(icon);
 	}
-
-
-
-
-
 
 	public static void AddForwardandBackButtons()
 	{
@@ -440,7 +435,7 @@ public class Furi extends JFrame {
 								Integer.parseInt(txtThreshold.getText()),
 								Integer.parseInt(txtR.getText()),
 								Integer.parseInt(txtG.getText()),
-								Integer.parseInt(txtB.getText()), DatatoSave));
+								Integer.parseInt(txtB.getText()), DatatoSave,null) );
 					LoadImageIntoUI(imgWorking); //use resizedImage here
 
 				} catch (IOException e) {
@@ -458,9 +453,6 @@ public class Furi extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 					ResetVariables(false); //not everything
-					//but we do need to reload the image.
-					//if there is a current image... leave it. 
-					//intCurrentFile = 0;
 					if(!arrFiles.isEmpty()) {
 						ChangeImageLabel(arrFiles.get(intCurrentFile).getName());
 						txtSaveTo.setText(arrFiles.get(intCurrentFile).getPath().substring(0, arrFiles.get(intCurrentFile).getPath().lastIndexOf("/")+1) + "output.csv");
@@ -486,7 +478,7 @@ public class Furi extends JFrame {
 				//ProcessImage(imgSource);
 				try {
 					imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhiteUsingRange(
-							imgSource, rgb, DatatoSave));
+							imgSource, rgb, DatatoSave, null));
 					LoadImageIntoUI(imgWorking); //use resizedImage here
 
 				} catch (IOException e) {
@@ -625,7 +617,6 @@ public class Furi extends JFrame {
 				}
 			});
 		
-		
 		btnAuto = new JButton("Analyze Current Folder!"); 
 		btnAuto.setBounds(50,50,220,50);
 		btnAuto.setLocation(450, 450);
@@ -734,23 +725,28 @@ public class Furi extends JFrame {
 			}
 		});
 	}
-	public static void CellCountMult(){
+	
+	
+	public static void CellCountMulti(){
 		countCellsMult = new JButton("Cell Count - Multi!");
 		countCellsMult.setBounds(50,100,150,30);
 		countCellsMult.setLocation(450,270);
 		FramePicture.getContentPane().add(countCellsMult); 
-		// countCells.setEnabled(false);
+
+
+		//at this point the user should have chosen an image or multiple images.
+		//The would have picked one more more RGB values
+		//so that arraylist exists.
+		//then we want to use those values to process the image.
 		countCellsMult.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(imgSource != null)
 				{
 					try {
-						imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhiteCellCountMult(imgSource,
+						imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhiteCellCountMulti(imgSource,
 									Integer.parseInt(txtThreshold.getText()),
-									Integer.parseInt(txtR.getText()),
-									Integer.parseInt(txtG.getText()),
-									Integer.parseInt(txtB.getText()), DatatoSave));
+									 DatatoSave));
 						LoadImageIntoUI(imgWorking); //use resizedImage here
 	
 					} catch (IOException z) {
