@@ -447,52 +447,16 @@ public class ImageManipulation {
 		    		}
 		    	}
 		    	//still need this to turn the pixel white if it isn't found in the above loop
-		    	if(thisisagoodpixel == false)
+		    	if(thisisagoodpixel == true)
 		    	{
 		    		 copy.setRGB(x, y, new Color(255,255,255).getRGB());
 		    	}
 		    }// For x
 		}// For y
-		/*
 		
-		//rgbMulti shouldn't be used here
-		for (RedGreenBlue pd : rgbMulti) 
-		{       
-			//here we need to look around the pixel we are on to see if it is "surrounded" by other greens
-			//we should be able to query the ArrayList, but for now let's create a method to do so.
-			//easy, but we can make it better.
-			CountPixelsThatAreCountedMulti(rgbMulti);
-			
-				ArrayList<RedGreenBlue> GroupedPixels = FindMultiPixelsNearby(pd, rgbMulti);
-				
-				if(GroupedPixels.size()>=8)
-				{ 	
-					cellgroupid++;
-					//add the pixel I am comparing. We know it is in a cell.
-					//Furi.OutPutThis("Adding:" + String.valueOf(pd.x) + ":" + String.valueOf(pd.y));
-					//GoodPixels.add(pd);	
-					pd.cellgroupid = cellgroupid;
-					pd.counted = true;
-					//turn it red
-					copy.setRGB(pd.x, pd.y, new Color(255,0,0).getRGB());
-					
-					for (RedGreenBlue pix : GroupedPixels) 
-					{ 	
-						int i = rgbMulti.indexOf(pix);
-						rgbMulti.get(i).counted = true;
-						rgbMulti.get(i).cellgroupid = cellgroupid;
-						Furi.OutPutThis(String.valueOf(cellgroupid));
-						Furi.OutPutThis("Adding:" + String.valueOf(pix.x) + ":" + String.valueOf(pix.y));
-						GoodPixels.add(pix);	
-						copy.setRGB(pix.x, pix.y, new Color(255,0,0).getRGB());
-					}
-				}
-			}
-	    
-		Furi.OutPutThis("Good Pixels:" + String.valueOf(GoodPixels.size()));
-		*/
 		return copy;
 	}
+	
 	private static ArrayList<RedGreenBlue> FindMultiPixelsNearby(RedGreenBlue pd, ArrayList<RedGreenBlue> rgbMulti) {
 		int surroundingpixels = 0;
 		
