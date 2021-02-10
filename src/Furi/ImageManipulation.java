@@ -31,6 +31,13 @@ public class ImageManipulation {
 		if(rgbMulti.size()<i)
 		{
 			rgbMulti.add(i-1, rgb);
+		}
+		else
+		{
+			rgbMulti.get(i-1).r =  rgb.r;
+			rgbMulti.get(i-1).g =  rgb.g;
+			rgbMulti.get(i-1).b =  rgb.b;
+			
 		}	
 		Furi.OutPutThis("Color index " + i + " : " + rgb.toString());
 	}
@@ -404,14 +411,14 @@ public class ImageManipulation {
 	
 	static BufferedImage MakeIgnoredPixelsWhiteCellCountMulti(BufferedImage img, int th, ArrayList<pixelData> DatatoSave)
 	{
-		cellgroupid = 0;
 		int w = img.getWidth();
 		int h = img.getHeight();
 		int r,g,b,pixel;
 		BufferedImage copy = ImageManipulation.deepCopyImage(img);
 		coloredpixels = 0;
 		stainedpixels = 0;
-		ArrayList<RedGreenBlue> GoodPixels = new ArrayList<RedGreenBlue>();
+		ArrayList<pixelData> GoodPixels = new ArrayList<pixelData>();
+		
 		for(int y = 0; y < h; y++) {
 		    for(int x = 0; x < w; x++) {
 		    	 pixel = img.getRGB(x, y);
@@ -419,10 +426,9 @@ public class ImageManipulation {
 		    	 g = (pixel >> 8) & 0xFF;
 		    	 b = (pixel) & 0xFF;
 		    	 dblTotalPixels++;
-		    	// int[] arrx = {x};
-		    	// int[] arry = {y};
-		    	 System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b);
-		    	 boolean thisisagoodpixel = false;	
+		    
+		    	System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b);
+		    	boolean thisisagoodpixel = false;	
 		    	for (RedGreenBlue rgb: rgbMulti)
 		    	{
 		    		if (thisisagoodpixel == false)
@@ -435,7 +441,7 @@ public class ImageManipulation {
 				    		pixelData pixeldata = new pixelData();
 				    		pixeldata.x = x;
 				    		pixeldata.y = y;
-				    		//GreenPixels.add(pixeldata);
+				    		GoodPixels.add(pixeldata);
 				    		
 				    		coloredpixels++;
 				    		stainedpixels++;
@@ -448,6 +454,7 @@ public class ImageManipulation {
 		    	if(thisisagoodpixel == false)
 		    	{
 		    		 copy.setRGB(x, y, new Color(255,255,255).getRGB());
+		    		 
 		    	}
 		    }// For x
 		}// For y
@@ -455,12 +462,12 @@ public class ImageManipulation {
 		return copy;
 	}
 	
-	private static ArrayList<RedGreenBlue> FindMultiPixelsNearby(RedGreenBlue pd, ArrayList<RedGreenBlue> rgbMulti) {
-		int surroundingpixels = 0;
+	private static ArrayList<pixelData> FindMultiPixelsNearby(RedGreenBlue pd, ArrayList<pixelData> pix) {
+int surroundingpixels = 0;
 		
-		ArrayList<RedGreenBlue> GroupedPixels = new ArrayList<RedGreenBlue>();
-		
-		for (RedGreenBlue pix : rgbMulti) 
+		ArrayList<pixelData> GroupedPixels = new ArrayList<pixelData>();
+		/*
+		for (pixelData pix : GreenPixels) 
 		{       	
 			if(!pix.counted && ((pix.x < pd.x +2 && pix.x > pd.x -2) &&
 					(pix.y < pd.y +2 && pix.y > pd.y -2)))
@@ -468,20 +475,11 @@ public class ImageManipulation {
 				GroupedPixels.add(pix);	
 			}
 	    }
+		*/
 		return GroupedPixels;
+		
 	}
 
-	private static void CountPixelsThatAreCountedMulti(ArrayList<RedGreenBlue> rgbMulti)
-	{
-		int counted = 0;
-		for (RedGreenBlue pd : rgbMulti) 
-		{
-			if(pd.counted)
-			{
-				counted++;
-			}
-		}
-		Furi.OutPutThis("Counted:" + String.valueOf(counted));
-	}
+	
 	
 }

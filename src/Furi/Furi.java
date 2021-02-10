@@ -97,6 +97,7 @@ public class Furi extends JFrame {
 	                {
 	                		AddToClickRGBAverage(color.getRed(), color.getGreen(), color.getBlue());
 	                }
+	                
 	                if(rdoMultiColor.isSelected())
 	                {
 	                	//here is where we will track which pixels go into which index of the array
