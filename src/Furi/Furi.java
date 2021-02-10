@@ -592,13 +592,12 @@ public class Furi extends JFrame {
 				int colornumber = Integer.parseInt(cblMultiColors.getItemAt(cblMultiColors.getSelectedIndex()));
 				OutPutThis("You are now working with Color #" + colornumber);
 				
-				
 				int r,g,b;
 				if (ImageManipulation.rgbMulti.size()>=colornumber)
 				{
-					r = ImageManipulation.rgbMulti.get(colornumber).r;
-					g = ImageManipulation.rgbMulti.get(colornumber).g;
-					b = ImageManipulation.rgbMulti.get(colornumber).b;
+					r = ImageManipulation.rgbMulti.get(colornumber-1).r;
+					g = ImageManipulation.rgbMulti.get(colornumber-1).g;
+					b = ImageManipulation.rgbMulti.get(colornumber-1).b;
 				}
 				else
 				{

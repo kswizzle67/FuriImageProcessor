@@ -425,29 +425,27 @@ public class ImageManipulation {
 		    	 boolean thisisagoodpixel = false;	
 		    	for (RedGreenBlue rgb: rgbMulti)
 		    	{
-		    		//21,2,27
-		    		
-		    		//r:19 g:2 b:68, r:78 g:34 b:174]
-		    		//th = 5
-		    		//now I can loop through this array and see if the pixel fits...
-		    		if ((r<rgb.r+th&&r>rgb.r-th)&&
-			    		(g<rgb.g+th&&g>rgb.g-th)&&
-				    	(b<rgb.b+th&&b>rgb.b-th))
+		    		if (thisisagoodpixel == false)
 		    		{
-		    			thisisagoodpixel = true;
-			    		pixelData pixeldata = new pixelData();
-			    		pixeldata.x = x;
-			    		pixeldata.y = y;
-			    		//GreenPixels.add(pixeldata);
-			    		
-			    		coloredpixels++;
-			    		stainedpixels++;
-			    	    System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b + "Good");
-			    	    System.out.println("Colored count:" + coloredpixels + ", Stained Count:" + stainedpixels);
+			    		if ((r<rgb.r+th&&r>rgb.r-th)&&
+				    		(g<rgb.g+th&&g>rgb.g-th)&&
+					    	(b<rgb.b+th&&b>rgb.b-th))
+			    		{
+			    			thisisagoodpixel = true;
+				    		pixelData pixeldata = new pixelData();
+				    		pixeldata.x = x;
+				    		pixeldata.y = y;
+				    		//GreenPixels.add(pixeldata);
+				    		
+				    		coloredpixels++;
+				    		stainedpixels++;
+				    	    System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b + "Good");
+				    	    System.out.println("Colored count:" + coloredpixels + ", Stained Count:" + stainedpixels);
+			    		}
 		    		}
 		    	}
 		    	//still need this to turn the pixel white if it isn't found in the above loop
-		    	if(thisisagoodpixel == true)
+		    	if(thisisagoodpixel == false)
 		    	{
 		    		 copy.setRGB(x, y, new Color(255,255,255).getRGB());
 		    	}
