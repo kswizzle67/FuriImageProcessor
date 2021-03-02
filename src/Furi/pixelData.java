@@ -7,7 +7,7 @@ public class pixelData {
 	public double dblTotalPixels, coloredpixels, stainedpixels; 
 	public double signal; 
 	public int x,y,cellgroupid;
-	public static boolean counted;
+	public boolean counted;
 	// public int[] x1 = {0};
 	// public int[] y1 = {0};
 	

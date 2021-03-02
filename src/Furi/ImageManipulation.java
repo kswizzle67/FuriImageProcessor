@@ -466,8 +466,11 @@ public class ImageManipulation {
 				//we should be able to query the ArrayList, but for now let's create a method to do so.
 				//easy, but we can make it better.
 				CountPixelsThatAreCounted(ColoredPixels);
+				int j = 0;
 				if(!pd.counted)
 				{
+					j++;
+					Furi.OutPutThis(Integer.toString(j));
 					ArrayList<pixelData> GroupedPixels = FindMultiPixelsNearby(pd, ColoredPixels);
 					
 					if(GroupedPixels.size()>=8)

@@ -42,7 +42,7 @@ public class exportData {
 				fileWriter.append(comma);
 				fileWriter.append(Double.toString(pd.signal));
 				fileWriter.append(separator);
-				fileWriter.append(Boolean.toString(pixelData.counted));
+				fileWriter.append(Boolean.toString(pd.counted));
 				fileWriter.append(separator);
 				fileWriter.append(Boolean.toString(RedGreenBlue.counted));
 				fileWriter.append(separator);
