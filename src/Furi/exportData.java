@@ -15,7 +15,7 @@ public class exportData {
 
 	}
 	
-	public static void exporttocsvfile(String csvfile, ArrayList<pixelData> DtoS, ArrayList<pixelData> GoodPix, ArrayList<RedGreenBlue> GoodMultPixels) {
+	public static void exporttocsvfile(String csvfile, ArrayList<pixelData> DtoS, ArrayList<pixelData> GoodPix, ArrayList<RedGreenBlue> GoodMultPixels, ArrayList<RedGreenBlue> DtoSave) {
 		
 		String comma = ","; 
 		String separator = "\n"; 
@@ -44,7 +44,9 @@ public class exportData {
 				fileWriter.append(separator);
 				fileWriter.append(Boolean.toString(pd.counted));
 				fileWriter.append(separator);
-				fileWriter.append(Boolean.toString(RedGreenBlue.counted));
+			}
+			for(RedGreenBlue GoodMultPixels1 : DtoSave) {
+				fileWriter.append(Boolean.toString(GoodMultPixels1.counted));
 				fileWriter.append(separator);
 			}
 			fileWriter.close();
