@@ -24,7 +24,6 @@ public class Furi extends JFrame {
 	static ArrayList<pixelData> DatatoSave = new ArrayList<pixelData>();
 	static ArrayList<File> arrFiles = new ArrayList<File>();
 	static ArrayList<Integer> MultiColors = new ArrayList<Integer>();
-	static ArrayList<RedGreenBlue> DatatoSaveM = new ArrayList<RedGreenBlue>();
 	
 	
 	static int intCurrentFile = 0;
@@ -305,7 +304,7 @@ public class Furi extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 					//fileManipulation.SaveFile(txtSaveTo.getText(), arrFiles.get(intCurrentFile));
-					exportData.exporttocsvfile(txtSaveTo.getText(), DatatoSave, null, DatatoSaveM, null);
+					exportData.exporttocsvfile(txtSaveTo.getText(), DatatoSave, null, null);
 			}
 		});
 		FramePicture.add(btnSave);
@@ -747,7 +746,7 @@ public class Furi extends JFrame {
 					try {
 						imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhiteCellCountMulti(imgSource,
 									Integer.parseInt(txtThreshold.getText()),
-									 DatatoSaveM));
+									 DatatoSave));
 						LoadImageIntoUI(imgWorking); //use resizedImage here
 	
 					} catch (IOException z) {

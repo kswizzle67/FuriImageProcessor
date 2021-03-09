@@ -5,7 +5,7 @@ public class RedGreenBlue {
 	public int cellgroupid;
 	public int r,g,b;
 	public int x,y;
-	public boolean counted;
+	public static boolean counted;
 	
 	public RedGreenBlue() {
 			r=0;
