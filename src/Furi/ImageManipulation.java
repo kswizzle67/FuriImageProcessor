@@ -190,25 +190,27 @@ public class ImageManipulation {
 		    		
 		    		coloredpixels++;
 		    		stainedpixels++;
+		    		pixelData pix = new pixelData();
+			   		  //we should really have the current file without going back to the
+			   		  //furi class
+			   		if(fyl != null)
+			   		{
+			   			pix.filename = fyl.getName();
+			   			pix.foldername = fyl.getParent();
+			   		}
+			   		pix.dblTotalPixels = dblTotalPixels;
+			   		pix.coloredpixels = coloredpixels;
+			   		pix.stainedpixels = stainedpixels;
+			   		pix.signal = stainedpixels/coloredpixels;
+			   		pix.x = x;
+			   		pix.y = y;
+	     			DatatoSave.add(pix);
 		    	    System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b + " H:" + hsb[0] + " s:" + hsb[1] + " b:" + hsb[2]);
 		    	}
 		    }// For x
 		}// For y
 		  System.out.println("Total:" + dblTotalPixels + " Colored: " + coloredpixels + " Stained:" + stainedpixels + " perc: " + stainedpixels/coloredpixels );
-		  pixelData pix = new pixelData();
-		  //we should really have the current file without going back to the
-		  //furi class
-		  if(fyl != null)
-		  {
-			  pix.filename = fyl.getName();
-			  pix.foldername = fyl.getParent();
-		  }
-		  pix.dblTotalPixels = dblTotalPixels;
-		  pix.coloredpixels = coloredpixels;
-		  pix.stainedpixels = stainedpixels;
-		  pix.signal = stainedpixels/coloredpixels;
-		  
-  			DatatoSave.add(pix);
+		 
 		}
 		return copy;
 	}
@@ -371,6 +373,13 @@ public class ImageManipulation {
 						Furi.OutPutThis("Adding:" + String.valueOf(pix.x) + ":" + String.valueOf(pix.y));
 						GoodPixels.add(pix);	
 						copy.setRGB(pix.x, pix.y, new Color(255,0,0).getRGB());
+						pix.dblTotalPixels = dblTotalPixels;
+				   		pix.coloredpixels = coloredpixels;
+				   		pix.stainedpixels = stainedpixels;
+				   		pix.signal = stainedpixels/coloredpixels;
+				   		pix.x = pd.x;
+				   		pix.y = pd.y;
+		     			DatatoSave.add(pix);
 					}
 				}
 			}
@@ -409,7 +418,7 @@ public class ImageManipulation {
 		Furi.OutPutThis("Counted:" + String.valueOf(counted));
 	}
 	
-	static BufferedImage MakeIgnoredPixelsWhiteCellCountMulti(BufferedImage img, int th, ArrayList<RedGreenBlue> DatatoSaveM)
+	static BufferedImage MakeIgnoredPixelsWhiteCellCountMulti(BufferedImage img, int th, ArrayList<pixelData> DatatoSave)
 	{
 		int w = img.getWidth();
 		int h = img.getHeight();
@@ -493,12 +502,21 @@ public class ImageManipulation {
 							Furi.OutPutThis("Adding:" + String.valueOf(pix.x) + ":" + String.valueOf(pix.y));
 							GoodPixels.add(pix);	
 							copy.setRGB(pix.x, pix.y, new Color(255,0,0).getRGB());
+							
+					   		pix.dblTotalPixels = dblTotalPixels;
+					   		pix.coloredpixels = coloredpixels;
+					   		pix.stainedpixels = stainedpixels;
+					   		pix.signal = stainedpixels/coloredpixels;
+					   		//I think this might be setting the group to the same x,y....BAD
+					   		pix.x = pd.x;
+					   		pix.y = pd.y;
+			     			DatatoSave.add(pix);
 						}
 					}
 				}
 		    }
 			Furi.OutPutThis("Good Pixels:" + String.valueOf(GoodPixels.size()));
-			
+			DatatoSave = GoodPixels;
 			return copy;
 			
 		}
