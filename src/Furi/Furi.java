@@ -52,6 +52,7 @@ public class Furi extends JFrame {
 	static JComboBox<String> cblMultiColors;
 	static JButton countCellsMult;
 
+	static String filename, foldername;
 	
 
 	private static final long serialVersionUID = 1L;
@@ -177,6 +178,8 @@ public class Furi extends JFrame {
 					File newfile = fileManipulation.fileopener(FramePicture);
 					intCurrentFile = 0;
 					arrFiles.add(newfile);
+					filename = arrFiles.get(intCurrentFile).getName();
+					foldername = arrFiles.get(intCurrentFile).getPath();
 					ChangeImageLabel(arrFiles.get(intCurrentFile).getName());
 					txtSaveTo.setText(arrFiles.get(intCurrentFile).getPath().substring(0, arrFiles.get(intCurrentFile).getPath().lastIndexOf("/")+1) + "output.csv");
 					imgSource =  ImageManipulation.FiletoBufferedImage(arrFiles.get(intCurrentFile));
@@ -431,6 +434,8 @@ public class Furi extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				//ProcessImage(imgSource);
 				try {
+					//need to clear the datatosave since we are processing this image anew
+					DatatoSave.clear();
 					imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhite(imgSource,
 								Integer.parseInt(txtThreshold.getText()),
 								Integer.parseInt(txtR.getText()),
@@ -477,6 +482,8 @@ public class Furi extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				//ProcessImage(imgSource);
 				try {
+					//need to clear the datatosave since we are processing this image anew
+					DatatoSave.clear();
 					imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhiteUsingRange(
 							imgSource, rgb, DatatoSave, null));
 					LoadImageIntoUI(imgWorking); //use resizedImage here
@@ -709,6 +716,8 @@ public class Furi extends JFrame {
 				if(imgSource != null)
 				{
 					try {
+						//need to clear the datatosave since we are processing this image anew
+						DatatoSave.clear();
 						imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhiteCellCount(imgSource,
 									Integer.parseInt(txtThreshold.getText()),
 									Integer.parseInt(txtR.getText()),
@@ -745,7 +754,7 @@ public class Furi extends JFrame {
 					try {
 						imgWorking = ImageManipulation.deepCopyImage(ImageManipulation.MakeIgnoredPixelsWhiteCellCountMulti(imgSource,
 									Integer.parseInt(txtThreshold.getText()),
-									 DatatoSave));
+									 DatatoSave, filename, foldername));
 						LoadImageIntoUI(imgWorking); //use resizedImage here
 	
 					} catch (IOException z) {

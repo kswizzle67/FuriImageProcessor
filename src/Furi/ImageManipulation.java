@@ -129,28 +129,27 @@ public class ImageManipulation {
 		    		float hsb[] = Color.RGBtoHSB(r, g, b, null);
 			        System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b + " H:" + hsb[0] + " s:" + hsb[1] + " b:" + hsb[2]);
 		    		// pixel with stain
-		    		
-		    		
 		    		coloredpixels++;
 		    		stainedpixels++;
+		    		
+		    		pixelData pix = new pixelData();
+		  		  	pix.dblTotalPixels = dblTotalPixels;
+		  		  	pix.coloredpixels = coloredpixels;
+		  		  	pix.stainedpixels = stainedpixels;
+		  		  	pix.signal = stainedpixels/dblTotalPixels;
+		  		  	pix.x = x;
+		  		  	pix.y = y;
+			  		if(fyl != null)
+			  		{
+			  			pix.filename = fyl.getName();
+			  			pix.foldername = fyl.getParent();
+			  		}
+			  		DatatoSave.add(pix);
 		    	}
 		    }// For x
 		}// For y
 		  System.out.println("Total:" + dblTotalPixels + " Colored: " + coloredpixels + " Stained:" + stainedpixels + " perc: " + stainedpixels/coloredpixels);
-		  pixelData pix = new pixelData();
-		  pix.dblTotalPixels = dblTotalPixels;
-		  pix.coloredpixels = coloredpixels;
-		  pix.stainedpixels = stainedpixels;
-		  pix.signal = stainedpixels/dblTotalPixels;
-		  //we should really have the current file without going back to the
-		  //furi class
-		  //I think this is the problem... I am not sure we move CurrentFile...
-		  if(fyl != null)
-		  {
-			  pix.filename = fyl.getName();
-			  pix.foldername = fyl.getParent();
-		  }
-		DatatoSave.add(pix);
+		  
 		}
 		return copy;
 	}
@@ -418,7 +417,7 @@ public class ImageManipulation {
 		Furi.OutPutThis("Counted:" + String.valueOf(counted));
 	}
 	
-	static BufferedImage MakeIgnoredPixelsWhiteCellCountMulti(BufferedImage img, int th, ArrayList<pixelData> DatatoSave)
+	static BufferedImage MakeIgnoredPixelsWhiteCellCountMulti(BufferedImage img, int th, ArrayList<pixelData> DatatoSave, String filename, String foldername)
 	{
 		int w = img.getWidth();
 		int h = img.getHeight();
@@ -500,16 +499,17 @@ public class ImageManipulation {
 							ColoredPixels.get(i).cellgroupid = cellgroupid;
 							Furi.OutPutThis(String.valueOf(cellgroupid));
 							Furi.OutPutThis("Adding:" + String.valueOf(pix.x) + ":" + String.valueOf(pix.y));
-							GoodPixels.add(pix);	
-							copy.setRGB(pix.x, pix.y, new Color(255,0,0).getRGB());
 							
+							pix.filename = filename;
+							pix.foldername = foldername;
+							pix.x = pd.x;
+							pix.y = pd.y;
 					   		pix.dblTotalPixels = dblTotalPixels;
 					   		pix.coloredpixels = coloredpixels;
 					   		pix.stainedpixels = stainedpixels;
 					   		pix.signal = stainedpixels/coloredpixels;
-					   		//I think this might be setting the group to the same x,y....BAD
-					   		pix.x = pd.x;
-					   		pix.y = pd.y;
+					   		GoodPixels.add(pix);	
+							copy.setRGB(pix.x, pix.y, new Color(255,0,0).getRGB());
 			     			DatatoSave.add(pix);
 						}
 					}

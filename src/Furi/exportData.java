@@ -15,7 +15,7 @@ public class exportData {
 		String comma = ","; 
 		String separator = "\n"; 
 		
-		String header = "FileName, FolderName, TotalPixels, ColoredPixels, StainedPixels, Signal (Stained/Colored), Cell Count (Single Stain), Cell Count (Multi Stain)";
+		String header = "FileName, FolderName, x,y,TotalPixels, ColoredPixels, StainedPixels, Signal (Stained/Colored), Cell Count";
 		
 		FileWriter fileWriter = null; 
 			try {
@@ -29,6 +29,10 @@ public class exportData {
 				fileWriter.append(comma);
 				fileWriter.append(pd.foldername);
 				fileWriter.append(comma);
+				fileWriter.append(Integer.toString(pd.x));
+				fileWriter.append(comma);
+				fileWriter.append(Integer.toString(pd.y));
+				fileWriter.append(comma);
 				fileWriter.append(Double.toString(pd.dblTotalPixels));
 				fileWriter.append(comma);
 				fileWriter.append(Double.toString(pd.coloredpixels));
@@ -36,7 +40,7 @@ public class exportData {
 				fileWriter.append(Double.toString(pd.stainedpixels));
 				fileWriter.append(comma);
 				fileWriter.append(Double.toString(pd.signal));
-				fileWriter.append(separator);
+				fileWriter.append(comma);
 				fileWriter.append(Boolean.toString(pd.counted));
 				fileWriter.append(separator);
 			}
