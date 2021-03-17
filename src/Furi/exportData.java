@@ -40,9 +40,9 @@ public class exportData {
 				fileWriter.append(Double.toString(pd.stainedpixels));
 				fileWriter.append(comma);
 				fileWriter.append(Double.toString(pd.signal));
-				fileWriter.append(comma);
-				fileWriter.append(Boolean.toString(pd.counted));
 				fileWriter.append(separator);
+				//fileWriter.append(Boolean.toString(pd.counted));
+				//fileWriter.append(separator);
 			}
 			/*
 			for(RedGreenBlue GoodMultPixels1 : DtoSave) {

@@ -201,6 +201,8 @@ public class ImageManipulation {
 			   		pix.coloredpixels = coloredpixels;
 			   		pix.stainedpixels = stainedpixels;
 			   		pix.signal = stainedpixels/coloredpixels;
+					pix.filename = Furi.filename;
+					pix.foldername = Furi.foldername;
 			   		pix.x = x;
 			   		pix.y = y;
 	     			DatatoSave.add(pix);
@@ -372,10 +374,14 @@ public class ImageManipulation {
 						Furi.OutPutThis("Adding:" + String.valueOf(pix.x) + ":" + String.valueOf(pix.y));
 						GoodPixels.add(pix);	
 						copy.setRGB(pix.x, pix.y, new Color(255,0,0).getRGB());
+						pix.filename = Furi.filename;
+						pix.foldername = Furi.foldername;
 						pix.dblTotalPixels = dblTotalPixels;
 				   		pix.coloredpixels = coloredpixels;
 				   		pix.stainedpixels = stainedpixels;
 				   		pix.signal = stainedpixels/coloredpixels;
+						pix.filename = Furi.filename;
+						pix.foldername = Furi.foldername;
 				   		pix.x = pd.x;
 				   		pix.y = pd.y;
 		     			DatatoSave.add(pix);
@@ -508,6 +514,8 @@ public class ImageManipulation {
 					   		pix.coloredpixels = coloredpixels;
 					   		pix.stainedpixels = stainedpixels;
 					   		pix.signal = stainedpixels/coloredpixels;
+							pix.filename = Furi.filename;
+							pix.foldername = Furi.foldername;
 					   		GoodPixels.add(pix);	
 							copy.setRGB(pix.x, pix.y, new Color(255,0,0).getRGB());
 			     			DatatoSave.add(pix);

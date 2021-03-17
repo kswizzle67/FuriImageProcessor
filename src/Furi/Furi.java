@@ -174,7 +174,7 @@ public class Furi extends JFrame {
 				try {
 					//should disable the folder option if they haven't clicked a folder
 					btnAuto.setEnabled(false);
-					ResetVariables(true);
+					ResetVariables(true);	
 					File newfile = fileManipulation.fileopener(FramePicture);
 					intCurrentFile = 0;
 					arrFiles.add(newfile);
