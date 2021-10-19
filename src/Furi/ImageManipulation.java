@@ -42,6 +42,39 @@ public class ImageManipulation {
 		Furi.OutPutThis("Color index " + i + " : " + rgb.toString());
 	}
 	
+	
+	//This tells us if the color is white or black usually. 
+	//It is controlled by a radio button on the UI for white or black.
+	static Boolean isBackgroundColor(int r, int g, int b)
+	{
+		if (Furi.rdoIgnoreWhite.isSelected())
+		{
+			//we deprecate this when we added the ability to ignore black
+		    	 /*
+		    	if (r==255&&g==255&&b==255)
+    			{
+		    		//it is already white. 
+		    		//It has already been counted and should only be in totalpixels
+    			}*/
+		    	if (isBackgroundColor(r,g,b))
+    			{
+			    		//it is already white. 
+			    		//It has already been counted and should only be in totalpixels
+    			}
+			{
+				return true;
+			}
+		}
+		else if (Furi.rdoIgnoreBlack.isSelected())
+		{
+			if (r==0&&g==0&&b==0)
+			{
+				return true;
+			}		
+		}
+		return false;
+	}
+	
 	static BufferedImage FiletoBufferedImage(File in) 
 	{
 		try {
@@ -107,10 +140,19 @@ public class ImageManipulation {
 		    	 g = (pixel >> 8) & 0xFF;
 		    	 b = (pixel) & 0xFF;
 		    	 dblTotalPixels++;
+		    	//we deprecate this when we added the ability to ignore black
+		    	 /*
+		    	//we deprecate this when we added the ability to ignore black
+		    	 /*
 		    	if (r==255&&g==255&&b==255)
     			{
 		    		//it is already white. 
 		    		//It has already been counted and should only be in totalpixels
+    			}*/
+		    	if (isBackgroundColor(r,g,b))
+    			{
+			    		//it is already white. 
+			    		//It has already been counted and should only be in totalpixels
     			}
 		    	else if((r>rgb[0][0]
 		    			||r<rgb[0][1])
@@ -171,11 +213,19 @@ public class ImageManipulation {
 		    	 g = (pixel >> 8) & 0xFF;
 		    	 b = (pixel) & 0xFF;
 		    	 dblTotalPixels++;
+		    	//we deprecate this when we added the ability to ignore black
+		    	 /*
 		    	if (r==255&&g==255&&b==255)
     			{
 		    		//it is already white. 
 		    		//It has already been counted and should only be in totalpixels
+    			}*/
+		    	if (isBackgroundColor(r,g,b))
+    			{
+			    		//it is already white. 
+			    		//It has already been counted and should only be in totalpixels
     			}
+  
 		    	else if ((r>R+th||r<R-th)||
 	    			(g>G+th||g<G-th)||
 		    		(b>B+th||b<B-th))
@@ -317,10 +367,17 @@ public class ImageManipulation {
 		    	// int[] arry = {y};
 		    	 System.out.println("X:" + x + " y:" + y + " r:" + r + " g:" + g + " b:" + b);
 			    	
+		    	//we deprecate this when we added the ability to ignore black
+		    	 /*
 		    	if (r==255&&g==255&&b==255)
     			{
 		    		//it is already white. 
 		    		//It has already been counted and should only be in totalpixels
+    			}*/
+		    	if (isBackgroundColor(r,g,b))
+    			{
+			    		//it is already white. 
+			    		//It has already been counted and should only be in totalpixels
     			}
 		    	else if ((r>R+th||r<R-th)||
 	    			(g>G+th||g<G-th)||

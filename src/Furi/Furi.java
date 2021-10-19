@@ -16,7 +16,6 @@ import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 import java.util.ArrayList;
-
 // 2222
 public class Furi extends JFrame {
 
@@ -38,10 +37,10 @@ public class Furi extends JFrame {
 	static JSlider s;
 	static JButton btnSave, btnSaveToLocation, btnForwardImg, btnBackImg, btnAuto;
 	static JTextField txtSaveTo, txtR, txtG, txtB,txtThreshold;
-	static JLabel lblSaveTo, imgLabel, lblFileNameTop,lbllblFileNameTop,lblHRPIFC, lblColor;
+	static JLabel lblSaveTo, imgLabel, lblFileNameTop,lbllblFileNameTop,lblHRPIFC, lblColor, lblIgnoreWhiteorBlack;
 	static JTextArea lblOutput;
-	static JRadioButton rdoHRP, rdoIFC, rdoMultiColor;
-	static ButtonGroup rdoGroup;
+	static JRadioButton rdoHRP, rdoIFC, rdoMultiColor, rdoIgnoreBlack,rdoIgnoreWhite;
+	static ButtonGroup rdoGroup, rdoGroupWhiteorBlack;
 	static JPanel rdoPanel;
 	static JCheckBox chkTrackClicks; //used to track clicks and estimate colors
 	static File csvfile;
@@ -513,6 +512,31 @@ public class Furi extends JFrame {
 
 	public static void AddHRPandIFCRadios()
 	{
+		
+		//White or black ignore:
+		//Heading
+		lblIgnoreWhiteorBlack = new JLabel("Ignore Which Color? :");
+		lblIgnoreWhiteorBlack.setSize(150,40);
+		lblIgnoreWhiteorBlack.setLocation(450, 140);
+		FramePicture.add(lblIgnoreWhiteorBlack);
+		
+		
+		rdoIgnoreWhite = new JRadioButton("Ignore White");
+		rdoIgnoreWhite.setBounds(25,20,150,30);
+		rdoIgnoreWhite.setLocation(450,160);
+		rdoIgnoreWhite.setSelected(true);
+
+		rdoIgnoreBlack = new JRadioButton("Ignore Black");
+		rdoIgnoreBlack.setBounds(25,20,150,30);
+		rdoIgnoreBlack.setLocation(450,175);
+
+		rdoGroupWhiteorBlack = new ButtonGroup();
+		rdoGroupWhiteorBlack.add(rdoIgnoreWhite);
+		rdoGroupWhiteorBlack.add(rdoIgnoreBlack);
+		
+		FramePicture.getContentPane().add(rdoIgnoreWhite);
+		FramePicture.getContentPane().add(rdoIgnoreBlack);
+		
 		//btnProcessImage.setBounds(50,100,200,30);
 		//btnProcessImage.setLocation(650,270);
 
@@ -521,6 +545,7 @@ public class Furi extends JFrame {
 		lblHRPIFC.setLocation(450, 5);
 		FramePicture.add(lblHRPIFC);
 
+		
 		// for IFC (green): r = 0, g = 254, b = 0;
 		// for HRP: r = 171, g = 171, b = 141;
 		// both have range +/- 20 for "make white". The button should "make white" as well.
