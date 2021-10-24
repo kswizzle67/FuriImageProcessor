@@ -49,18 +49,11 @@ public class ImageManipulation {
 	{
 		if (Furi.rdoIgnoreWhite.isSelected())
 		{
-			//we deprecate this when we added the ability to ignore black
-		    	 /*
-		    	if (r==255&&g==255&&b==255)
-    			{
-		    		//it is already white. 
-		    		//It has already been counted and should only be in totalpixels
-    			}*/
-		    	if (isBackgroundColor(r,g,b))
-    			{
+	    	if (r==255 && g==255 && b==255)
+			{
 			    		//it is already white. 
 			    		//It has already been counted and should only be in totalpixels
-    			}
+			}
 			{
 				return true;
 			}
@@ -153,6 +146,7 @@ public class ImageManipulation {
     			{
 			    		//it is already white. 
 			    		//It has already been counted and should only be in totalpixels
+			        copy.setRGB(x, y, new Color(255,255,255).getRGB());		    		
     			}
 		    	else if((r>rgb[0][0]
 		    			||r<rgb[0][1])
@@ -224,6 +218,7 @@ public class ImageManipulation {
     			{
 			    		//it is already white. 
 			    		//It has already been counted and should only be in totalpixels
+		    	    copy.setRGB(x, y, new Color(255,255,255).getRGB());
     			}
   
 		    	else if ((r>R+th||r<R-th)||
